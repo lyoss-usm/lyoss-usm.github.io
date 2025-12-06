@@ -3,27 +3,23 @@
 
 @import "tailwindcss";
 
-:root {
+@theme {
     /* Fuentes */
     --font-sans: 'Inter', 'Outfit', sans-serif;
 
-    /* Paleta institucional USM */
-    --color-usm-blue: #004b85;
-    --color-usm-red: #d60019;
-    --color-usm-yellow: #f7ae00;
+    --color-primary: #004b85;
+    --color-secondary: #8000ff;
+    --color-success: #008452; /* Verde USM */
+    --color-warning: #f7ae00; /* Amarillo USM */
+    --color-error: #d60019;   /* Rojo USM */
+    --color-base-100: #ffffff;
+    --color-base-200: #f3f3f3; /* Fondo */ 
+    --color-base-300: #e5e5e5; 
+
+    /* Custom */
+    --color-lyoss-dark: #08203e;
+    --color-text-body: #1f1d1c;  
+    --color-text-nav: #3b3d40;
     --color-usm-green: #008452;
     --color-usm-black: #000000;
-
-    /* Paleta de la Comunidad */
-    --color-lyoss-dark: #08203e;
-    --color-lyoss-purple: #8000ff;
-
-    /* Textos base */
-    /* Ideal usar con transparencia/opacidad al 80% para tonos mas claros o oscuros */
-    --color-text-body: #1f1d1c; 
-    --color-text-nav-footer: #3b3d40;
-
-    /* Fondos base */
-    --color-bg-page: #f3f3f3; 
-    --color-bg-nav-footer: #ffffff;   
 }
