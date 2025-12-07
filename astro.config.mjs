@@ -9,5 +9,6 @@ export default defineConfig({
 		plugins: [tailwindcss()],
 	},
 	output: "static",
-	site: "https://lyoss.org",
+	site: "https://lyoss-usm.github.io",
+	compressHTML: true,
 });

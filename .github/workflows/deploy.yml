@@ -1,0 +1,43 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      # - 'v[0-9]+.[0-9]+.[0-9]+'
+      - "latest"
+  workflow_dispatch:
+
+concurrency:
+  group: "prod-deploy"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+  pages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install and build Astro project
+        uses: withastro/action@v3
+        with:
+          path: .
+          node-version: 22
+          package-manager: pnpm@latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
