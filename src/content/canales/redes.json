@@ -1,7 +1,7 @@
 [
 	{
 		"nombre": "Discord",
-		"url": "https://discord.com/invite/t6Y2bRJW",
+		"url": "https://discord.com/invite/vESGc8JajC",
 		"descripcion": "Únete a nuestra comunidad.",
 		"logo": "../../assets/discord.webp"
 	},
@@ -23,5 +23,11 @@
 		"descripcion": "Nuestros proyectos.",
 		"logo": "../../assets/github.webp",
 		"logoDark": "../../assets/github-dark.webp"
+	},
+	{
+		"nombre": "Correo",
+		"url": "mailto:lyoss.utfsm@proton.me",
+		"descripcion": "Contáctanos por correo electrónico.",
+		"logo": "../../assets/proton-mail.webp"
 	}
 ]

@@ -1,0 +1,227 @@
+---
+import {
+	Github,
+	Disc,
+	Star,
+	Users,
+	CircleCheckBig,
+	HeartHandshake,
+	Globe,
+	GitFork
+} from '@lucide/astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+	stars?: number;
+	contributors?: number;
+	forks?: number;
+	issues?: number;
+	active?: boolean;
+	helpWanted?: boolean;
+	githubUrl?: string;
+	siteUrl?: string;
+	bannerUrl?: ImageMetadata | string;
+	bannerColor?: string;
+	logoUrl?: ImageMetadata | string;
+}
+
+const {
+	stars = 0,
+	contributors = 0,
+	forks = 0,
+	issues = 0,
+	active = false,
+	helpWanted = false,
+	githubUrl,
+	siteUrl,
+	bannerUrl,
+	bannerColor = 'bg-gradient-to-r from-primary/20 to-secondary/20',
+	logoUrl
+} = Astro.props;
+
+// Handle image types for Astro Image component
+const hasBanner = bannerUrl != null;
+const hasLogo = logoUrl != null;
+const isBannerString = typeof bannerUrl === 'string';
+const isLogoString = typeof logoUrl === 'string';
+
+// Generate issues URL from GitHub URL
+const issuesUrl = githubUrl ? `${githubUrl}/issues` : undefined;
+---
+
+<div
+	class="card overflow-hidden border border-base-content/10 bg-base-100 transition-all duration-300 hover:border-base-content/20 hover:shadow-lg"
+>
+	<!-- Banner or colored background -->
+	<div class={`h-32 relative ${hasBanner ? '' : bannerColor}`}>
+		{
+			hasBanner && (
+				<>
+					{isBannerString ? (
+						<img
+							src={bannerUrl as string}
+							alt="Project banner"
+							class="h-full w-full object-cover"
+						/>
+					) : (
+						<Image
+							src={bannerUrl as ImageMetadata}
+							alt="Project banner"
+							class="h-full w-full object-cover"
+							width={400}
+							height={128}
+							format="webp"
+							quality={80}
+						/>
+					)}
+				</>
+			)
+		}
+		{!hasBanner && <div class="h-full w-full" />}
+
+		<!-- Project Logo overlay -->
+		<div
+			class="absolute top-3 right-3 flex h-10 w-10 items-center justify-center rounded-full border border-base-content/10 bg-base-100/90 backdrop-blur-sm"
+		>
+			{
+				hasLogo ? (
+					<>
+						{isLogoString ? (
+							<img
+								src={logoUrl as string}
+								alt="Project logo"
+								class="h-6 w-6 rounded-full object-cover"
+							/>
+						) : (
+							<Image
+								src={logoUrl as ImageMetadata}
+								alt="Project logo"
+								class="h-6 w-6 rounded-full object-cover"
+								width={32}
+								height={32}
+								format="webp"
+								quality={90}
+							/>
+						)}
+					</>
+				) : (
+					<Github class="h-5 w-5 text-base-content" />
+				)
+			}
+		</div>
+
+		<!-- Status indicators -->
+		{
+			(active || helpWanted) && (
+				<div class="absolute top-3 left-3 flex gap-2">
+					{active && (
+						<div
+							data-tip="Activo"
+							class="tooltip tooltip-right z-20 flex h-8 w-8 items-center justify-center rounded-full border border-success/20 bg-success/90 backdrop-blur-sm"
+						>
+							<CircleCheckBig class="h-4 w-4 text-success-content" />
+						</div>
+					)}
+					{helpWanted && (
+						<div
+							data-tip="Necesitamos ayuda"
+							class="tooltip tooltip-right flex h-8 w-8 items-center justify-center rounded-full border border-error/20 bg-error/90 backdrop-blur-sm"
+						>
+							<HeartHandshake class="h-4 w-4 text-error-content" />
+						</div>
+					)}
+				</div>
+			)
+		}
+	</div>
+
+	<div class="card-body p-6">
+		<slot />
+
+		<!-- Footer with stats and GitHub link -->
+		<div class="flex items-center justify-between">
+			<div class="flex items-center gap-4 text-sm text-base-content/60">
+				{
+					stars > 0 && (
+						<span class="flex items-center gap-1">
+							<Star class="h-4 w-4" />
+							{stars}
+						</span>
+					)
+				}
+				{
+					contributors > 0 && (
+						<span class="flex items-center gap-1">
+							<Users class="h-4 w-4" />
+							{contributors}
+						</span>
+					)
+				}
+				{
+					forks > 0 && (
+						<span class="flex items-center gap-1">
+							<GitFork class="h-4 w-4" />
+							{forks}
+						</span>
+					)
+				}
+				{
+					issues > 0 && (
+						<span class="flex items-center gap-1">
+							<Disc class="h-4 w-4" />
+							{issues}
+						</span>
+					)
+				}
+			</div>
+
+			<div class="flex items-center gap-2">
+				{
+					githubUrl && (
+						<a
+							href={githubUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="tooltip tooltip-left inline-flex h-8 w-8 items-center justify-center rounded-lg border border-base-content/20 bg-base-content/5 text-base-content/80 transition-all duration-200 hover:border-base-content/30 hover:bg-base-content/10 hover:text-base-content"
+							data-tip="Repositorio"
+							aria-label="View project on GitHub"
+						>
+							<Github class="h-4 w-4" />
+						</a>
+					)
+				}
+
+				{
+					issuesUrl && (
+						<a
+							href={issuesUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="tooltip tooltip-left inline-flex h-8 w-8 items-center justify-center rounded-lg border border-base-content/20 bg-base-content/5 text-base-content/80 transition-all duration-200 hover:border-base-content/30 hover:bg-base-content/10 hover:text-base-content"
+							data-tip="Issues"
+							aria-label="View project issues"
+						>
+							<Disc class="h-4 w-4" />
+						</a>
+					)
+				}
+
+				{
+					siteUrl && (
+						<a
+							href={siteUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="tooltip tooltip-left inline-flex h-8 w-8 items-center justify-center rounded-lg border border-base-content/20 bg-base-content/5 text-base-content/80 transition-all duration-200 hover:border-base-content/30 hover:bg-base-content/10 hover:text-base-content"
+							data-tip="Web"
+							aria-label="Visit project website"
+						>
+							<Globe class="h-4 w-4" />
+						</a>
+					)
+				}
+			</div>
+		</div>
+	</div>
+</div>

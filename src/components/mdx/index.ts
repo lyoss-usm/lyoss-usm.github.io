@@ -5,7 +5,19 @@ import Heading from './Heading.astro';
 import Paragraph from './Paragraph.astro';
 import Accent from './Accent.astro';
 import Stat from './Stat.astro';
+import Badge from './Badge.astro';
 import ContribuirCard from './ContribuirCard.astro';
 import ContribuirStep from './ContribuirStep.astro';
 
-export { Mini, Strong, Sub, Heading, Paragraph, Accent, Stat, ContribuirCard, ContribuirStep };
+export {
+	Mini,
+	Strong,
+	Sub,
+	Heading,
+	Paragraph,
+	Accent,
+	Stat,
+	Badge,
+	ContribuirCard,
+	ContribuirStep
+};

@@ -1,10 +1,19 @@
 ---
 interface Props {
 	class: string;
+	variant?: 'sm' | 'md';
 }
-const { class: className } = Astro.props;
+const { class: className, variant } = Astro.props;
 ---
 
-<p class={`text-lg md:text-xl text-base-content/70 ${className}`}>
-	<slot />
-</p>
+{
+	variant === 'sm' ? (
+		<p class={`text-sm leading-relaxed text-base-content/80 ${className}`}>
+			<slot />
+		</p>
+	) : (
+		<p class={`text-lg text-base-content/70 md:text-xl ${className}`}>
+			<slot />
+		</p>
+	)
+}

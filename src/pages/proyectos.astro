@@ -1,9 +1,303 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
+import { Search, Filter, Github } from '@lucide/astro';
+import CartaProyecto from '@/components/CartaProyecto.astro';
+import { getCollection } from 'astro:content';
+
+let proyectos = await getCollection('proyectos');
+
+const processedProyectos = await Promise.all(
+	proyectos.map(async (proyecto) => {
+		const { Content } = await proyecto.render();
+		return {
+			...proyecto,
+			Content
+		};
+	})
+);
+// Get all unique technologies for filters
+const allTechnologies = [...new Set(proyectos.flatMap((p) => p.data.findBy ?? []))].sort();
 ---
 
 <MainLayout>
-	<section class="grid h-screen place-items-center">
-		<h1>Proyectos</h1>
-	</section>
+	<div class="min-h-screen bg-base-100 pt-20">
+		<div class="container mx-auto px-4 py-8">
+			<!-- Header -->
+			<div class="mb-8">
+				<div class="mb-4 flex items-center gap-3">
+					<Github class="h-10 w-10 text-base-content" />
+					<h1 class="font-heading text-4xl font-bold text-base-content lg:text-5xl">
+						Nuestros Proyectos
+					</h1>
+				</div>
+				<p class="mb-2 text-lg text-base-content/70">
+					<span id="project-count">{processedProyectos.length}</span> proyectos • Construidos con ❤️ por
+					nuestra comunidad
+				</p>
+			</div>
+
+			<!-- Search and Filters -->
+			<div class="mb-8 rounded-2xl border border-base-content/10 bg-base-200/50 p-6">
+				<div class="flex flex-col gap-4 lg:flex-row">
+					<!-- Search Bar -->
+					<div class="relative flex-1">
+						<Search
+							class="pointer-events-none absolute top-1/2 left-3 z-90 h-5 w-5 -translate-y-1/2 transform"
+						/>
+						<input
+							type="text"
+							id="search-input"
+							placeholder="Buscar proyectos..."
+							class="input-bordered input w-full border-base-content/20 bg-base-100 pl-10 focus:border-primary"
+						/>
+					</div>
+
+					<!-- Filters -->
+					<div class="flex items-center gap-4">
+						<div class="flex items-center gap-2">
+							<Filter class="h-4 w-4 text-base-content/60" />
+							<span class="text-sm font-medium text-base-content/80">Filtros</span>
+						</div>
+
+						<div class="flex gap-2 max-xs:flex-wrap">
+							<button class="filter-btn active filter-all btn btn-sm btn-primary" data-filter="all">
+								Todos
+							</button>
+							<button class="filter-btn filter-active btn btn-outline btn-sm" data-filter="active">
+								Activos
+							</button>
+							<button
+								class="filter-btn filter-help-wanted btn btn-outline btn-sm"
+								data-filter="help-wanted"
+							>
+								Buscan Ayuda
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Technology Filters -->
+				<div class="mt-4 border-t border-base-content/10 pt-4">
+					<div class="flex flex-wrap gap-2">
+						{
+							allTechnologies.map((tech) => (
+								<button
+									class="tech-filter badge badge-outline hover:badge-primary"
+									data-tech={tech}
+								>
+									{tech}
+								</button>
+							))
+						}
+					</div>
+				</div>
+			</div>
+
+			<!-- Projects Grid -->
+			<div id="projects-grid" class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{
+					processedProyectos.map(({ data, Content, slug }) => (
+						<div
+							class="project-card"
+							data-title={slug.replaceAll('-', ' ').toLowerCase()}
+							data-technologies={data.findBy?.join(',').toLowerCase()}
+							data-status={data.active ? 'active' : 'inactive'}
+							data-help-wanted={data.helpWanted ? 'true' : 'false'}
+						>
+							<CartaProyecto
+								stars={data.stars}
+								contributors={data.contributors}
+								forks={data.forks}
+								issues={data.issues}
+								active={data.active}
+								helpWanted={data.helpWanted}
+								githubUrl={data.githubUrl}
+								siteUrl={data.siteUrl}
+								bannerUrl={data.bannerUrl}
+								logoUrl={data.logoUrl}
+							>
+								<Content />
+							</CartaProyecto>
+						</div>
+					))
+				}
+			</div>
+
+			<!-- No results message -->
+			<div id="no-results" class="hidden py-12 text-center">
+				<div class="mb-4 text-base-content/60">
+					<Search class="mx-auto mb-4 h-16 w-16 opacity-40" />
+					<h3 class="mb-2 font-heading text-xl font-semibold">No se encontraron proyectos</h3>
+					<p>Intenta ajustar tus filtros de búsqueda</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Search and filter functionality
+		const searchInput = document.getElementById('search-input');
+		const filterButtons = document.querySelectorAll('.filter-btn');
+		const techFilters = document.querySelectorAll('.tech-filter');
+		const projectCards = document.querySelectorAll('.project-card');
+		const noResults = document.getElementById('no-results');
+		const projectCount = document.getElementById('project-count');
+
+		let activeFilter = 'all';
+		let activeTechFilters = new Set();
+		let searchQuery = '';
+
+		function updateProjectCount() {
+			const visibleCards = Array.from(projectCards).filter(
+				(card) => !card.classList.contains('hidden')
+			);
+			if (projectCount) projectCount.textContent = visibleCards.length.toString();
+		}
+
+		function filterProjects() {
+			let visibleCount = 0;
+
+			projectCards.forEach((card) => {
+				const element = card as HTMLElement;
+				const title = element.dataset.title || '';
+				const technologies = element.dataset.technologies || '';
+				const status = element.dataset.status || '';
+				const helpWanted = element.dataset.helpWanted === 'true';
+
+				// Search filter
+				const matchesSearch =
+					searchQuery === '' || title.includes(searchQuery) || technologies.includes(searchQuery);
+
+				// Status filter
+				let matchesStatus = true;
+				if (activeFilter === 'active') {
+					matchesStatus = status === 'active';
+				} else if (activeFilter === 'help-wanted') {
+					matchesStatus = helpWanted;
+				}
+
+				// Technology filter
+				const projectTechs = technologies.split(',');
+				const matchesTech =
+					activeTechFilters.size === 0 ||
+					Array.from(activeTechFilters).some((tech) =>
+						projectTechs.includes(String(tech).toLowerCase())
+					);
+
+				if (matchesSearch && matchesStatus && matchesTech) {
+					card.classList.remove('hidden');
+					visibleCount++;
+				} else {
+					card.classList.add('hidden');
+				}
+			});
+
+			// Show/hide no results message
+			if (noResults) {
+				if (visibleCount === 0) {
+					noResults.classList.remove('hidden');
+				} else {
+					noResults.classList.add('hidden');
+				}
+			}
+
+			updateProjectCount();
+		}
+
+		// Search input handler
+		if (searchInput) {
+			searchInput.addEventListener('input', (e) => {
+				const target = e.target as HTMLInputElement;
+				searchQuery = target.value.toLowerCase();
+				filterProjects();
+			});
+		}
+
+		// Filter button handlers
+		filterButtons.forEach((button) => {
+			button.addEventListener('click', () => {
+				// Update active filter
+				filterButtons.forEach((btn) => {
+					btn.classList.remove('btn-primary', 'btn-success', 'btn-error', 'active');
+					btn.classList.add('btn-outline');
+				});
+
+				button.classList.remove('btn-outline');
+				button.classList.add('active');
+
+				// Apply specific color based on button type
+				if (button.classList.contains('filter-all')) {
+					button.classList.add('btn-primary');
+				} else if (button.classList.contains('filter-active')) {
+					button.classList.add('btn-success');
+				} else if (button.classList.contains('filter-help-wanted')) {
+					button.classList.add('btn-error');
+				}
+
+				activeFilter = (button as HTMLElement).dataset.filter || 'all';
+				filterProjects();
+			});
+		});
+
+		// Technology filter handlers
+		techFilters.forEach((filter) => {
+			filter.addEventListener('click', () => {
+				const tech = ((filter as HTMLElement).dataset.tech || '').toLowerCase();
+
+				if (activeTechFilters.has(tech)) {
+					activeTechFilters.delete(tech);
+					filter.classList.remove('badge-primary');
+					filter.classList.add('badge-outline');
+				} else {
+					activeTechFilters.add(tech);
+					filter.classList.remove('badge-outline');
+					filter.classList.add('badge-primary');
+				}
+
+				filterProjects();
+			});
+		});
+
+		// Initial setup
+		updateProjectCount();
+	</script>
+
+	<style>
+		.project-card {
+			transition: all 0.3s ease;
+		}
+
+		.project-card.hidden {
+			display: none;
+		}
+
+		.filter-btn.active {
+			transform: scale(1.05);
+		}
+
+		.filter-btn {
+			transition: all 0.2s ease;
+		}
+
+		.filter-active.btn-outline:hover {
+			background-color: hsl(var(--su));
+			border-color: hsl(var(--su));
+			color: hsl(var(--suc));
+		}
+
+		.filter-help-wanted.btn-outline:hover {
+			background-color: hsl(var(--er));
+			border-color: hsl(var(--er));
+			color: hsl(var(--erc));
+		}
+
+		.tech-filter {
+			transition: all 0.2s ease;
+			cursor: pointer;
+		}
+
+		.tech-filter:hover {
+			transform: translateY(-1px);
+		}
+	</style>
 </MainLayout>

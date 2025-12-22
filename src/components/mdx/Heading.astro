@@ -1,7 +1,7 @@
 ---
 interface Props {
 	class: string;
-	variant?: 'sm' | 'md' | 'lg';
+	variant?: 'xs' | 'sm' | 'md' | 'lg';
 }
 const { class: className, variant } = Astro.props;
 ---
@@ -13,6 +13,10 @@ const { class: className, variant } = Astro.props;
 		</h1>
 	) : variant === 'sm' ? (
 		<h1 class={`font-heading text-2xl font-bold text-base-content md:text-4xl ${className}`}>
+			<slot />
+		</h1>
+	) : variant === 'xs' ? (
+		<h1 class={`font-heading text-xl font-bold text-base-content ${className}`}>
 			<slot />
 		</h1>
 	) : (

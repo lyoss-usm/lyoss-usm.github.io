@@ -1,16 +1,21 @@
 import { defineCollection, z } from 'astro:content';
 
-// Esto es de ejemplo, CAMBIAR!!
-const projectsCollection = defineCollection({
+const proyectosCollection = defineCollection({
 	type: 'content',
 	schema: ({ image }) =>
 		z.object({
-			title: z.string().min(1),
-			description: z.string().min(1),
-			repo: z.string().url().optional(),
-			link: z.string().url().optional(),
-			preview: image().optional(),
-			tags: z.array(z.string()).optional()
+			stars: z.number().optional(),
+			contributors: z.number().optional(),
+			forks: z.number().optional(),
+			issues: z.number().optional(),
+			active: z.boolean(),
+			helpWanted: z.boolean().optional(),
+			bannerUrl: image().optional(),
+			logoUrl: image().optional(),
+			githubUrl: z.string().url().optional(),
+			siteUrl: z.string().url().optional(),
+			issuesUrl: z.string().url().optional(),
+			findBy: z.array(z.string()).optional()
 		})
 });
 
@@ -33,7 +38,7 @@ const contenidosCollection = defineCollection({
 });
 
 export const collections = {
-	projects: projectsCollection,
+	proyectos: proyectosCollection,
 	canales: canalesCollection,
 	contenidos: contenidosCollection
 };
