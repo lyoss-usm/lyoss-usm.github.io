@@ -1,27 +1,27 @@
 [
-  {
-    "nombre": "Discord",
-    "url": "https://discord.com/invite/t6Y2bRJW",
-    "descripcion": "Únete a nuestra comunidad.",
-    "logo": "../../assets/discord.webp"
-  },
-  {
-    "nombre": "WhatsApp",
-    "url": "https://chat.whatsapp.com/KI8bDUhXEpg5D4ieHJ44xT",
-    "descripcion": "Grupo de anuncios, comunidad y soporte.",
-    "logo": "../../assets/whatsapp.webp"
-  },
-  {
-    "nombre": "Instagram",
-    "url": "https://www.instagram.com/lyoss.usm/",
-    "descripcion": "Fotos y eventos.",
-    "logo": "../../assets/instagram.webp"
-  },
-  {
-    "nombre": "GitHub",
-    "url": "https://github.com/lyoss-usm",
-    "descripcion": "Nuestros proyectos.",
-    "logo": "../../assets/github.webp",
-    "logoDark": "../../assets/github-dark.webp"
-  }
+	{
+		"nombre": "Discord",
+		"url": "https://discord.com/invite/t6Y2bRJW",
+		"descripcion": "Únete a nuestra comunidad.",
+		"logo": "../../assets/discord.webp"
+	},
+	{
+		"nombre": "WhatsApp",
+		"url": "https://chat.whatsapp.com/KI8bDUhXEpg5D4ieHJ44xT",
+		"descripcion": "Grupo de anuncios, comunidad y soporte.",
+		"logo": "../../assets/whatsapp.webp"
+	},
+	{
+		"nombre": "Instagram",
+		"url": "https://www.instagram.com/lyoss.usm/",
+		"descripcion": "Fotos y eventos.",
+		"logo": "../../assets/instagram.webp"
+	},
+	{
+		"nombre": "GitHub",
+		"url": "https://github.com/lyoss-usm",
+		"descripcion": "Nuestros proyectos.",
+		"logo": "../../assets/github.webp",
+		"logoDark": "../../assets/github-dark.webp"
+	}
 ]

@@ -1,60 +1,67 @@
 ---
-import { Image } from "astro:assets";
-import Logo from "@/assets/logo-1.webp";
-import { getOrbitsData } from "@/utils/orbit";
+import { Image } from 'astro:assets';
+import Logo from '@/assets/logo-1.webp';
+import { getOrbitsData } from '@/utils/orbit';
 import { getEntry } from 'astro:content';
 const entry_content = await getEntry('contenidos', 'hero');
 if (!entry_content) {
-    throw new Error('No se encontró la entrada de contenido para contenidos/hero');
+	throw new Error('No se encontró la entrada de contenido para contenidos/hero');
 }
 const { Content } = await entry_content.render();
 const orbits = await getOrbitsData();
 ---
 
-<section id="hero" class="hero pt-16 min-h-svh relative overflow-hidden">
-  <div class="hero-content flex-col lg:flex-row-reverse relative z-10 w-full max-w-7xl mx-auto px-4">
+<section id="hero" class="relative hero min-h-svh overflow-hidden pt-16">
+	<div
+		class="relative hero-content z-10 mx-auto w-full max-w-7xl flex-col px-4 lg:flex-row-reverse"
+	>
+		<div class="relative flex items-center justify-center">
+			<div
+				class="pointer-events-none absolute top-1/2 left-1/2 z-0 -translate-x-1/2 -translate-y-1/2"
+			>
+				{
+					orbits.map((orbit) => (
+						<div
+							class={`absolute rounded-full border border-dashed border-base-content/20 ${orbit.orbitClass} -translate-x-1/2 -translate-y-1/2 ${orbit.size} ${orbit.opacity}`}
+						>
+							{orbit.items.map((item) => (
+								<div class={`absolute ${item.position}`}>
+									<div class={orbit.avatarClass}>
+										<Image
+											src={item.src}
+											alt="GitHub Member"
+											width={32}
+											height={32}
+											format="webp"
+											quality={80}
+											class={`${item.size} rounded-full border-2 border-base-100 bg-base-100 object-cover shadow-md`}
+										/>
+									</div>
+								</div>
+							))}
+						</div>
+					))
+				}
+			</div>
 
-    <div class="relative flex justify-center items-center">
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0">
-        {orbits.map((orbit) => (
-          <div class={`absolute border border-dashed border-base-content/20 rounded-full ${orbit.orbitClass} -translate-x-1/2 -translate-y-1/2 ${orbit.size} ${orbit.opacity}`}>
-            {orbit.items.map((item) => (
-              <div class={`absolute ${item.position}`}>
-                <div class={orbit.avatarClass}>
-                  <Image
-                    src={item.src}
-                    alt="GitHub Member"
-                    width={32}
-                    height={32}
-                    format="webp"
-                    quality={80}
-                    class={`${item.size} rounded-full border-2 border-base-100 shadow-md object-cover bg-base-100`}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
+			<Image
+				src={Logo}
+				loading="eager"
+				alt="Linux y Open Source USM Logo"
+				class="relative z-10 max-w-xs rounded-lg drop-shadow-2xl lg:max-w-sm"
+				widths={[320, 348]}
+				sizes="(max-width: 1024px) 320px, 348px"
+			/>
+		</div>
 
-      <Image
-        src={Logo}
-        loading="eager"
-        alt="Linux y Open Source USM Logo"
-        class="max-w-xs lg:max-w-sm rounded-lg drop-shadow-2xl relative z-10"
-        widths={[320, 348]}
-        sizes="(max-width: 1024px) 320px, 348px"
-      />
-    </div>
+		<div class="z-10 text-center lg:text-left">
+			<Content />
 
-    <div class="z-10 text-center lg:text-left">
-      <Content />
-
-      <div class="flex flex-wrap justify-center lg:justify-start gap-4">
-        <a class="btn btn-primary" href="/contacto">Unirse</a>
-        <a class="btn btn-accent" href="#contribuir">Contribuir</a>
-        <a class="btn btn-secondary" href="#proyectos">Ver Proyectos</a>
-      </div>
-    </div>
-  </div>
+			<div class="flex flex-wrap justify-center gap-4 lg:justify-start">
+				<a class="btn btn-primary" href="/contacto">Unirse</a>
+				<a class="btn btn-accent" href="#contribuir">Contribuir</a>
+				<a class="btn btn-secondary" href="#proyectos">Ver Proyectos</a>
+			</div>
+		</div>
+	</div>
 </section>

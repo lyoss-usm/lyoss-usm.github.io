@@ -6,7 +6,7 @@
 		"paths": {
 			"@/": ["./src/"],
 			"@/*": ["./src/*"],
-			"MDX": ["./src/components/mdx/index.ts"],
+			"MDX": ["./src/components/mdx/index.ts"]
 		}
 	}
 }

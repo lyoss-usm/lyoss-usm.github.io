@@ -1,8 +1,8 @@
 ---
 interface Props {
-    class: string;
+	class: string;
 }
 const { class: className } = Astro.props;
 ---
 
-<span class={`text-primary font-bold ${className}`}><slot/></span>
+<span class={`text-primary font-bold ${className}`}><slot /></span>

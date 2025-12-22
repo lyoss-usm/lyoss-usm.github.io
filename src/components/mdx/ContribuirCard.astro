@@ -1,78 +1,76 @@
 ---
 export interface Props {
-  title: string;
-  description: string;
-  color: 'primary' | 'error' | 'info' | 'warning' | 'secondary' | 'accent' | 'success';
+	title: string;
+	description: string;
+	color: 'primary' | 'error' | 'info' | 'warning' | 'secondary' | 'accent' | 'success';
 }
 
 const { title, description, color } = Astro.props;
 
 const colorClasses = {
-  primary: {
-    border: 'hover:border-primary/30',
-    bg: 'hover:bg-primary/5',
-    iconBg: 'bg-primary/20',
-    iconColor: 'text-primary'
-  },
-  error: {
-    border: 'hover:border-error/30',
-    bg: 'hover:bg-error/5',
-    iconBg: 'bg-error/20',
-    iconColor: 'text-error'
-  },
-  info: {
-    border: 'hover:border-info/30',
-    bg: 'hover:bg-info/5',
-    iconBg: 'bg-info/20',
-    iconColor: 'text-info'
-  },
-  warning: {
-    border: 'hover:border-warning/30',
-    bg: 'hover:bg-warning/5',
-    iconBg: 'bg-warning/20',
-    iconColor: 'text-warning'
-  },
-  secondary: {
-    border: 'hover:border-secondary/30',
-    bg: 'hover:bg-secondary/5',
-    iconBg: 'bg-secondary/20',
-    iconColor: 'text-secondary'
-  },
-  accent: {
-    border: 'hover:border-accent/30',
-    bg: 'hover:bg-accent/5',
-    iconBg: 'bg-accent/20',
-    iconColor: 'text-accent'
-  },
-  success: {
-    border: 'hover:border-success/30',
-    bg: 'hover:bg-success/5',
-    iconBg: 'bg-success/20',
-    iconColor: 'text-success'
-  }
+	primary: {
+		border: 'hover:border-primary/30',
+		bg: 'hover:bg-primary/5',
+		iconBg: 'bg-primary/20',
+		iconColor: 'text-primary'
+	},
+	error: {
+		border: 'hover:border-error/30',
+		bg: 'hover:bg-error/5',
+		iconBg: 'bg-error/20',
+		iconColor: 'text-error'
+	},
+	info: {
+		border: 'hover:border-info/30',
+		bg: 'hover:bg-info/5',
+		iconBg: 'bg-info/20',
+		iconColor: 'text-info'
+	},
+	warning: {
+		border: 'hover:border-warning/30',
+		bg: 'hover:bg-warning/5',
+		iconBg: 'bg-warning/20',
+		iconColor: 'text-warning'
+	},
+	secondary: {
+		border: 'hover:border-secondary/30',
+		bg: 'hover:bg-secondary/5',
+		iconBg: 'bg-secondary/20',
+		iconColor: 'text-secondary'
+	},
+	accent: {
+		border: 'hover:border-accent/30',
+		bg: 'hover:bg-accent/5',
+		iconBg: 'bg-accent/20',
+		iconColor: 'text-accent'
+	},
+	success: {
+		border: 'hover:border-success/30',
+		bg: 'hover:bg-success/5',
+		iconBg: 'bg-success/20',
+		iconColor: 'text-success'
+	}
 };
 
 const selectedColor = colorClasses[color as keyof typeof colorClasses] || colorClasses.primary;
 ---
 
 <div
-  class={`card bg-base-200/50 border border-base-content/10 ${selectedColor.border} ${selectedColor.bg} transition-all duration-300`}
+	class={`card bg-base-200/50 border border-base-content/10 ${selectedColor.border} ${selectedColor.bg} transition-all duration-300`}
 >
-  <div class="card-body p-8">
-    <div class="flex items-center gap-4 mb-4">
-      <div
-        class={`w-12 h-12 ${selectedColor.iconBg} rounded-lg flex items-center justify-center ${selectedColor.iconColor}`}
-      >
-        <slot />
-      </div>
-      <h3
-        class="font-heading text-xl font-semibold text-base-content"
-      >
-        {title}
-      </h3>
-    </div>
-    <p class="text-base-content/80">
-      {description}
-    </p>
-  </div>
+	<div class="card-body p-8">
+		<div class="mb-4 flex items-center gap-4">
+			<div
+				class={`w-12 h-12 ${selectedColor.iconBg} rounded-lg flex items-center justify-center ${selectedColor.iconColor}`}
+			>
+				<slot />
+			</div>
+			<h3 class="font-heading text-xl font-semibold text-base-content">
+				{title}
+			</h3>
+		</div>
+		<p class="text-base-content/80">
+			{description}
+		</p>
+	</div>
 </div>
