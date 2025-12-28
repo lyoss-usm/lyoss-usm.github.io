@@ -1,0 +1,125 @@
+
+import { Coffee } from "@lucide/astro";
+
+export const hitos = [
+    {
+        year: "Septiembre 2025",
+        title: "Primer Correo",
+        description: "Nuestro viaje comenzo el Sabado 13 de Septiembre de 2025, donde se produce el primer intercambio de ideas entre estudiantes de Ingenieria Civil Telemática y el Centro de Alumnos de la carrera de Informática, para asi construir una comunidad Linux y Open Source para asi revivir lo que fue una era muy importante en la Universidad.",
+    },
+    {
+        year: "Octubre 2025",
+        title: "Primera Charla",
+        description: "El dia Jueves 29 de Octubre de 2025, se realiza la primera charla oficial de Lyoss, donde se presentan los objetivos y la vision de la comunidad a los primeros interesados. Tuvimos la compañia de los profesores Mauricio Araya, Carolina Saavedra y Horst Von Brand, siendo este ultimo un referente en lo que fue alguna vez una comunidad Linux en la USM. Aquel dia tuvimos mas de 70 asistentes.",
+        },
+        {
+            year: "Noviembre 2025",
+            title: "Primeros Desarrollos",
+            description: "Prontamente nos pusimos manos a la obra, generando proyectos open source con impacto, el primer proyecto que inciamos fue nuestra Pagina Web, luego seguimos con un servidor de Miinecraft y los cimientos de un mapa interactivo de la Universidad .",
+        }
+];
+
+<section id="historia" class="not-prose min-h-screen py-16 bg-base-100">
+  <div class="container mx-auto px-4">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-6xl font-bold text-base-content mb-6 font-heading">
+            Nuestra Historia
+        </h2>
+        <p class="text-lg text-base-content/70 max-w-3xl mx-auto leading-relaxed">Un grupo de estudiantes que cree en el poder del software libre para transformar la educación y la tecnología.</p>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+        <div class="space-y-8">
+          <div class="w-full">
+            <img
+              src="/src/assets/banner-0.webp"
+              alt="Lyoss Banner"
+              class="w-full h-auto rounded-lg shadow-lg"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+
+          <div class="space-y-4">
+            <p class="text-base-content/80 leading-relaxed">
+              Todo empezó en Septiembre de 2025, con un simple correo entre estudiantes de Ingeniería Civil Telemática
+              y el Centro de Estudiantes de Informática. Se gestionaron las primeras reuniones para compartir ideas.
+            </p>
+
+            <p class="text-base-content/80 leading-relaxed">
+              Lo que comenzó como reuniones en la sala del Centro de Estudiantes de Informática se convirtió en una
+              comunidad activa con proyectos propios, charlas y un Discord que funciona como cueva virtual.
+            </p>
+
+            <p class="text-base-content/80 leading-relaxed">
+              Hoy somos más de 70 miembros en Discord, seguimos construyendo proyectos open source y con miras a realizar
+              eventos que promuevan el uso de Linux y tecnologías libres en nuestra universidad.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-3 p-4 bg-primary/10 rounded-lg border border-primary/20">
+            <Coffee class="w-5 h-5 text-primary" />
+            <span class="text-sm text-base-content/80">
+              Más de 1000 tazas de café consumidas
+            </span>
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div class="w-full">
+          <ul class="timeline timeline-vertical w-full">
+            {hitos.map((hito, index) => (
+              <li>
+                {index > 0 && <hr class="bg-primary/60" />}
+
+                <div class="timeline-middle">
+                  <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/20">
+                    <span class="h-2 w-2 rounded-full bg-primary" />
+                  </span>
+                </div>
+
+                <div class="timeline-end mb-10 pl-6 md:pl-8">
+                  <time class="font-mono italic text-primary font-bold text-lg">
+                    {hito.year}
+                  </time>
+
+                  <div class="text-2xl font-bold font-heading text-base-content mb-2">
+                    {hito.title}
+                  </div>
+
+                  <p class="text-base-content/80 leading-relaxed">
+                    {hito.description}
+                  </p>
+
+                  {"link" in hito && hito.link ? (
+                    <a
+                      href={hito.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      class="mt-3 inline-flex text-sm text-primary hover:underline"
+                    >
+                      {hito.linkLabel ?? "Ver link"}
+                    </a>
+                  ) : null}
+                </div>
+
+                {index < hitos.length - 1 && <hr class="bg-primary/60" />}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>{`
+.timeline {
+  --timeline-col-start: auto !important;
+  --timeline-col-end: 1fr !important;
+}
+
+.timeline .timeline-end {
+  margin-left: 1.5rem !important;
+}
+`}</style>
