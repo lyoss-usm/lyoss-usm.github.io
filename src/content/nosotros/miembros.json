@@ -13,14 +13,14 @@
         "nombre": "Isidora Cortes Cataldo",
         "rol": "Secretaria General",
         "bio": "Estudiante de Ingeniería Civil Informatica.",
-        "avatar": "src/assets/logo-0.webp",
+        "avatar": "/src/assets/logo-0.webp",
         "githubUrl": "https://github.com/nubeconfusa"
     },
     {
         "nombre": "Sofía Salazar",
         "rol": "Finanzas",
         "bio": "Estudiante de Ingeniería Civil Industrial.",
-        "avatar": "src/assets/logo-0.webp"
+        "avatar": "/src/assets/logo-0.webp"
     },
     {
         "nombre": "Ángel González Peña",
@@ -79,7 +79,7 @@
         "nombre": "Sebastian Torres Valenta",
         "rol": "Líder de Proyecto - Evol",
         "bio": "Estudiante de Ingeniería Civil Telemática.",
-        "avatar": "src/assets/logo-0.webp",
+        "avatar": "/src/assets/logo-0.webp",
         "githubUrl": "https://github.com/sebadaba"
     },
     {
@@ -93,25 +93,25 @@
         "nombre": "Constanza Acosta",
         "rol": "Líder de Proyecto - Malla Interactiva",
         "bio": "Estudiante de Ingeniería Civil Telemática.",
-        "avatar": "src/assets/logo-0.webp"
+        "avatar": "/src/assets/logo-0.webp"
     },
     {
         "nombre": "Rock Dabre Valenzuela",
         "rol": "Coordinador",
         "bio": "Estudiante de Ingeniería Civil Informática.",
-        "avatar": "src/assets/logo-0.webp"
+        "avatar": "/src/assets/logo-0.webp"
     },
     {
         "nombre": "Joaquin Velíz",
         "rol": "Coordinador",
         "bio": "Estudiante de Ingeniería Civil Informática.",
-        "avatar": "src/assets/logo-0.webp"
+        "avatar": "/src/assets/logo-0.webp"
     },
     {
         "nombre": "Lucas Bernard",
         "rol": "Coordinador",
         "bio": "Estudiante de Ingeniería Civil Informática.",
-        "avatar": "src/assets/logo-0.webp"
+        "avatar": "/src/assets/logo-0.webp"
     },
     {
         "nombre": "Giuseppe Queirolo",
@@ -124,7 +124,7 @@
         "nombre": "Daniel Fernandez",
         "rol": "Coordinador",
         "bio": "Estudiante de Ingeniería Civil Telemática.",
-        "avatar": "src/assets/logo-0.webp"
+        "avatar": "/src/assets/logo-0.webp"
     },
     {
         "nombre": "Matias Mancilla Cesped",
@@ -137,6 +137,6 @@
         "nombre": "Matias Acuña Oyarzún",
         "rol": "Coordinador",
         "bio": "Estudiante de Ingeniería Civil Informática.",
-        "avatar": "src/assets/logo-0.webp"
+        "avatar": "/src/assets/logo-0.webp"
     }
 ]
