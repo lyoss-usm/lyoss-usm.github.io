@@ -1,9 +1,36 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
+import CartaMiembro from '@/components/CartaMiembro.astro';
+import { getCollection } from 'astro:content';
+
+const nosotrosEntry = await getCollection('nosotros');
+
+const data0 = nosotrosEntry[0]?.data;
+const miembros =
+  Array.isArray(data0) ? data0
+  : Array.isArray((data0 as any)?.miembros) ? (data0 as any).miembros
+  : [];
 ---
 
 <MainLayout>
-	<section class="grid h-screen place-items-center">
-		<h1>Nosotros</h1>
+	<section class="bg-base-100 py-16 pt-32">
+		<div class="container mx-auto px-4">
+			<!-- Header -->
+			<div class="text-left mb-16">
+				<h2 class="font-heading text-4xl lg:text-5xl font-bold text-base-content mb-4">
+					Conoce a la <span class="text-primary">coordinación</span> de Lyoss
+				</h2>
+				<p class="text-base-content/70 text-lg">
+					El equipo organizador que lidera y coordina las actividades de nuestra comunidad.
+				</p>
+			</div>
+
+			<!-- Team Grid -->
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				{miembros.map((miembro: any) => (
+					<CartaMiembro {...miembro} />
+				))}
+			</div>
+		</div>
 	</section>
 </MainLayout>
