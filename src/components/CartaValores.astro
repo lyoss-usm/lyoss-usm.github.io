@@ -1,0 +1,42 @@
+---
+import { Heart, Users, Code2, Lightbulb, Shield, Globe } from "@lucide/astro";
+
+interface Item {
+  titulo: string;
+  descripcion: string;
+  icon?: "Heart" | "Users" | "Code2" | "Lightbulb" | "Shield" | "Globe";
+}
+
+const { items = [] } = Astro.props as { items: Item[] };
+
+const icons = { Heart, Users, Code2, Lightbulb, Shield, Globe } as const;
+---
+
+<section id="valores" class="py-24">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="font-heading text-4xl lg:text-5xl font-bold text-base-content">
+        Nuestros Valores
+      </h2>
+      <p class="mt-3 text-base-content/60 max-w-2xl mx-auto">
+        Los principios que guían cada decisión y acción en nuestra comunidad.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+      {items.map((v) => {
+        const Icon = (v.icon && icons[v.icon]) || Heart;
+        return (
+          <div class="rounded-xl border border-base-content/10 bg-base-100/40 backdrop-blur-sm p-6 hover:border-base-content/20 transition h-full">
+            <div class="w-10 h-10 rounded-lg border border-base-content/10 flex items-center justify-center mb-4">
+              <Icon size={18} class="text-base-content/70" />
+            </div>
+
+            <h3 class="font-heading font-bold text-base text-base-content">{v.titulo}</h3>
+            <p class="mt-2 text-sm text-base-content/70 leading-relaxed">{v.descripcion}</p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
