@@ -50,6 +50,7 @@ const nosotrosCollection = defineCollection({
 				webUrl: z.string().url().optional(),
 				linkedinUrl: z.string().url().optional(),
 				instagramUrl: z.string().url().optional(),
+				codebergUrl: z.string().url().optional(),
 				avatar: image()
 			})
 		)
