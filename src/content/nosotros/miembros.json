@@ -2,7 +2,7 @@
     {
         "nombre": "Mitchel Rojas Rivera",
         "rol": "Presidente",
-        "bio": "Estudiante de Ingeniería Civil Telematica. Me gusta el Linux y comer completos. i use void btw...",
+        "bio": "Estudiante de Ingeniería Civil Telematica. Fan del pingüinito y los completos del XL. i use void btw...",
         "avatar": "https://avatars.githubusercontent.com/u/108637663?v=4",
         "githubUrl": "https://github.com/michifeli",
         "linkedinUrl": "https://www.linkedin.com/in/mitchelrojas/",
@@ -25,7 +25,7 @@
     {
         "nombre": "Ángel González Peña",
         "rol": "Coordinador de Comunidad e Inclusión",
-        "bio": "Estudiante de Ingeniería Civil Telemática.",
+        "bio": "Telemático al que le gusta el LOL y aprender diversas cosas. Te amo Rodrigo :3",
         "avatar": "https://avatars.githubusercontent.com/u/167334538?v=4",
         "githubUrl": "https://github.com/angelitop71",
         "linkedinUrl": "https://www.linkedin.com/in/angel-gonzalez-pe%C3%B1a-a21046366/"
@@ -33,9 +33,10 @@
     {
         "nombre": "Nacochna Pinto Tapia",
         "rol": "Coordinadora de Comunidad e Inclusión",
-        "bio": "Estudiante de Ingeniería Civil Física.",
+        "bio": "Una música condenada a ser física. Me gusta el fagot y no se programar :p",
         "avatar": "https://avatars.githubusercontent.com/u/223402770?v=4",
-        "githubUrl": "https://github.com/nacochna"
+        "githubUrl": "https://github.com/nacochna",
+        "instagramUrl": "https://www.instagram.com/nacochna/"
     },
     {
         "nombre": "Ignacio Olivares Cortés",
@@ -71,9 +72,10 @@
     {
         "nombre": "Yair Flores Leiva",
         "rol": "Líder de Proyecto - Evol",
-        "bio": "Estudiante de Ingeniería Civil Telemática.",
+        "bio": "Estudiante de Ingeniería Civil Telemática, me gusta Linux, Rust y la privacidad. I use libreboot btw.",
         "avatar": "https://avatars.githubusercontent.com/u/109782222?v=4",
-        "githubUrl": "https://github.com/yfloress"
+        "githubUrl": "https://github.com/yfloress",
+        "codebergUrl": "https://codeberg.org/Kyronix"
     },
     {
         "nombre": "Sebastian Torres Valenta",
@@ -85,7 +87,7 @@
     {
         "nombre": "Evol Olivares",
         "rol": "Lider de Proyecto - WikiLinux",
-        "bio": "Estudiante de Ingeniería Civil Telemática.",
+        "bio": "Estudiante de Ingeniería Civil en Mitchel Rojas.",
         "avatar": "https://avatars.githubusercontent.com/u/170658011?v=4",
         "githubUrl": "https://github.com/asdurian"
     },
@@ -129,7 +131,7 @@
     {
         "nombre": "Matias Mancilla Cesped",
         "rol": "Coordinador",
-        "bio": "Estudiante de Ingeniería Civil Electrónica.",
+        "bio": "Estudiante de Ingeniería Civil Electrónica, amante del minecraft y los completos.",
         "avatar": "https://avatars.githubusercontent.com/u/245719297?v=4",
         "githubUrl": "https://github.com/Mancilla67"
     },
