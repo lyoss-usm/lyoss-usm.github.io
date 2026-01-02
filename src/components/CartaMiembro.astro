@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
-import { Github, Linkedin, Instagram, Globe } from "@lucide/astro";
+import { Github, Linkedin, Instagram, Globe, Mountain } from "@lucide/astro";
 
 interface Props {
   nombre: string;
@@ -12,9 +12,10 @@ interface Props {
   webUrl?: string;
   linkedinUrl?: string;
   instagramUrl?: string;
+  codebergUrl?: string;
 }
 
-const { nombre, rol, bio, avatar, githubUrl, webUrl, linkedinUrl, instagramUrl } = Astro.props;
+const { nombre, rol, bio, avatar, githubUrl, webUrl, linkedinUrl, instagramUrl, codebergUrl } = Astro.props;
 
 const normalize = (s: string) =>
   s
@@ -122,6 +123,17 @@ const getRolColor = (rol: string): string => {
 					aria-label="Sitio web"
 				>
 					<Globe size={16} />
+				</a>
+			)}
+			{codebergUrl && (
+				<a
+					href={codebergUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-base-content/60 hover:text-base-content transition-colors"
+					aria-label="Codeberg"
+				>
+					<Mountain size={16} />
 				</a>
 			)}
 		</div>
