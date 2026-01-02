@@ -1,3 +1,4 @@
+import { object } from 'astro/zod';
 import { defineCollection, z } from 'astro:content';
 
 const proyectosCollection = defineCollection({
@@ -37,8 +38,26 @@ const contenidosCollection = defineCollection({
 	type: 'content'
 });
 
+const nosotrosCollection = defineCollection({
+	type: 'data',
+	schema: ({ image }) =>
+		z.array(
+			z.object({
+				nombre: z.string(),
+				rol: z.string(),
+				bio: z.string(),
+				githubUrl: z.string().url().optional(),
+				webUrl: z.string().url().optional(),
+				linkedinUrl: z.string().url().optional(),
+				instagramUrl: z.string().url().optional(),
+				avatar: image()
+			})
+		)
+});
+
 export const collections = {
 	proyectos: proyectosCollection,
 	canales: canalesCollection,
-	contenidos: contenidosCollection
+	contenidos: contenidosCollection,
+	nosotros: nosotrosCollection
 };

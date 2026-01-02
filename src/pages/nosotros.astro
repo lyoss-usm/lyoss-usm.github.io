@@ -1,9 +1,25 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
+import { getCollection, getEntry } from 'astro:content';
+
+const nosotrosEntry = await getCollection('nosotros');
+const data0 = nosotrosEntry[0]?.data;
+const miembros =
+  Array.isArray(data0) ? data0
+  : Array.isArray((data0 as any)?.miembros) ? (data0 as any).miembros
+  : [];
+
+const valoresEntry = await getEntry('contenidos', 'valores');
+const historiaEntry = await getEntry('contenidos', 'historia');
+
+if (!valoresEntry) throw new Error('No se encontró contenidos/valores');
+if (!historiaEntry) throw new Error('No se encontró contenidos/historia');
+
+const { Content: Valores } = await valoresEntry.render();
+const { Content: Historia } = await historiaEntry.render();
 ---
 
 <MainLayout>
-	<section class="grid h-screen place-items-center">
-		<h1>Nosotros</h1>
-	</section>
+  <Valores />
+  <Historia />
 </MainLayout>
