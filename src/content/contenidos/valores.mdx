@@ -1,5 +1,8 @@
 import { Heart, Users, Code, Lightbulb, Shield, Globe } from "@lucide/astro";
 
+import Heading from "../../components/mdx/Heading.astro";
+import Sub from "../../components/mdx/Sub.astro";
+
 export const valores = [
   {
     Icon: Heart,
@@ -23,7 +26,7 @@ export const valores = [
     Icon: Code,
     title: "Aprendizaje Colaborativo",
     description:
-      "Aprendemos juntos, compartiendo conocimientos y ayudándonos mutuamente a crecer como desarrolladores y tecnólogos.",
+      "Aprendemos juntos, compartiendo conocimientos y ayudándonos mutuamente a crecer como desarrolladores y personas.",
     color: "text-info",
     bgColor: "bg-info/10",
     borderColor: "border-info/20",
@@ -57,18 +60,21 @@ export const valores = [
   },
 ];
 
-<section id="valores" class="py-16 bg-base-200">
+<section id="valores" class="not-prose py-16 bg-base-200">
   <div class="container mx-auto px-4">
     <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-6xl font-bold text-base-content mb-6 font-heading">
-                Nuestros Valores
-            </h2>
-            <p class="text-lg text-base-content/70 max-w-3xl mx-auto leading-relaxed">Los principios que guían cada decisión y acción en nuestra comunidad.</p>
-        </div>
+      <div class="text-center mb-16">
+        <Heading class="mb-6">
+          Nuestros Valores
+        </Heading>
+
+        <p class="text-lg text-base-content/70 max-w-3xl mx-auto leading-relaxed">Los principios que guían cada decisión y acción en nuestra comunidad. </p>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
         {valores.map((valor) => {
           const Icon = valor.Icon;
+
           return (
             <div
               class={`card bg-base-100 shadow-lg hover:shadow-xl transition-all duration-300 border ${valor.borderColor} group hover:scale-105`}
@@ -85,7 +91,7 @@ export const valores = [
                 </h3>
 
                 <p class="text-sm text-base-content/60 leading-relaxed">
-                    {valor.description}
+                  {valor.description}
                 </p>
               </div>
             </div>
