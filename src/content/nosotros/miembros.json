@@ -2,7 +2,7 @@
     {
         "nombre": "Mitchel Rojas Rivera",
         "rol": "Presidente",
-        "bio": "Estudiante de Ingeniería Civil Telematica. Fan del pingüinito y los completos del XL. i use void btw...",
+        "bio": "Estudiante de Ingeniería Civil Telematica. Entusiasta de los sistemas operativos y la ciberseguridad. Fan del pingüinito, fother muckers y los completos del XL. i use void btw...",
         "avatar": "https://avatars.githubusercontent.com/u/108637663?v=4",
         "githubUrl": "https://github.com/michifeli",
         "linkedinUrl": "https://www.linkedin.com/in/mitchelrojas/",
@@ -19,7 +19,7 @@
     {
         "nombre": "Sofía Salazar",
         "rol": "Finanzas",
-        "bio": "Estudiante de Ingeniería Civil Industrial.",
+        "bio": "Estudiante de Ingeniería Civil Industrial. Me apasiona la gestión de proyectos y la optimización de procesos mediante el uso de las herramientas digitales para colaborar en la organización y logística de nuestra comunidad tecnológica.",
         "avatar": "/src/assets/logo-0.webp"
     },
     {
@@ -41,9 +41,10 @@
     {
         "nombre": "Ignacio Olivares Cortés",
         "rol": "Coordinador de Proyectos",
-        "bio": "Estudiante de Ingeniería Civil Informática.",
+        "bio": "Memorista de ingeniería civil informática, ex-sysadmin y linux enjoyer.",
         "avatar": "https://avatars.githubusercontent.com/u/97808627?v=4",
-        "githubUrl": "https://github.com/ialfaroc"
+        "githubUrl": "https://github.com/ialfaroc", 
+        "linkedinUrl": "https://www.linkedin.com/in/ignacio-alfaro-cortés-888b1b307"
     },
     {
         "nombre": "Matías Peñaloza Bustamante",
@@ -80,9 +81,10 @@
     {
         "nombre": "Sebastian Torres Valenta",
         "rol": "Líder de Proyecto - Evol",
-        "bio": "Estudiante de Ingeniería Civil Telemática.",
+        "bio": "Estudiante de Ingeniería Civil Telemática, me gusta la ciencia ficción, la radioafición y el self-hosting. NixOS btw.",
         "avatar": "/src/assets/logo-0.webp",
-        "githubUrl": "https://github.com/sebadaba"
+        "githubUrl": "https://github.com/sebadaba", 
+        "linkedinUrl": "https://www.linkedin.com/in/sebastián-torres-02346037a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
     },
     {
         "nombre": "Evol Olivares",
