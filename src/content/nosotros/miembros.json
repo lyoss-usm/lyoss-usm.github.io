@@ -65,7 +65,7 @@
     {
         "nombre": "Sebastian Torrealba",
         "rol": "Líder de Proyecto - Stackoverworld",
-        "bio": "Estudiante de Ingeniería Civil Informática.",
+        "bio": "Aficionado de programación competitiva, software libre y Linux.",
         "avatar": "https://avatars.githubusercontent.com/u/83615350?v=4",
         "githubUrl": "https://github.com/storrealbac",
         "linkedinUrl": "https://www.linkedin.com/in/storrealbac/"
@@ -108,8 +108,10 @@
     {
         "nombre": "Joaquin Velíz",
         "rol": "Coordinador",
-        "bio": "Estudiante de Ingeniería Civil Informática.",
-        "avatar": "/src/assets/logo-0.webp"
+        "bio": "Vicepresidente del ceeinf y metido en las altas esferas de lyoos por azares del destino.",
+        "avatar": "https://avatars.githubusercontent.com/u/88526101?v=4",
+        "githubUrl": "https://github.com/juaquo15",
+        "linkedinUrl": "https://www.linkedin.com/in/joaquinveliz?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
     },
     {
         "nombre": "Lucas Bernard",
@@ -120,9 +122,10 @@
     {
         "nombre": "Giuseppe Queirolo",
         "rol": "Coordinador",
-        "bio": "Estudiante de Ingeniería Civil Informática.",
+        "bio": "Hater número 1 de Huawei eNSP e intento de aprendiz en criptografía.",
         "avatar": "https://avatars.githubusercontent.com/u/115963549?v=4",
-        "githubUrl": "https://github.com/Gxppe"
+        "githubUrl": "https://github.com/Gxppe",
+        "linkedinUrl": "https://www.linkedin.com/in/giuseppe-queirolo-5b51a0165/"
     },
     {
         "nombre": "Daniel Fernandez",
@@ -139,6 +142,20 @@
     },
     {
         "nombre": "Matias Acuña Oyarzún",
+        "rol": "Coordinador",
+        "bio": "Estudiante de Ingeniería Civil Informática.",
+        "avatar": "/src/assets/logo-0.webp"
+    },
+    {
+        "nombre": "Danniel Guardia Santana",
+        "rol": "Coordinador",
+        "bio": "Estudiante de Ingeniería Civil Informática, me gusta la programación y los videojuegos.",
+        "avatar": "https://avatars.githubusercontent.com/u/82466908?v=4",
+        "githubUrl": "https://github.com/dadolfog",
+        "instagramUrl": "https://www.instagram.com/pan_con_tomate_y_palta?igsh=Zm81ZDRsZzFpcThq"
+    },
+    {
+        "nombre": "Benjamín Muñoz",
         "rol": "Coordinador",
         "bio": "Estudiante de Ingeniería Civil Informática.",
         "avatar": "/src/assets/logo-0.webp"
