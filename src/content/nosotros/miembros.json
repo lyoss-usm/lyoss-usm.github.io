@@ -130,8 +130,10 @@
     {
         "nombre": "Daniel Fernandez",
         "rol": "Coordinador",
-        "bio": "Estudiante de Ingeniería Civil Telemática.",
-        "avatar": "/src/assets/logo-0.webp"
+        "bio": "Estudiante de Ingeniería Civil Telemática, entusiasta de drones y ciberseguridad. No me gusta la palta. I use Arch BTW, pero estoy condenado a jugar lol.",
+        "avatar": "/src/assets/logo-0.webp",
+        "linkedinUrl": "https://www.linkedin.com/in/danielfernandeztel/",
+        "instagramUrl": "www.instagram.com/leyrrad/"
     },
     {
         "nombre": "Matias Mancilla Cesped",
@@ -155,7 +157,7 @@
         "instagramUrl": "https://www.instagram.com/pan_con_tomate_y_palta?igsh=Zm81ZDRsZzFpcThq"
     },
     {
-        "nombre": "Benjamín Muñoz",
+        "nombre": "Benjamín Labbe",
         "rol": "Coordinador",
         "bio": "Estudiante de Ingeniería Civil Informática.",
         "avatar": "/src/assets/logo-0.webp"
