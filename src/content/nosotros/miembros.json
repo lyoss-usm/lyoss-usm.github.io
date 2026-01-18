@@ -13,14 +13,14 @@
         "nombre": "Isidora Cortes Cataldo",
         "rol": "Secretaria General",
         "bio": "Estudiante de Ingeniería Civil Informatica.",
-        "avatar": "/src/assets/logo-0.webp",
+        "avatar": "https://avatars.githubusercontent.com/u/239697873?s=200&v=4v",
         "githubUrl": "https://github.com/nubeconfusa"
     },
     {
         "nombre": "Sofía Salazar",
         "rol": "Finanzas",
         "bio": "Estudiante de Ingeniería Civil Industrial. Me apasiona la gestión de proyectos y la optimización de procesos mediante el uso de las herramientas digitales para colaborar en la organización y logística de nuestra comunidad tecnológica.",
-        "avatar": "/src/assets/logo-0.webp"
+        "avatar": "/src/assets/avatar/avatar_sofi.webp"
     },
     {
         "nombre": "Ángel González Peña",
@@ -58,9 +58,10 @@
     {
         "nombre": "Marco Repetto Jara",
         "rol": "Líder de Proyecto - Calculadora de Notas",
-        "bio": "Estudiante de Ingeniería Civil Informática.",
+        "bio": "Estudiante de Ingeniería Civil Informática. Interesado en modelamiento matemático y computación aplicada. Fan Nº1 Alvaro Henríquez.",
         "avatar": "https://avatars.githubusercontent.com/u/85263930?v=4",
-        "githubUrl": "https://github.com/marcorepetto"
+        "githubUrl": "https://github.com/marcorepetto",
+        "linkedinUrl": "https://www.linkedin.com/in/marco-antonio-repetto-jara-8b581a1bb"
     },
     {
         "nombre": "Sebastian Torrealba",
@@ -82,7 +83,7 @@
         "nombre": "Sebastian Torres Valenta",
         "rol": "Líder de Proyecto - Evol",
         "bio": "Estudiante de Ingeniería Civil Telemática, me gusta la ciencia ficción, la radioafición y el self-hosting. NixOS btw.",
-        "avatar": "/src/assets/logo-0.webp",
+        "avatar": "https://avatars.githubusercontent.com/u/127623492?v=4",
         "githubUrl": "https://github.com/sebadaba", 
         "linkedinUrl": "https://www.linkedin.com/in/sebastián-torres-02346037a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
     },
@@ -96,14 +97,16 @@
     {
         "nombre": "Constanza Acosta",
         "rol": "Líder de Proyecto - Malla Interactiva",
-        "bio": "Estudiante de Ingeniería Civil Telemática.",
-        "avatar": "/src/assets/logo-0.webp"
+        "bio": "Estudiante de Ingeniería Civil Telemática, interesada en la creación de tecnología con propósito. Dog lover y creativa, siempre buscando crear soluciones innovadoras a problemas reales.",
+        "avatar": "/src/assets/avatar/avatar_cony.webp"
     },
     {
         "nombre": "Rock Dabre Valenzuela",
         "rol": "Coordinador",
-        "bio": "Estudiante de Ingeniería Civil Informática.",
-        "avatar": "/src/assets/logo-0.webp"
+        "bio": "Presidente del CEEINF, tengo 5000 horas en el destiny, me gusta la tecnología y los videojuegos.",
+        "avatar": "https://avatars.githubusercontent.com/u/129891756?v=4",
+        "githubUrl": "https://github.com/RuackD",
+        "linkedinUrl": "https://www.linkedin.com/in/rockdabrevalenzuela/"
     },
     {
         "nombre": "Joaquin Velíz",
@@ -117,7 +120,7 @@
         "nombre": "Lucas Bernard",
         "rol": "Coordinador",
         "bio": "Estudiante de Ingeniería Civil Informática.",
-        "avatar": "/src/assets/logo-0.webp"
+        "avatar": "https://avatars.githubusercontent.com/u/239697873?s=200&v=4"
     },
     {
         "nombre": "Giuseppe Queirolo",
@@ -131,9 +134,9 @@
         "nombre": "Daniel Fernandez",
         "rol": "Coordinador",
         "bio": "Estudiante de Ingeniería Civil Telemática, entusiasta de drones y ciberseguridad. No me gusta la palta. I use Arch BTW, pero estoy condenado a jugar lol.",
-        "avatar": "/src/assets/logo-0.webp",
+        "avatar": "/src/assets/avatar/avatar_leyrra.webp",
         "linkedinUrl": "https://www.linkedin.com/in/danielfernandeztel/",
-        "instagramUrl": "www.instagram.com/leyrrad/"
+        "instagramUrl": "https://www.instagram.com/leyrrad/"
     },
     {
         "nombre": "Matias Mancilla Cesped",
@@ -146,7 +149,7 @@
         "nombre": "Matias Acuña Oyarzún",
         "rol": "Coordinador",
         "bio": "Estudiante de Ingeniería Civil Informática.",
-        "avatar": "/src/assets/logo-0.webp"
+        "avatar": "https://avatars.githubusercontent.com/u/239697873?s=200&v=4"
     },
     {
         "nombre": "Danniel Guardia Santana",
@@ -160,6 +163,7 @@
         "nombre": "Benjamín Labbe",
         "rol": "Coordinador",
         "bio": "Estudiante de Ingeniería Civil Informática.",
-        "avatar": "/src/assets/logo-0.webp"
+        "avatar": "https://avatars.githubusercontent.com/u/80217767?v=4",
+        "githubUrl": "https://github.com/ShanonName"
     }
 ]
