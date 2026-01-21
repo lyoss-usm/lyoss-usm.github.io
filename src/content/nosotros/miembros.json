@@ -12,8 +12,8 @@
     {
         "nombre": "Isidora Cortes Cataldo",
         "rol": "Secretaria General",
-        "bio": "Estudiante de Ingeniería Civil Informatica.",
-        "avatar": "https://avatars.githubusercontent.com/u/239697873?s=200&v=4v",
+        "bio": "Estudiante de informática. 👩🏻‍💻 \nMe gusta el té y el Open Source. 🐧\n Chile. 🇨🇱",
+        "avatar": "https://avatars.githubusercontent.com/u/128914837?v=4",
         "githubUrl": "https://github.com/nubeconfusa"
     },
     {
@@ -148,8 +148,9 @@
     {
         "nombre": "Matias Acuña Oyarzún",
         "rol": "Coordinador",
-        "bio": "Estudiante de Ingeniería Civil Informática.",
-        "avatar": "https://avatars.githubusercontent.com/u/239697873?s=200&v=4"
+        "bio": "En pocas palabras, a veces compilo canciones y otras compongo código. Busco aportar visión técnica con un toque diferente.",
+        "avatar": "/src/assets/avatar/avatar_matiacuña.webp",
+        "linkedinUrl": "https://www.linkedin.com/in/matias-acu%C3%B1a-76795b354"
     },
     {
         "nombre": "Danniel Guardia Santana",
