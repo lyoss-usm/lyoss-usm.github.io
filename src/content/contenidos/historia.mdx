@@ -7,6 +7,8 @@ import Accent from "../../components/mdx/Accent.astro";
 import Strong from "../../components/mdx/Strong.astro";
 import Badge from "../../components/mdx/Badge.astro";
 
+import BannerWebp from "../../assets/banner-0.webp";
+
 export const hitos = [
   {
     year: "Septiembre 2025",
@@ -42,7 +44,7 @@ export const hitos = [
         <div class="space-y-8">
           <div class="w-full">
             <img
-              src="src/assets/banner-0.webp"
+              src={BannerWebp.src}
               alt="Lyoss Banner"
               class="w-full h-auto rounded-lg shadow-lg"
               loading="lazy"
@@ -124,5 +126,3 @@ export const hitos = [
   margin-left: 1.5rem !important;
 }
 `}</style>
-
-
