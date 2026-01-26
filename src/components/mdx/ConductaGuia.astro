@@ -1,0 +1,62 @@
+---
+interface Props {
+	numero: string;
+	titulo: string;
+	impacto: string;
+	consecuencia: string;
+	color?: 'warning' | 'error' | 'info' | 'primary';
+}
+const { numero, titulo, impacto, consecuencia, color = 'primary' } = Astro.props;
+
+const colorClasses: Record<string, { bg: string; border: string; text: string; badge: string }> = {
+	warning: {
+		bg: 'bg-warning/5',
+		border: 'border-warning/30',
+		text: 'text-warning',
+		badge: 'badge-warning'
+	},
+	error: {
+		bg: 'bg-error/5',
+		border: 'border-error/30',
+		text: 'text-error',
+		badge: 'badge-error'
+	},
+	info: {
+		bg: 'bg-info/5',
+		border: 'border-info/30',
+		text: 'text-info',
+		badge: 'badge-info'
+	},
+	primary: {
+		bg: 'bg-primary/5',
+		border: 'border-primary/30',
+		text: 'text-primary',
+		badge: 'badge-primary'
+	}
+};
+
+const classes = colorClasses[color];
+---
+
+<div class={`rounded-xl border p-6 ${classes.bg} ${classes.border}`}>
+	<div class="flex items-center gap-3 mb-4">
+		<span class={`badge ${classes.badge} badge-lg font-bold`}>{numero}</span>
+		<h4 class={`font-heading text-xl font-bold ${classes.text}`}>{titulo}</h4>
+	</div>
+	
+	<div class="space-y-4">
+		<div>
+			<p class="text-sm font-semibold text-base-content/60 uppercase tracking-wide mb-1">
+				Impacto en la Comunidad
+			</p>
+			<p class="text-base-content/80">{impacto}</p>
+		</div>
+		
+		<div>
+			<p class="text-sm font-semibold text-base-content/60 uppercase tracking-wide mb-1">
+				Consecuencia
+			</p>
+			<p class="text-base-content/80">{consecuencia}</p>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,30 @@
+---
+interface Props {
+	items: string[];
+	variant?: 'positive' | 'negative';
+}
+const { items, variant = 'positive' } = Astro.props;
+
+const iconColor = variant === 'positive' ? 'text-success' : 'text-error';
+const bgColor = variant === 'positive' ? 'bg-success/10' : 'bg-error/10';
+const borderColor = variant === 'positive' ? 'border-success/20' : 'border-error/20';
+---
+
+<ul class={`space-y-3 p-6 rounded-xl border ${bgColor} ${borderColor}`}>
+	{items.map((item) => (
+		<li class="flex items-start gap-3">
+			<span class={`mt-1 flex-shrink-0 ${iconColor}`}>
+				{variant === 'positive' ? (
+					<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+					</svg>
+				) : (
+					<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+					</svg>
+				)}
+			</span>
+			<span class="text-base-content/80">{item}</span>
+		</li>
+	))}
+</ul>
