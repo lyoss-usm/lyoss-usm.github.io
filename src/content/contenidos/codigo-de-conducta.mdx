@@ -1,0 +1,165 @@
+import { Heading, Sub } from 'MDX';
+import ConductaSection from '@/components/mdx/ConductaSection.astro';
+import ConductaList from '@/components/mdx/ConductaList.astro';
+import ConductaGuia from '@/components/mdx/ConductaGuia.astro';
+import { Scale, Heart, Shield, AlertTriangle, Mail } from '@lucide/astro';
+
+export const comportamientosPositivos = [
+	"Demostrar empatía y amabilidad ante otras personas",
+	"Respeto a diferentes opiniones, puntos de vista y experiencias",
+	"Dar y aceptar adecuadamente retroalimentación constructiva",
+	"Aceptar la responsabilidad y disculparse ante quienes se vean afectados por nuestros errores, aprendiendo de la experiencia",
+	"Centrarse en lo que sea mejor no sólo para nosotros como individuos, sino para la comunidad en general"
+];
+
+export const comportamientosNegativos = [
+	"El uso de lenguaje o imágenes sexualizadas, y aproximaciones o atenciones sexuales de cualquier tipo",
+	"Comentarios despectivos (trolling), insultantes o derogatorios, y ataques personales o políticos",
+	"El acoso en público o privado",
+	"Publicar información privada de otras personas, tales como direcciones físicas o de correo electrónico, sin su permiso explícito",
+	"Otras conductas que puedan ser razonablemente consideradas como inapropiadas en un entorno profesional"
+];
+
+<section class="bg-base-100 py-16 pt-32">
+	<div class="container mx-auto px-4 max-w-4xl">
+		{/* Header */}
+		<div class="text-center mb-16">
+			<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
+				<Scale class="w-8 h-8 text-primary" />
+			</div>
+			<Heading variant="md" class="mb-4">
+				Código de Conducta
+			</Heading>
+			<Sub class="mx-auto max-w-2xl">
+				Convenido para Contribuyentes — Adaptación del Contributor Covenant v2.1
+			</Sub>
+		</div>
+
+		{/* Nuestro Compromiso */}
+		<ConductaSection title="Nuestro Compromiso">
+			<div class="flex gap-4 p-6 bg-primary/5 rounded-xl border border-primary/20 mb-6">
+				<Heart class="w-6 h-6 text-primary flex-shrink-0" />
+				<p class="text-base-content/80 leading-relaxed">
+					Nosotros, como miembros, contribuyentes y administradores nos comprometemos a hacer de la participación en nuestra comunidad sea una experiencia libre de acoso para todo el mundo, independientemente de la edad, dimensión corporal, discapacidad visible o invisible, etnicidad, características sexuales, identidad y expresión de género, nivel de experiencia, educación, nivel socio-económico, nacionalidad, apariencia personal, raza, casta, color, religión, o identidad u orientación sexual.
+				</p>
+			</div>
+			<p class="text-base-content/80 leading-relaxed">
+				Nos comprometemos a actuar e interactuar de maneras que contribuyan a una comunidad <strong class="text-primary">abierta</strong>, <strong class="text-primary">acogedora</strong>, <strong class="text-primary">diversa</strong>, <strong class="text-primary">inclusiva</strong> y <strong class="text-primary">sana</strong>.
+			</p>
+		</ConductaSection>
+
+		{/* Nuestros Estándares */}
+		<ConductaSection title="Nuestros Estándares">
+			<p class="text-base-content/80 mb-6">
+				Ejemplos de comportamientos que contribuyen a crear un ambiente positivo para nuestra comunidad:
+			</p>
+			<ConductaList items={comportamientosPositivos} variant="positive" />
+			
+			<p class="text-base-content/80 mb-6 mt-10">
+				Ejemplos de comportamiento inaceptable:
+			</p>
+			<ConductaList items={comportamientosNegativos} variant="negative" />
+		</ConductaSection>
+
+		{/* Aplicación de las responsabilidades */}
+		<ConductaSection title="Aplicación de las Responsabilidades">
+			<div class="flex gap-4 p-6 bg-info/5 rounded-xl border border-info/20">
+				<Shield class="w-6 h-6 text-info flex-shrink-0" />
+				<div class="text-base-content/80 leading-relaxed">
+					<p>
+						Los administradores de la comunidad son responsables de aclarar y hacer cumplir nuestros estándares de comportamiento aceptable y tomarán acciones apropiadas y correctivas de forma justa en respuesta a cualquier comportamiento que consideren inapropiado, amenazante, ofensivo o dañino.
+					</p>
+					<p>
+						Los administradores de la comunidad tendrán el derecho y la responsabilidad de eliminar, editar o rechazar comentarios, commits, código, ediciones de páginas de wiki, issues y otras contribuciones que no se alineen con este Código de Conducta, y comunicarán las razones para sus decisiones de moderación cuando sea apropiado.
+					</p>
+				</div>
+			</div>
+		</ConductaSection>
+
+		{/* Alcance */}
+		<ConductaSection title="Alcance">
+			<p class="text-base-content/80 leading-relaxed">
+				Este código de conducta aplica tanto a espacios del proyecto como a espacios públicos donde un individuo esté en representación del proyecto o comunidad. Ejemplos de esto incluyen el uso de la cuenta oficial de correo electrónico, publicaciones a través de las redes sociales oficiales, o presentaciones con personas designadas en eventos en línea o no.
+			</p>
+		</ConductaSection>
+
+		{/* Aplicación */}
+		<ConductaSection title="Aplicación">
+			<div class="flex gap-4 p-6 bg-warning/5 rounded-xl border border-warning/20">
+				<Mail class="w-6 h-6 text-warning flex-shrink-0" />
+				<div class="text-base-content/80 leading-relaxed">
+					<p>
+						Instancias de comportamiento abusivo, acosador o inaceptable de otro modo podrán ser reportadas a los administradores de la comunidad responsables del cumplimiento:
+					</p>
+					<ul>
+						<li>
+							<strong class="text-warning">Ángel González</strong> — <a href="mailto:angel.gonzalezp@usm.cl" class="link link-warning">angel.gonzalezp@usm.cl</a>
+						</li>
+						<li>
+							<strong class="text-warning">Nacochna Pinto</strong> — <a href="mailto:npinto@usm.cl" class="link link-warning">npinto@usm.cl</a>
+						</li>
+					</ul>
+					<p>
+						Todas las quejas serán evaluadas e investigadas de una manera puntual y justa. Todos los administradores de la comunidad están obligados a respetar la privacidad y la seguridad de quienes reporten incidentes.
+					</p>
+				</div>
+			</div>
+		</ConductaSection>
+
+		{/* Guías de Aplicación */}
+		<ConductaSection title="Guías de Aplicación">
+			<p class="text-base-content/80 mb-6">
+				Los administradores de la comunidad seguirán estas Guías de Impacto en la Comunidad para determinar las consecuencias de cualquier acción que juzguen como un incumplimiento de este Código de Conducta:
+			</p>
+			<div class="space-y-8">
+				<div>
+					<h4 class="font-heading text-xl font-bold text-info mb-3">1. Corrección</h4>
+					<p class="text-sm font-semibold text-base-content/50 uppercase tracking-wide mb-2">Impacto en la Comunidad</p>
+					<p class="text-base-content/80 mb-4">El uso de lenguaje inapropiado u otro comportamiento considerado no profesional o no acogedor en la comunidad.</p>
+					<p class="text-sm font-semibold text-base-content/50 uppercase tracking-wide mb-2">Consecuencia</p>
+					<p class="text-base-content/80">Un aviso escrito y privado por parte de los administradores de la comunidad, proporcionando claridad alrededor de la naturaleza de este incumplimiento y una explicación de por qué el comportamiento es inaceptable. Una disculpa pública podría ser solicitada.</p>
+				</div>
+				
+				<div>
+					<h4 class="font-heading text-xl font-bold text-warning mb-3">2. Aviso</h4>
+					<p class="text-sm font-semibold text-base-content/50 uppercase tracking-wide mb-2">Impacto en la Comunidad</p>
+					<p class="text-base-content/80 mb-4">Un incumplimiento causado por un único incidente o por una cadena de acciones.</p>
+					<p class="text-sm font-semibold text-base-content/50 uppercase tracking-wide mb-2">Consecuencia</p>
+					<p class="text-base-content/80">Un aviso con consecuencias por comportamiento prolongado. No se interactúa con las personas involucradas, incluyendo interacción no solicitada con quienes se encuentran aplicando el Código de Conducta, por un periodo especificado de tiempo. Esto incluye evitar las interacciones en espacios de la comunidad, así como a través de canales externos como las redes sociales. Incumplir estos términos puede conducir a una expulsión temporal o permanente.</p>
+				</div>
+				
+				<div>
+					<h4 class="font-heading text-xl font-bold text-error mb-3">3. Expulsión Temporal</h4>
+					<p class="text-sm font-semibold text-base-content/50 uppercase tracking-wide mb-2">Impacto en la Comunidad</p>
+					<p class="text-base-content/80 mb-4">Una serie de incumplimientos de los estándares de la comunidad, incluyendo comportamiento inapropiado continuo.</p>
+					<p class="text-sm font-semibold text-base-content/50 uppercase tracking-wide mb-2">Consecuencia</p>
+					<p class="text-base-content/80">Una expulsión temporal de cualquier forma de interacción o comunicación pública con la comunidad durante un intervalo de tiempo especificado. No se permite interactuar de manera pública o privada con las personas involucradas, incluyendo interacciones no solicitadas con quienes se encuentran aplicando el Código de Conducta, durante este periodo. Incumplir estos términos puede conducir a una expulsión permanente.</p>
+				</div>
+				
+				<div>
+					<h4 class="font-heading text-xl font-bold text-error mb-3">4. Expulsión Permanente</h4>
+					<p class="text-sm font-semibold text-base-content/50 uppercase tracking-wide mb-2">Impacto en la Comunidad</p>
+					<p class="text-base-content/80 mb-4">Demostrar un patrón sistemático de incumplimientos de los estándares de la comunidad, incluyendo conductas inapropiadas prolongadas en el tiempo, acoso de individuos, o agresiones o menosprecio a grupos de individuos.</p>
+					<p class="text-sm font-semibold text-base-content/50 uppercase tracking-wide mb-2">Consecuencia</p>
+					<p class="text-base-content/80">Una expulsión permanente de cualquier tipo de interacción pública con la comunidad del proyecto.</p>
+				</div>
+			</div>
+		</ConductaSection>
+
+		{/* Atribución */}
+		<div class="mt-16 p-6 bg-base-200 rounded-xl border border-base-300">
+			<h3 class="font-heading text-lg font-bold text-base-content mb-4">Atribución</h3>
+			<div class="space-y-3 text-sm text-base-content/70">
+				<p>
+					Este Código de Conducta es una adaptación del <a href="https://www.contributor-covenant.org/es/version/2/1/code_of_conduct.html" target="_blank" rel="noopener noreferrer" class="link link-primary">Contributor Covenant, versión 2.1</a>.
+				</p>
+				<p>
+					Las Guías de Impacto en la Comunidad están inspiradas en la escalera de aplicación del código de conducta de Mozilla.
+				</p>
+				<p>
+					Para respuestas a las preguntas frecuentes de este código de conducta, consulta las <a href="https://www.contributor-covenant.org/faq" target="_blank" rel="noopener noreferrer" class="link link-primary">FAQ</a>. Hay traducciones disponibles en <a href="https://www.contributor-covenant.org/translations" target="_blank" rel="noopener noreferrer" class="link link-primary">contributor-covenant.org/translations</a>.
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
