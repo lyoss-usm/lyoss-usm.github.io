@@ -8,6 +8,9 @@ import Stat from './Stat.astro';
 import Badge from './Badge.astro';
 import ContribuirCard from './ContribuirCard.astro';
 import ContribuirStep from './ContribuirStep.astro';
+import ConductaSection from './ConductaSection.astro';
+import ConductaList from './ConductaList.astro';
+import ConductaGuia from './ConductaGuia.astro';
 
 export {
 	Mini,
@@ -19,5 +22,8 @@ export {
 	Stat,
 	Badge,
 	ContribuirCard,
-	ContribuirStep
+	ContribuirStep,
+	ConductaSection,
+	ConductaList,
+	ConductaGuia
 };
