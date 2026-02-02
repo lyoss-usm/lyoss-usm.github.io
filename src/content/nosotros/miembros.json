@@ -20,7 +20,8 @@
         "nombre": "Sofía Salazar",
         "rol": "Finanzas",
         "bio": "Estudiante de Ingeniería Civil Industrial. Me apasiona la gestión de proyectos y la optimización de procesos mediante el uso de las herramientas digitales para colaborar en la organización y logística de nuestra comunidad tecnológica.",
-        "avatar": "/src/assets/avatar/avatar_sofi.webp"
+        "avatar": "/src/assets/avatar/avatar_sofi.webp",
+        "instagramUrl": "https://www.instagram.com/mnis_sofi.a?igsh=MXU4YXNnZmQ0YjZtcg=="
     },
     {
         "nombre": "Ángel González Peña",
@@ -90,7 +91,7 @@
     {
         "nombre": "Evol Olivares",
         "rol": "Lider de Proyecto - WikiLinux",
-        "bio": "Estudiante de Ingeniería Civil en Mitchel Rojas.",
+        "bio": "Estudiante de Ingeniera Civil Telemática. Entusiasta de diversas disciplinas. He utilizado muchas distribuciones y sistemas operativos como Gentoo, Debian y Void linux.",
         "avatar": "https://avatars.githubusercontent.com/u/170658011?v=4",
         "githubUrl": "https://github.com/asdurian"
     },
@@ -163,8 +164,10 @@
     {
         "nombre": "Benjamín Labbe",
         "rol": "Coordinador",
-        "bio": "Estudiante de Ingeniería Civil Informática.",
+        "bio": "Ing Cilvil Informatica - UTFSM \nAficionado de la programacion, ciberseguridad y el minecraft, mi gata se llama sofi.",
         "avatar": "https://avatars.githubusercontent.com/u/80217767?v=4",
-        "githubUrl": "https://github.com/ShanonName"
+        "githubUrl": "https://github.com/ShanonName",
+        "linkedinUrl": "https://cl.linkedin.com/in/benjam%C3%ADn-labb%C3%A9-0b1814251/en",
+        "instagramUrl": "https://www.instagram.com/ahhhhhhhname/"
     }
 ]
