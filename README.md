@@ -11,7 +11,7 @@ Este es el repositorio oficial del sitio web de Lyoss. Diseñado para proporcion
 
 1. Clona este repositorio:
    ```bash
-   git clone https://github.com/Linux-and-Open-Source-USM/website.git
+   git clone https://github.com/lyoss-usm/lyoss-usm.github.io.git website
    ```
 2. Navega al directorio del proyecto:
    ```bash
