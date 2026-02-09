@@ -7,6 +7,9 @@ on:
       - main
   workflow_dispatch: # <- Boton manual en GitHub
 
+permissions:
+  contents: write
+
 jobs:
   call-release:
     name: Call Shared Release
