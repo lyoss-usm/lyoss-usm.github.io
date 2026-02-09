@@ -1,0 +1,103 @@
+import { Heart, Users, Code, Lightbulb, Shield, Globe } from "@lucide/astro";
+
+import Heading from "../../components/mdx/Heading.astro";
+import Sub from "../../components/mdx/Sub.astro";
+
+export const valores = [
+  {
+    Icon: Heart,
+    title: "Pasión por el Open Source",
+    description:
+      "Creemos firmemente en el poder del software libre para transformar la educación y democratizar el acceso a la tecnología.",
+    color: "text-error",
+    bgColor: "bg-error/10",
+    borderColor: "border-error/20",
+  },
+  {
+    Icon: Users,
+    title: "Comunidad Inclusiva",
+    description:
+      "Construimos un espacio seguro donde todos pueden aprender, sin importar su nivel de experiencia o conocimientos previos.",
+    color: "text-success",
+    bgColor: "bg-success/10",
+    borderColor: "border-success/20",
+  },
+  {
+    Icon: Code,
+    title: "Aprendizaje Colaborativo",
+    description:
+      "Aprendemos juntos, compartiendo conocimientos y ayudándonos mutuamente a crecer como desarrolladores y personas.",
+    color: "text-info",
+    bgColor: "bg-info/10",
+    borderColor: "border-info/20",
+  },
+  {
+    Icon: Lightbulb,
+    title: "Innovación Constante",
+    description:
+      "Experimentamos con nuevas tecnologías y enfoques, siempre buscando maneras de mejorar y evolucionar.",
+    color: "text-warning",
+    bgColor: "bg-warning/10",
+    borderColor: "border-warning/20",
+  },
+  {
+    Icon: Shield,
+    title: "Transparencia y Ética",
+    description:
+      "Operamos con total transparencia, tomando decisiones de forma democrática y respetando la privacidad de nuestros miembros.",
+    color: "text-secondary",
+    bgColor: "bg-secondary/10",
+    borderColor: "border-secondary/20",
+  },
+  {
+    Icon: Globe,
+    title: "Impacto Social",
+    description:
+      "Trabajamos para generar un impacto positivo en nuestra universidad y comunidad a través de la tecnología libre.",
+    color: "text-accent",
+    bgColor: "bg-accent/10",
+    borderColor: "border-accent/20",
+  },
+];
+
+<section id="valores" class="not-prose py-16 bg-base-200">
+  <div class="container mx-auto px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <Heading class="mb-6">
+          Nuestros Valores
+        </Heading>
+
+        <p class="text-lg text-base-content/70 max-w-3xl mx-auto leading-relaxed">Los principios que guían cada decisión y acción en nuestra comunidad. </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+        {valores.map((valor) => {
+          const Icon = valor.Icon;
+
+          return (
+            <div
+              class={`card bg-base-100 shadow-lg hover:shadow-xl transition-all duration-300 border ${valor.borderColor} group hover:scale-105`}
+            >
+              <div class="card-body p-6">
+                <div
+                  class={`w-16 h-16 rounded-full ${valor.bgColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+                >
+                  <Icon class={`w-8 h-8 ${valor.color}`} />
+                </div>
+
+                <h3 class="text-xl font-bold text-base-content mb-3 font-heading">
+                  {valor.title}
+                </h3>
+
+                <p class="text-sm text-base-content/60 leading-relaxed">
+                  {valor.description}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>

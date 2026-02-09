@@ -1,50 +1,14 @@
-name: Semantic Versioning
+# Este workflow generara versiones y releases automáticamente al pushear a main.
+name: Release Pipeline
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
-
-permissions:
-  contents: write
+  workflow_dispatch: # <- Boton manual en GitHub
 
 jobs:
-  release:
-    name: Create Release
-    runs-on: ubuntu-latest
-    environment: semver
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Calculate version
-        id: version
-        uses: PaulHatch/semantic-version@v5.4.0
-        with:
-          tag_prefix: "v"
-          major_pattern: "/!:|BREAKING CHANGE:/"
-          minor_pattern: "/feat:/"
-          version_format: "${major}.${minor}.${patch}"
-          user_format_type: "csv"
-          bump_each_commit: false
-
-      - name: Create Release
-        if: steps.version.outputs.changed == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v${{ steps.version.outputs.version }}
-          name: Release v${{ steps.version.outputs.version }}
-          draft: false
-          prerelease: false
-          generate_release_notes: true
-
-      - name: Update Latest Tag
-        if: steps.version.outputs.changed == 'true'
-        uses: richardsimko/update-tag@v1
-        with:
-          tag_name: latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+  call-release:
+    name: Call Shared Release
+    uses: lyoss-usm/workflows/.github/workflows/semantic-release.yml@main
+    secrets: inherit # Esto usa los secretos del repo o de la organizacion. (GH_PAT es requerido)

@@ -1,0 +1,27 @@
+---
+interface Props {
+	class: string;
+	variant?: 'xs' | 'sm' | 'md' | 'lg';
+}
+const { class: className, variant } = Astro.props;
+---
+
+{
+	variant === 'lg' ? (
+		<h1 class={`font-heading text-4xl font-bold text-base-content lg:text-8xl ${className}`}>
+			<slot />
+		</h1>
+	) : variant === 'sm' ? (
+		<h1 class={`font-heading text-2xl font-bold text-base-content md:text-4xl ${className}`}>
+			<slot />
+		</h1>
+	) : variant === 'xs' ? (
+		<h1 class={`font-heading text-xl font-bold text-base-content ${className}`}>
+			<slot />
+		</h1>
+	) : (
+		<h1 class={`font-heading text-4xl font-bold text-base-content md:text-6xl ${className}`}>
+			<slot />
+		</h1>
+	)
+}

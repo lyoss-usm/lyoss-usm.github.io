@@ -1,0 +1,14 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import { getEntry } from 'astro:content';
+
+const codigoEntry = await getEntry('contenidos', 'codigo-de-conducta');
+
+if (!codigoEntry) throw new Error('No se encontró contenidos/codigo-de-conducta');
+
+const { Content } = await codigoEntry.render();
+---
+
+<MainLayout title="Código de Conducta | Lyoss" description="Código de Conducta de la comunidad Lyoss basado en el Contributor Covenant">
+	<Content />
+</MainLayout>

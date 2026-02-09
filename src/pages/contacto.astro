@@ -1,0 +1,90 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+const entry_content = await getEntry('contenidos', 'canales');
+const entry_canales = await getEntry('canales', 'redes');
+if (!entry_canales) {
+	throw new Error('No se encontró la entrada de contenido para canales/redes');
+}
+if (!entry_content) {
+	throw new Error('No se encontró la entrada de contenido para contenidos/canales');
+}
+const canales = entry_canales.data;
+const { Content } = await entry_content.render();
+---
+
+<MainLayout title="Contacto - Lyoss">
+	<div class="hero min-h-screen bg-base-100 pt-20 lg:pt-17">
+		<div class="hero-content mx-auto max-w-6xl px-6">
+			<div class="grid w-full items-center gap-12 lg:grid-cols-2">
+				<!-- Left Side - Text -->
+				<div class="text-left">
+					<Content />
+				</div>
+
+				<!-- Right Side - Links -->
+				<div class="space-y-4">
+					{
+						canales.map((canal) => (
+							<a
+								href={canal.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="group flex items-center gap-4 rounded-2xl border border-base-300 bg-base-200 p-6 shadow-sm transition-all duration-300 hover:scale-105 hover:border-primary/30 hover:bg-base-300 hover:shadow-lg"
+							>
+								<div class="rounded-xl bg-base-100 p-3 shadow-sm transition-colors duration-300 group-hover:bg-primary/10">
+									{canal.logoDark ? (
+										<div class="relative h-8 w-8">
+											<Image
+												src={canal.logo}
+												alt={canal.nombre}
+												width={64}
+												height={64}
+												class="hidden h-8 w-8 object-contain dark:block"
+											/>
+											<Image
+												src={canal.logoDark}
+												alt={canal.nombre}
+												width={64}
+												height={64}
+												class="h-8 w-8 object-contain dark:hidden"
+											/>
+										</div>
+									) : (
+										<Image
+											src={canal.logo}
+											alt={canal.nombre}
+											width={64}
+											height={64}
+											class="h-8 w-8 object-contain"
+										/>
+									)}
+								</div>
+								<div class="flex-1">
+									<div class="text-lg font-bold text-base-content">{canal.nombre}</div>
+									<div class="text-sm text-base-content/70 max-sm:hidden">{canal.descripcion}</div>
+								</div>
+								<div class="rounded-full bg-base-300 p-2 transition-all duration-300 group-hover:translate-x-1 group-hover:bg-primary/20">
+									<svg
+										class="h-5 w-5 text-base-content/70 group-hover:text-primary"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M9 5l7 7-7 7"
+										/>
+									</svg>
+								</div>
+							</a>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</MainLayout>

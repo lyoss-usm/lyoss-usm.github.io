@@ -1,0 +1,101 @@
+import {
+	GitBranch,
+	Code,
+	Book,
+	Bug,
+	Paintbrush,
+	Users,
+	MessageSquare,
+	GraduationCap
+} from '@lucide/astro';
+import { ContribuirCard, ContribuirStep, Heading, Sub } from 'MDX';
+
+<div class="mb-16 text-center">
+	<Heading variant="md" class="mb-4">
+		Formas de Contribuir
+	</Heading>
+	<Sub class="mx-auto max-w-2xl">Hay muchas formas de aportar. No necesitas ser experto.</Sub>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <ContribuirCard
+        title="Contribuye con Código"
+        description="Contribuye código directamente a nuestros repositorios. Lidera un proyecto o confirma bugs"
+        color="primary"
+    >
+        <Code class="w-6 h-6" />
+    </ContribuirCard>
+
+    <ContribuirCard
+        title="Reportar Bugs"
+        description="Encuentra problemas y ayúdanos a mejorar la calidad"
+        color="error"
+    >
+        <Bug class="w-6 h-6" />
+    </ContribuirCard>
+
+    <ContribuirCard
+        title="Construye Documentación"
+        description="Ayuda a otros escribiendo guías sobre nuestros proyectos o diferentes tópicos de tecnología"
+        color="info"
+    >
+        <Book class="w-6 h-6" />
+    </ContribuirCard>
+
+    <ContribuirCard
+        title="Diseña"
+        description="Mejora nuestra interfaz de usuario"
+        color="warning"
+    >
+        <Paintbrush class="w-6 h-6" />
+    </ContribuirCard>
+
+    <ContribuirCard
+        title="Comunidad"
+        description="Difunde LyOSS. Comparte en los canales de la comunidad"
+        color="secondary"
+    >
+        <Users class="w-6 h-6" />
+    </ContribuirCard>
+
+    <ContribuirCard
+        title="Enseña y Mentoriza"
+        description="Comparte tu conocimiento en workshops, charlas o ayudando a nuevos miembros"
+        color="accent"
+    >
+        <GraduationCap class="w-6 h-6" />
+    </ContribuirCard>
+
+</div>
+
+<div class="text-center mt-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <ContribuirStep
+            step="01"
+            title="Únete a Discord"
+            description="Preséntate y cuéntanos en qué te gustaría ayudar."
+            color="primary"
+        >
+            <MessageSquare class="w-8 h-8" />
+        </ContribuirStep>
+
+        <ContribuirStep
+            step="02"
+            title="Explora proyectos"
+            description="Revisa nuestros repositorios y encuentra algo que te interese."
+            color="info"
+        >
+            <GitBranch class="w-8 h-8" />
+        </ContribuirStep>
+
+        <ContribuirStep
+            step="03"
+            title="Haz tu primera PR"
+            description="Fork, código, commit, PR. ¡Cada contribución cuenta!"
+            color="success"
+        >
+            <Code class="w-8 h-8" />
+        </ContribuirStep>
+    </div>
+
+</div>

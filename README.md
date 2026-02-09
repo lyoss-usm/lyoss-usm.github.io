@@ -10,19 +10,19 @@ Este es el repositorio oficial del sitio web de Lyoss. Diseñado para proporcion
 ## Quick Start
 
 1. Clona este repositorio:
-    ```bash
-    git clone https://github.com/Linux-and-Open-Source-USM/website.git
-    ```
+   ```bash
+   git clone https://github.com/lyoss-usm/lyoss-usm.github.io.git website
+   ```
 2. Navega al directorio del proyecto:
-    ```bash
-    cd website
-    ```
+   ```bash
+   cd website
+   ```
 3. Instala las dependencias:
-    ```bash
-    pnpm install
-    ```
+   ```bash
+   pnpm install
+   ```
 4. Inicia el servidor de desarrollo:
-    ```bash
-    pnpm dev
-    ```
+   ```bash
+   pnpm dev
+   ```
 5. Abre tu navegador y visita [http://localhost:4321](http://localhost:4321) para ver el sitio web en acción.

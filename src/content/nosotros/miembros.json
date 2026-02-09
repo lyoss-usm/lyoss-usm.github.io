@@ -1,0 +1,173 @@
+[
+    {
+        "nombre": "Mitchel Rojas Rivera",
+        "rol": "Presidente",
+        "bio": "Estudiante de Ingeniería Civil Telematica. Entusiasta de los sistemas operativos y la ciberseguridad. Fan del pingüinito, fother muckers y los completos del XL. i use void btw...",
+        "avatar": "https://avatars.githubusercontent.com/u/108637663?v=4",
+        "githubUrl": "https://github.com/michifeli",
+        "linkedinUrl": "https://www.linkedin.com/in/mitchelrojas/",
+        "instagramUrl": "https://www.instagram.com/michifeliiis/",
+        "webUrl": "https://michifeli.github.io/"
+    },
+    {
+        "nombre": "Isidora Cortes Cataldo",
+        "rol": "Secretaria General",
+        "bio": "Estudiante de informática. 👩🏻‍💻 \nMe gusta el té y el Open Source. 🐧\n Chile. 🇨🇱",
+        "avatar": "https://avatars.githubusercontent.com/u/128914837?v=4",
+        "githubUrl": "https://github.com/nubeconfusa"
+    },
+    {
+        "nombre": "Sofía Salazar",
+        "rol": "Finanzas",
+        "bio": "Estudiante de Ingeniería Civil Industrial. Me apasiona la gestión de proyectos y la optimización de procesos mediante el uso de las herramientas digitales para colaborar en la organización y logística de nuestra comunidad tecnológica.",
+        "avatar": "/src/assets/avatar/avatar_sofi.webp",
+        "instagramUrl": "https://www.instagram.com/mnis_sofi.a?igsh=MXU4YXNnZmQ0YjZtcg=="
+    },
+    {
+        "nombre": "Ángel González Peña",
+        "rol": "Coordinador de Comunidad e Inclusión",
+        "bio": "Telemático al que le gusta el LOL y aprender diversas cosas. Te amo Rodrigo :3",
+        "avatar": "https://avatars.githubusercontent.com/u/167334538?v=4",
+        "githubUrl": "https://github.com/angelitop71",
+        "linkedinUrl": "https://www.linkedin.com/in/angel-gonzalez-pe%C3%B1a-a21046366/"
+    },
+    {
+        "nombre": "Nacochna Pinto Tapia",
+        "rol": "Coordinadora de Comunidad e Inclusión",
+        "bio": "Una música condenada a ser física. Me gusta el fagot y no se programar :p",
+        "avatar": "https://avatars.githubusercontent.com/u/223402770?v=4",
+        "githubUrl": "https://github.com/nacochna",
+        "instagramUrl": "https://www.instagram.com/nacochna/"
+    },
+    {
+        "nombre": "Ignacio Olivares Cortés",
+        "rol": "Coordinador de Proyectos",
+        "bio": "Memorista de ingeniería civil informática, ex-sysadmin y linux enjoyer.",
+        "avatar": "https://avatars.githubusercontent.com/u/97808627?v=4",
+        "githubUrl": "https://github.com/ialfaroc",
+        "linkedinUrl": "https://www.linkedin.com/in/ignacio-alfaro-cortés-888b1b307"
+    },
+    {
+        "nombre": "Matías Peñaloza Bustamante",
+        "rol": "Lider de Proyecto - Pagina Web",
+        "bio": "Estudiante de Ingeniería Civil Informática y Freelancer. Me gusta todo lo relacionado con software, análisis de datos y Linux :p.",
+        "avatar": "https://avatars.githubusercontent.com/u/134110830?v=4",
+        "githubUrl": "https://github.com/madmti",
+        "linkedinUrl": "https://www.linkedin.com/in/matias-daniel-pe%C3%B1aloza-bustamante-26041733b/",
+        "webUrl": "https://madmti.github.io/"
+    },
+    {
+        "nombre": "Marco Repetto Jara",
+        "rol": "Líder de Proyecto - Calculadora de Notas",
+        "bio": "Estudiante de Ingeniería Civil Informática. Interesado en modelamiento matemático y computación aplicada. Fan Nº1 Alvaro Henríquez.",
+        "avatar": "https://avatars.githubusercontent.com/u/85263930?v=4",
+        "githubUrl": "https://github.com/marcorepetto",
+        "linkedinUrl": "https://www.linkedin.com/in/marco-antonio-repetto-jara-8b581a1bb"
+    },
+    {
+        "nombre": "Sebastian Torrealba",
+        "rol": "Líder de Proyecto - Stackoverworld",
+        "bio": "Aficionado de programación competitiva, software libre y Linux.",
+        "avatar": "https://avatars.githubusercontent.com/u/83615350?v=4",
+        "githubUrl": "https://github.com/storrealbac",
+        "linkedinUrl": "https://www.linkedin.com/in/storrealbac/"
+    },
+    {
+        "nombre": "Yair Flores Leiva",
+        "rol": "Líder de Proyecto - Evol",
+        "bio": "Estudiante de Ingeniería Civil Telemática, me gusta Linux, Rust y la privacidad. I use libreboot btw.",
+        "avatar": "https://avatars.githubusercontent.com/u/109782222?v=4",
+        "githubUrl": "https://github.com/yfloress",
+        "codebergUrl": "https://codeberg.org/Kyronix"
+    },
+    {
+        "nombre": "Sebastian Torres Valenta",
+        "rol": "Líder de Proyecto - Evol",
+        "bio": "Estudiante de Ingeniería Civil Telemática, me gusta la ciencia ficción, la radioafición y el self-hosting. NixOS btw.",
+        "avatar": "https://avatars.githubusercontent.com/u/127623492?v=4",
+        "githubUrl": "https://github.com/sebadaba",
+        "linkedinUrl": "https://www.linkedin.com/in/sebastián-torres-02346037a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+    },
+    {
+        "nombre": "Evol Olivares",
+        "rol": "Lider de Proyecto - WikiLinux",
+        "bio": "Estudiante de Ingeniera Civil Telemática. Entusiasta de diversas disciplinas. He utilizado muchas distribuciones y sistemas operativos como Gentoo, Debian y Void linux.",
+        "avatar": "https://avatars.githubusercontent.com/u/170658011?v=4",
+        "githubUrl": "https://github.com/asdurian"
+    },
+    {
+        "nombre": "Constanza Acosta",
+        "rol": "Líder de Proyecto - Malla Interactiva",
+        "bio": "Estudiante de Ingeniería Civil Telemática, interesada en la creación de tecnología con propósito. Dog lover y creativa, siempre buscando crear soluciones innovadoras a problemas reales.",
+        "avatar": "/src/assets/avatar/avatar_cony.webp"
+    },
+    {
+        "nombre": "Rock Dabre Valenzuela",
+        "rol": "Coordinador",
+        "bio": "Presidente del CEEINF, tengo 5000 horas en el destiny, me gusta la tecnología y los videojuegos.",
+        "avatar": "https://avatars.githubusercontent.com/u/129891756?v=4",
+        "githubUrl": "https://github.com/RuackD",
+        "linkedinUrl": "https://www.linkedin.com/in/rockdabrevalenzuela/"
+    },
+    {
+        "nombre": "Joaquin Velíz",
+        "rol": "Coordinador",
+        "bio": "Vicepresidente del CEEINF y metido en las altas esferas de LYOSS por azares del destino.",
+        "avatar": "https://avatars.githubusercontent.com/u/88526101?v=4",
+        "githubUrl": "https://github.com/juaquo15",
+        "linkedinUrl": "https://www.linkedin.com/in/joaquinveliz?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+    },
+    {
+        "nombre": "Lucas Bernard",
+        "rol": "Coordinador",
+        "bio": "Estudiante de Ingeniería Civil Informática.",
+        "avatar": "https://avatars.githubusercontent.com/u/239697873?s=200&v=4"
+    },
+    {
+        "nombre": "Giuseppe Queirolo",
+        "rol": "Coordinador",
+        "bio": "Hater número 1 de Huawei eNSP e intento de aprendiz en criptografía.",
+        "avatar": "https://avatars.githubusercontent.com/u/115963549?v=4",
+        "githubUrl": "https://github.com/Gxppe",
+        "linkedinUrl": "https://www.linkedin.com/in/giuseppe-queirolo-5b51a0165/"
+    },
+    {
+        "nombre": "Daniel Fernandez",
+        "rol": "Coordinador",
+        "bio": "Estudiante de Ingeniería Civil Telemática, entusiasta de drones y ciberseguridad. No me gusta la palta. I use Arch BTW, pero estoy condenado a jugar lol.",
+        "avatar": "/src/assets/avatar/avatar_leyrra.webp",
+        "linkedinUrl": "https://www.linkedin.com/in/danielfernandeztel/",
+        "instagramUrl": "https://www.instagram.com/leyrrad/"
+    },
+    {
+        "nombre": "Matias Mancilla Cesped",
+        "rol": "Coordinador",
+        "bio": "Estudiante de Ingeniería Civil Electrónica, amante del minecraft y los completos.",
+        "avatar": "https://avatars.githubusercontent.com/u/245719297?v=4",
+        "githubUrl": "https://github.com/Mancilla67"
+    },
+    {
+        "nombre": "Matias Acuña Oyarzún",
+        "rol": "Coordinador",
+        "bio": "En pocas palabras, a veces compilo canciones y otras compongo código. Busco aportar visión técnica con un toque diferente.",
+        "avatar": "/src/assets/avatar/avatar_matiacuña.webp",
+        "linkedinUrl": "https://www.linkedin.com/in/matias-acu%C3%B1a-76795b354"
+    },
+    {
+        "nombre": "Danniel Guardia Santana",
+        "rol": "Coordinador",
+        "bio": "Estudiante de Ingeniería Civil Informática, me gusta la programación y los videojuegos.",
+        "avatar": "https://avatars.githubusercontent.com/u/82466908?v=4",
+        "githubUrl": "https://github.com/dadolfog",
+        "instagramUrl": "https://www.instagram.com/pan_con_tomate_y_palta?igsh=Zm81ZDRsZzFpcThq"
+    },
+    {
+        "nombre": "Benjamín Labbe",
+        "rol": "Coordinador",
+        "bio": "Ing Cilvil Informatica - UTFSM \nAficionado de la programacion, ciberseguridad y el minecraft, mi gata se llama sofi.",
+        "avatar": "https://avatars.githubusercontent.com/u/80217767?v=4",
+        "githubUrl": "https://github.com/ShanonName",
+        "linkedinUrl": "https://cl.linkedin.com/in/benjam%C3%ADn-labb%C3%A9-0b1814251/en",
+        "instagramUrl": "https://www.instagram.com/ahhhhhhhname/"
+    }
+]

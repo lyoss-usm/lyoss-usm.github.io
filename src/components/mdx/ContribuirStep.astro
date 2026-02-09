@@ -1,0 +1,66 @@
+---
+export interface Props {
+	step: string;
+	title: string;
+	description: string;
+	color: string;
+}
+
+const { step, title, description, color } = Astro.props;
+
+// Mapeo de colores a clases CSS
+const colorClasses = {
+	primary: {
+		iconBg: 'bg-primary/20',
+		iconColor: 'text-primary',
+		stepColor: 'text-primary'
+	},
+	error: {
+		iconBg: 'bg-error/20',
+		iconColor: 'text-error',
+		stepColor: 'text-error'
+	},
+	info: {
+		iconBg: 'bg-info/20',
+		iconColor: 'text-info',
+		stepColor: 'text-info'
+	},
+	warning: {
+		iconBg: 'bg-warning/20',
+		iconColor: 'text-warning',
+		stepColor: 'text-warning'
+	},
+	secondary: {
+		iconBg: 'bg-secondary/20',
+		iconColor: 'text-secondary',
+		stepColor: 'text-secondary'
+	},
+	accent: {
+		iconBg: 'bg-accent/20',
+		iconColor: 'text-accent',
+		stepColor: 'text-accent'
+	},
+	success: {
+		iconBg: 'bg-success/20',
+		iconColor: 'text-success',
+		stepColor: 'text-success'
+	}
+};
+
+const selectedColor = colorClasses[color as keyof typeof colorClasses] || colorClasses.primary;
+---
+
+<div class="text-center">
+	<div
+		class={`w-16 h-16 ${selectedColor.iconBg} rounded-full flex items-center justify-center mx-auto mb-4 ${selectedColor.iconColor}`}
+	>
+		<slot />
+	</div>
+	<div class={`text-4xl font-bold ${selectedColor.stepColor} mb-2`}>{step}</div>
+	<h4 class="mb-2 font-heading text-lg font-semibold text-base-content">
+		{title}
+	</h4>
+	<p class="text-sm text-base-content/70">
+		{description}
+	</p>
+</div>

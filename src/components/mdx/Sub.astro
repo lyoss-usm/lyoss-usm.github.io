@@ -1,0 +1,19 @@
+---
+interface Props {
+	class: string;
+	variant?: 'sm' | 'md';
+}
+const { class: className, variant } = Astro.props;
+---
+
+{
+	variant === 'sm' ? (
+		<p class={`text-sm leading-relaxed text-base-content/80 ${className}`}>
+			<slot />
+		</p>
+	) : (
+		<p class={`text-lg text-base-content/70 md:text-xl ${className}`}>
+			<slot />
+		</p>
+	)
+}

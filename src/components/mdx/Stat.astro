@@ -1,0 +1,13 @@
+---
+interface Props {
+	class: string;
+	value: string;
+	color?: 'primary' | 'secondary' | 'accent';
+}
+const { class: className, value, color } = Astro.props;
+---
+
+<div class={`stat max-sm:w-auto ${className}`}>
+	<div class={`stat-value text-2xl text-${color ?? 'primary'}`}>{value}</div>
+	<div class="stat-desc"><slot /></div>
+</div>

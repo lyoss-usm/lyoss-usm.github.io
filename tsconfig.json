@@ -5,7 +5,8 @@
 	"compilerOptions": {
 		"paths": {
 			"@/": ["./src/"],
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"MDX": ["./src/components/mdx/index.ts"]
 		}
 	}
 }

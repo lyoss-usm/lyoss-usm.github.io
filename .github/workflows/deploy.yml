@@ -1,43 +1,52 @@
-name: Deploy
+# Este workflow compila y despliega un sitio Astro a GitHub Pages automaticamente.
 
+name: Astro Deploy to GitHub Pages
 on:
   push:
     tags:
-      # - 'v[0-9]+.[0-9]+.[0-9]+'
       - "latest"
-  workflow_dispatch:
-
-concurrency:
-  group: "prod-deploy"
-  cancel-in-progress: false
+  workflow_dispatch: # <- Boton manual en GitHub
 
 permissions:
   contents: read
-  id-token: write
-  pages: write
+  pages: write      # Necesario para desplegar
+  id-token: write   # Necesario para autenticación OIDC
 
 jobs:
+  # BUILD
   build:
+    name: Build Astro
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install and build Astro project
+      - name: Install and Build
         uses: withastro/action@v3
         with:
-          path: .
-          node-version: 22
-          package-manager: pnpm@latest
+            # CONFIGURACION DE BUILD
+            # Configura la ruta, version de node y package manager
+            path: .
+            node-version: 22
+            package-manager: pnpm@latest
 
+      # UPLOAD ARTIFACT
+      # Sube la carpeta 'dist' como artifact para GitHub Pages, asi lo puede usar el siguiente job.
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  # DEPLOY
+  # Llama al workflow reutilizable para hacer el deploy y auditoria con Lighthouse
   deploy:
+    name: Call Shared Deploy
     needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    uses: lyoss-usm/workflows/.github/workflows/gh-pages-deploy.yml@main
+    with:
+      # CONFIGURACION DE DEPLOY
+      # Configura el entorno de deploy para usar el environment github-pages
+      # y activar la auditoria con Lighthouse al final del deploy
+      environment_name: 'github-pages'
+      run_audit: true
+    secrets: inherit # <- Esto usa los secretos del repo o de la organizacion. (GH_PAT es requerido)

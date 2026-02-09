@@ -1,0 +1,141 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { Github, Linkedin, Instagram, Globe, Mountain } from "@lucide/astro";
+
+interface Props {
+  nombre: string;
+  rol: string;
+  bio: string;
+  avatar: ImageMetadata | string;
+  githubUrl?: string;
+  webUrl?: string;
+  linkedinUrl?: string;
+  instagramUrl?: string;
+  codebergUrl?: string;
+}
+
+const { nombre, rol, bio, avatar, githubUrl, webUrl, linkedinUrl, instagramUrl, codebergUrl } = Astro.props;
+
+const normalize = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const getRolColor = (rol: string): string => {
+  const r = normalize(rol);
+
+  if (r.includes("presidente")) return "text-orange-400";
+  if (r.includes("secretaria")) return "text-amber-400";
+  if (r.includes("finanzas")) return "text-blue-400";
+  if (r.includes("proyectos")) return "text-fuchsia-400";
+  if (r.includes("comunidad") && r.includes("inclusion")) return "text-fuchsia-400";
+  if (r.includes("coordinador") || r.includes("coordinadora")) return "text-red-400";
+  if (r.includes("lider de proyecto")) return "text-cyan-400";
+
+  return "text-primary";
+};
+---
+
+<div class="card bg-base-100 border border-base-content/10 hover:shadow-lg transition-all duration-300">
+	<div class="card-body p-6">
+		<div class="flex items-start gap-4 mb-4">
+			<div class="avatar flex-shrink-0">
+				<div class="w-16 h-16 rounded-full">
+					{typeof avatar === "string" ? (
+						<img
+							src={avatar}
+							alt={nombre}
+							class="rounded-full"
+						/>
+					) : (
+						<Image
+							src={avatar}
+							alt={nombre}
+							width={64}
+							height={64}
+							format="webp"
+							quality={90}
+						/>
+					)}
+				</div>
+			</div>
+
+			<div class="flex-1">
+				<div class={`text-sm uppercase font-medium mb-1 ${getRolColor(rol)}`}>
+					{rol}
+				</div>
+				<h3 class="font-heading text-lg font-semibold text-base-content">
+					{nombre}
+				</h3>
+			</div>
+		</div>
+
+		<!-- Bio -->
+		<p class="text-base-content/80 text-sm mb-6 leading-relaxed whitespace-pre-line">
+			{bio}
+		</p>
+
+		<!-- Redes sociales -->
+		<div class="flex gap-3">
+			{githubUrl && (
+				<a
+					href={githubUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-base-content/60 hover:text-base-content transition-colors"
+					aria-label="GitHub"
+				>
+					<Github size={16} />
+				</a>
+			)}
+			{linkedinUrl && (
+				<a
+					href={linkedinUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-base-content/60 hover:text-base-content transition-colors"
+					aria-label="LinkedIn"
+				>
+					<Linkedin size={16} />
+				</a>
+			)}
+			{instagramUrl && (
+				<a
+					href={instagramUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-base-content/60 hover:text-base-content transition-colors"
+					aria-label="Instagram"
+				>
+					<Instagram size={16} />
+				</a>
+			)}
+			{webUrl && (
+				<a
+					href={webUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-base-content/60 hover:text-base-content transition-colors"
+					aria-label="Sitio web"
+				>
+					<Globe size={16} />
+				</a>
+			)}
+			{codebergUrl && (
+				<a
+					href={codebergUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-base-content/60 hover:text-base-content transition-colors"
+					aria-label="Codeberg"
+				>
+					<Mountain size={16} />
+				</a>
+			)}
+		</div>
+	</div>
+</div>

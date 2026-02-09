@@ -1,0 +1,41 @@
+---
+import { getEntry } from 'astro:content';
+const entry_content = await getEntry('contenidos', 'contribuir');
+if (!entry_content) {
+	throw new Error('No se encontró la entrada de contenido para contenidos/contribuir');
+}
+const { Content } = await entry_content.render();
+---
+
+<section id="contribuir" class="min-h-svh bg-base-100 py-16">
+	<div class="container mx-auto px-4">
+		<Content />
+
+		<!-- First Time Contributing -->
+		<div class="mt-12 rounded-2xl bg-base-200 p-8">
+			<div class="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+				<div>
+					<h3 class="mb-2 font-heading text-2xl font-semibold text-base-content">
+						¿Primera vez contribuyendo?
+					</h3>
+					<p class="text-base-content/70">
+						Explora todas las issues abiertas en nuestra organización y encuentra algo que te
+						interese.
+					</p>
+				</div>
+				<div class="flex items-center gap-4">
+					<a
+						href="https://github.com/issues?q=is%3Aopen%20is%3Aissue%20org%3Alyoss-usm"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn btn-primary"
+						data-umami-event="ver-issues"
+					>
+						Ver todas las issues
+					</a>
+					<a href="/contacto" class="btn btn-outline btn-secondary" data-umami-event="ver-contacto"> Ver canales </a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

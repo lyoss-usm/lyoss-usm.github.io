@@ -1,0 +1,55 @@
+---
+import CartaProyecto from '../CartaProyecto.astro';
+import { getCollection } from 'astro:content';
+
+let proyectos = await getCollection('proyectos');
+proyectos = proyectos.slice(0, 6);
+
+const processedProyectos = await Promise.all(
+	proyectos.map(async (proyecto) => {
+		const { Content } = await proyecto.render();
+		return {
+			...proyecto,
+			Content
+		};
+	})
+);
+---
+
+<section id="proyectos" class="bg-base-200">
+	<div class="container mx-auto px-4 py-16">
+		<!-- Header -->
+		<div class="mb-12 flex items-center justify-between">
+			<div>
+				<h2 class="mb-2 font-heading text-4xl font-bold text-base-content">
+					Proyectos de la Comunidad
+				</h2>
+				<p class="text-base-content/70">Lo que estamos construyendo actualmente.</p>
+			</div>
+			<a href="/proyectos" class="btn btn-outline max-sm:hidden" data-umami-event="ver-proyectos"> Ver todos los proyectos </a>
+			<a href="/proyectos" class="btn btn-outline sm:hidden" data-umami-event="ver-proyectos"> Ver todos </a>
+		</div>
+
+		<!-- Projects Grid -->
+		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+			{
+				processedProyectos.map(({ data, Content }) => (
+					<CartaProyecto
+						stars={data.stars}
+						contributors={data.contributors}
+						forks={data.forks}
+						issues={data.issues}
+						active={data.active}
+						helpWanted={data.helpWanted}
+						githubUrl={data.githubUrl}
+						siteUrl={data.siteUrl}
+						bannerUrl={data.bannerUrl}
+						logoUrl={data.logoUrl}
+					>
+						<Content />
+					</CartaProyecto>
+				))
+			}
+		</div>
+	</div>
+</section>

@@ -1,0 +1,26 @@
+changelog:
+  exclude:
+    labels:
+      - "Oculto"
+    authors:
+      - renovate
+      - dependabot
+
+  categories:
+    - title: "Features"
+      labels:
+        - "Funcionalidad"
+
+    - title: "Fixes"
+      labels:
+        - "Bug"
+        - "Fix"
+
+    - title: "Maintenance"
+      labels:
+        - "Infraestructura"
+        - "Test"
+
+    - title: "Other Changes"
+      labels:
+        - "*"
