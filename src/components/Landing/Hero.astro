@@ -8,7 +8,7 @@ if (!entry_content) {
 	throw new Error('No se encontró la entrada de contenido para contenidos/hero');
 }
 const { Content } = await entry_content.render();
-const orbits = await getOrbitsData();
+const orbits = getOrbitsData();
 ---
 
 <section id="hero" class="relative hero min-h-svh overflow-hidden pt-16">
@@ -29,7 +29,7 @@ const orbits = await getOrbitsData();
 									<div class={orbit.avatarClass}>
 										<Image
 											src={item.src}
-											alt="GitHub Member"
+											alt="Member"
 											width={32}
 											height={32}
 											format="webp"
