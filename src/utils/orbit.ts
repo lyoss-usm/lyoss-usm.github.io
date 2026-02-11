@@ -1,12 +1,14 @@
-export interface GitHubMember {
-	login: string;
-	avatar_url: string;
+import members from '../content/nosotros/miembros.json';
+
+export interface Member {
+    avatar: string;
+    [key: string]: any; 
 }
 
 export interface OrbitItem {
-	src: string;
-	position: string;
-	size: string;
+    src: string;
+    position: string;
+    size: string;
 }
 
 export interface OrbitConfig {
@@ -22,8 +24,12 @@ export interface Orbit extends OrbitConfig {
 	items: OrbitItem[];
 }
 
-const GITHUB_ORG = 'lyoss-usm';
 const DEFAULT_MEMBER_COUNT = 13;
+
+
+const avatarImages = import.meta.glob<{ default: string }>('/src/assets/avatar/*.{png,jpg,jpeg,webp,svg}', {
+    eager: true
+});
 
 const orbitConfigs: OrbitConfig[] = [
 	{
@@ -87,42 +93,42 @@ function generatePositions(count: number): string[] {
 	return positions;
 }
 
-export async function fetchGitHubMembers(): Promise<GitHubMember[]> {
-	let members: GitHubMember[] = [];
+function resolveSource(path: string): string {
+    if (path.startsWith('http')) {
+        return path;
+    }
 
-	try {
-		const response = await fetch(
-			`https://api.github.com/orgs/${GITHUB_ORG}/members?per_page=${DEFAULT_MEMBER_COUNT}`
-		);
-		if (response.ok) {
-			members = await response.json();
-		}
-	} catch (error) {
-		console.error('Error cargando miembros de GitHub:', error);
-	}
+    if (avatarImages[path]) {
+        return avatarImages[path].default;
+    }
 
-	for (let i = members.length; i < DEFAULT_MEMBER_COUNT; i++) {
-		members.push({
-			login: `ghost-${i}`,
-			avatar_url: `https://github.com/identicons/${i}.png`
-		});
-	}
-
-	return members.sort(() => Math.random() - 0.5);
+    console.warn(`Imagen local no encontrada: ${path}`);
+    return path;
 }
 
-export function generateOrbits(members: GitHubMember[]): Orbit[] {
+export function generateOrbits(members: Member[]): Orbit[] {
 	let memberIndex = 0;
+
+	const shuffledMembers = [...members].sort(() => Math.random() - 0.5);
+
+		while (shuffledMembers.length < DEFAULT_MEMBER_COUNT) {
+			shuffledMembers.push({
+				nombre: 'Ghost',
+				rol: 'Ghost',
+				bio: '',
+				avatar: `https://github.com/identicons/${shuffledMembers.length}.png`
+			});
+		}
 
 	return orbitConfigs.map((config) => {
 		const positions = generatePositions(config.count);
-		const items: OrbitItem[] = members
-			.slice(memberIndex, memberIndex + config.count)
-			.map((member, i) => ({
-				src: member.avatar_url,
-				position: positions[i],
-				size: config.count > 2 ? 'w-6 h-6 lg:w-8 lg:h-8' : 'w-10 h-10 lg:w-12 lg:h-12'
-			}));
+		const orbitMembers = shuffledMembers.slice(memberIndex, memberIndex + config.count);
+				
+		const items: OrbitItem[] = orbitMembers.map((member, i) => ({
+			src: resolveSource(member.avatar),
+			position: positions[i],
+			size: config.count > 2 ? 'w-6 h-6 lg:w-8 lg:h-8' : 'w-10 h-10 lg:w-12 lg:h-12'
+		}));
 
 		memberIndex += config.count;
 
@@ -131,9 +137,10 @@ export function generateOrbits(members: GitHubMember[]): Orbit[] {
 			items
 		};
 	});
-}
 
-export async function getOrbitsData(): Promise<Orbit[]> {
-	const members = await fetchGitHubMembers();
-	return generateOrbits(members);
+	
+
+}
+export function getOrbitsData(): Orbit[] {
+    return generateOrbits(members as Member[]);
 }

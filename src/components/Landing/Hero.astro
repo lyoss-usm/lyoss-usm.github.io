@@ -8,7 +8,7 @@ if (!entry_content) {
 	throw new Error('No se encontró la entrada de contenido para contenidos/hero');
 }
 const { Content } = await entry_content.render();
-const orbits = await getOrbitsData();
+const orbits = getOrbitsData();
 ---
 
 <section id="hero" class="relative hero min-h-svh overflow-hidden pt-16">
@@ -29,7 +29,7 @@ const orbits = await getOrbitsData();
 									<div class={orbit.avatarClass}>
 										<Image
 											src={item.src}
-											alt="GitHub Member"
+											alt="Member"
 											width={32}
 											height={32}
 											format="webp"
@@ -44,14 +44,17 @@ const orbits = await getOrbitsData();
 				}
 			</div>
 
-			<Image
-				src={Logo}
-				loading="eager"
-				alt="Linux y Open Source USM Logo"
-				class="relative z-10 max-w-xs rounded-lg drop-shadow-2xl lg:max-w-sm"
-				widths={[320, 348]}
-				sizes="(max-width: 1024px) 320px, 348px"
-			/>
+			        <Image
+			            src={Logo}
+			            loading="eager"
+			            fetchpriority="high"
+			            alt="Linux y Open Source USM Logo"
+			            class="relative z-10 max-w-xs rounded-lg drop-shadow-2xl lg:max-w-sm"
+			            width={348}
+			            height={348}
+			            widths={[320, 348]}
+			            sizes="(max-width: 1024px) 320px, 348px"
+			        />
 		</div>
 
 		<div class="z-10 text-center lg:text-left">
