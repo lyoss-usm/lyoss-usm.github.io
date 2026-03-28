@@ -2,6 +2,10 @@
 
 Este es el repositorio oficial del sitio web de Lyoss. Diseñado para proporcionar información sobre nuestros proyectos y actividades relacionadas con Linux y el software de código abierto.
 
+## Seguimiento
+
+Puedes consultar el progreso actual y estado del proyecto en [Github Project](https://github.com/orgs/lyoss-usm/projects/17).
+
 ## Requisitos
 
 - [Node.js](https://nodejs.org/en) (>= 22.x)
