@@ -1,10 +1,12 @@
-# Lyoss - Website
+# Lyoss - Website ![](https://img.shields.io/badge/estado-MVP_Completado-green) ![](https://img.shields.io/github/license/lyoss-usm/lyoss-usm.github.io)
 
 Este es el repositorio oficial del sitio web de Lyoss. Diseñado para proporcionar información sobre nuestros proyectos y actividades relacionadas con Linux y el software de código abierto.
 
+
 ## Seguimiento
 
-Puedes consultar el progreso actual y estado del proyecto en [Github Project](https://github.com/orgs/lyoss-usm/projects/17).
+- Puedes seguir el progreso del proyecto en [GitHub Projects](https://github.com/orgs/lyoss-usm/projects/17).
+- Para reportar problemas o sugerencias, visita [GitHub Issues](https://github.com/lyoss-usm/lyoss-usm.github.io/issues).
 
 ## Requisitos
 
