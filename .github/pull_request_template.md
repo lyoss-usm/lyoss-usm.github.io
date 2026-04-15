@@ -20,5 +20,5 @@ Algun detalle importante..
 ```El numero despues del # debe ser el numero da la issue
 ```
 
-```Si la PR va de develop a main, recuerda incluir el label "Oculto"
+```Si la PR va de develop a main, recuerda incluir el label "Release"
 ```

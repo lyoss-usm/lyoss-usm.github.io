@@ -1,0 +1,17 @@
+name: Setup Repo Labels and Rulesets
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync-labels:
+    uses: lyoss-usm/workflows/.github/workflows/sync-labels.yml@main
+    permissions:
+      issues: write
+  sync-rulesets:
+    needs: sync-labels
+    uses: lyoss-usm/workflows/.github/workflows/sync-rulesets.yml@main
+    secrets: inherit
+    permissions:
+      contents: write
+      repository-projects: write
