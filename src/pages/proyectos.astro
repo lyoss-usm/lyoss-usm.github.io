@@ -31,8 +31,8 @@ const allTechnologies = [...new Set(proyectos.flatMap((p) => p.data.findBy ?? []
 					</h1>
 				</div>
 				<p class="mb-2 text-lg text-base-content/70">
-					<span id="project-count">{processedProyectos.length}</span> proyectos • Construidos con ❤️ por
-					nuestra comunidad
+					<span id="project-count">{processedProyectos.length}</span> proyectos • Construidos
+					con ❤️ por nuestra comunidad
 				</p>
 			</div>
 
@@ -42,7 +42,7 @@ const allTechnologies = [...new Set(proyectos.flatMap((p) => p.data.findBy ?? []
 					<!-- Search Bar -->
 					<div class="relative flex-1">
 						<Search
-							class="pointer-events-none absolute top-1/2 left-3 z-90 h-5 w-5 -translate-y-1/2 transform"
+							class="pointer-events-none absolute top-1/2 left-3 z-40 h-5 w-5 -translate-y-1/2 transform"
 						/>
 						<input
 							type="text"
@@ -60,10 +60,16 @@ const allTechnologies = [...new Set(proyectos.flatMap((p) => p.data.findBy ?? []
 						</div>
 
 						<div class="flex gap-2 max-xs:flex-wrap">
-							<button class="filter-btn active filter-all btn btn-sm btn-primary" data-filter="all">
+							<button
+								class="filter-btn active filter-all btn btn-sm btn-primary"
+								data-filter="all"
+							>
 								Todos
 							</button>
-							<button class="filter-btn filter-active btn btn-outline btn-sm" data-filter="active">
+							<button
+								class="filter-btn filter-active btn btn-outline btn-sm"
+								data-filter="active"
+							>
 								Activos
 							</button>
 							<button
@@ -94,7 +100,10 @@ const allTechnologies = [...new Set(proyectos.flatMap((p) => p.data.findBy ?? []
 			</div>
 
 			<!-- Projects Grid -->
-			<div id="projects-grid" class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+			<div
+				id="projects-grid"
+				class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+			>
 				{
 					processedProyectos.map(({ data, Content, slug }) => (
 						<div
@@ -127,7 +136,9 @@ const allTechnologies = [...new Set(proyectos.flatMap((p) => p.data.findBy ?? []
 			<div id="no-results" class="hidden py-12 text-center">
 				<div class="mb-4 text-base-content/60">
 					<Search class="mx-auto mb-4 h-16 w-16 opacity-40" />
-					<h3 class="mb-2 font-heading text-xl font-semibold">No se encontraron proyectos</h3>
+					<h3 class="mb-2 font-heading text-xl font-semibold">
+						No se encontraron proyectos
+					</h3>
 					<p>Intenta ajustar tus filtros de búsqueda</p>
 				</div>
 			</div>
@@ -166,7 +177,9 @@ const allTechnologies = [...new Set(proyectos.flatMap((p) => p.data.findBy ?? []
 
 				// Search filter
 				const matchesSearch =
-					searchQuery === '' || title.includes(searchQuery) || technologies.includes(searchQuery);
+					searchQuery === '' ||
+					title.includes(searchQuery) ||
+					technologies.includes(searchQuery);
 
 				// Status filter
 				let matchesStatus = true;
