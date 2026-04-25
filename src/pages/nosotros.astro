@@ -1,14 +1,12 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
-import CartaMiembro from '@/components/CartaMiembro.astro';
-import { getCollection, getEntry } from 'astro:content';
+import OrganigramaPersona from '@/components/OrganigramaPersona.astro';
+import { getCollection, getEntry, render } from 'astro:content'; 
+import { procesarEstructuraOrganigrama, filtrarMiembrosPorEstado } from '@/utils/organigrama';
 
-const nosotrosEntry = await getCollection('nosotros');
-const data0 = nosotrosEntry[0]?.data;
-const miembros =
-  Array.isArray(data0) ? data0
-  : Array.isArray((data0 as any)?.miembros) ? (data0 as any).miembros
-  : [];
+// 1. Carga de datos base
+const nosotrosEntries = await getCollection('nosotros');
+const miembros = nosotrosEntries.map(entry => entry.data);
 
 const valoresEntry = await getEntry('contenidos', 'valores');
 const historiaEntry = await getEntry('contenidos', 'historia');
@@ -16,32 +14,165 @@ const historiaEntry = await getEntry('contenidos', 'historia');
 if (!valoresEntry) throw new Error('No se encontró contenidos/valores');
 if (!historiaEntry) throw new Error('No se encontró contenidos/historia');
 
-const { Content: Valores } = await valoresEntry.render();
-const { Content: Historia } = await historiaEntry.render();
+const { Content: Valores } = await render(valoresEntry);
+const { Content: Historia } = await render(historiaEntry);
+
+// 2. Definición de textos y descripciones
+const descripcionesEquipos: Record<string, string> = {
+  "Jefaturas de Proyecto": "Seguimiento técnico y coordinación de proyectos activos dentro de la comunidad.",
+  "Fondos Concursables": "Equipo clave encargado de la gestión financiera y postulación a fondos de la universidad.",
+  "Eventos": "Organización de Hackatón, Install Fest y actividades de vinculación con el medio.",
+  "Delegados en San Joaquín": "Representación local y apoyo constante para los miembros de la sede San Joaquín.",
+  "Comunidad e Inclusión": "Coordinación transversal de integración, sentido de pertenencia y diversidad."
+};
+
+// 3. Procesamiento y unión de datos
+const { presidencia, areaAdministrativa, areaTecnologica } = procesarEstructuraOrganigrama(miembros);
+
+// Inyectamos las descripciones en las subáreas procesadas
+[areaAdministrativa, areaTecnologica].forEach(area => {
+  area.subareas.forEach(sub => {
+    sub.descripcion = descripcionesEquipos[sub.titulo] || "";
+  });
+});
+
+const miembrosActivos  = filtrarMiembrosPorEstado(miembros, 'activo');
+const miembrosInactivos = filtrarMiembrosPorEstado(miembros, 'inactivo');
+
+if (!presidencia) throw new Error('No hay presidencia configurada en miembros.json');
 ---
 
 <MainLayout>
-  <section class="bg-base-100 py-16 pt-32">
-    <div class="container mx-auto px-4">
-      <!-- Header -->
+  <section class="bg-base-100 py-20 pt-36">
+    <div class="container mx-auto max-w-[1600px] px-5 lg:px-8">
       <div class="text-left mb-16">
-        <h2 class="font-heading text-4xl lg:text-5xl font-bold text-base-content mb-4">
-          Conoce a la <span class="text-primary">coordinación</span> de Lyoss
+        <h2 class="font-heading text-5xl lg:text-6xl font-bold text-base-content mb-4">
+          Conoce a la coordinación de <span class="text-primary">Lyoss</span>
         </h2>
-        <p class="text-base-content/70 text-lg">
-          El equipo organizador que lidera y coordina las actividades de nuestra comunidad.
+        <p class="text-base-content/70 text-xl max-w-3xl">
+            El equipo organizador que lidera y coordina las actividades de nuestra comunidad. 
         </p>
       </div>
 
-      <!-- Team Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {miembros.map((miembro: any) => (
-          <CartaMiembro {...miembro} />
-        ))}
+      <div class="flex justify-center mb-12">
+        <div class="w-full max-w-2xl rounded-2xl border border-primary/25 bg-base-100/90 p-5 md:p-6 relative organigrama-raiz">
+          <OrganigramaPersona persona={presidencia} />
+        </div>
       </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-7 relative organigrama-ramas items-start">
+        
+        {/* Renderizado directo del Área Administrativa */}
+        {areaAdministrativa.jefatura && (
+          <section class="rounded-2xl border border-secondary/30 p-5 md:p-6 bg-base-200/40">
+            <h3 class="font-heading text-3xl font-bold mb-5 text-secondary">{areaAdministrativa.titulo}</h3>
+            
+            <div class="rounded-xl border border-secondary/25 p-4 mb-6 bg-base-100/85">
+                <p class="text-sm uppercase font-bold tracking-wide mb-2 text-secondary">{areaAdministrativa.jefatura.cargo}</p>
+                <OrganigramaPersona persona={areaAdministrativa.jefatura} />
+            </div>
+
+            <div class="space-y-5">
+              {areaAdministrativa.subareas.map((subarea: any) => (
+                <article class="rounded-xl border border-secondary/25 bg-secondary/5 p-4 md:p-5">
+                  <h4 class="text-lg font-semibold text-secondary">{subarea.titulo}</h4>
+                  <p class="text-base text-base-content/70 mb-4">{subarea.descripcion}</p>
+                  <div class="space-y-3">
+                    {subarea.personas.map((persona: any) => (
+                      <OrganigramaPersona persona={persona} />
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Renderizado directo del Área Tecnológica */}
+        {areaTecnologica.jefatura && (
+          <section class="rounded-2xl border border-primary/30 p-5 md:p-6 bg-base-200/40">
+            <h3 class="font-heading text-3xl font-bold mb-5 text-primary">{areaTecnologica.titulo}</h3>
+            
+            <div class="rounded-xl border border-primary/25 p-4 mb-6 bg-base-100/85">
+                <p class="text-sm uppercase font-bold tracking-wide mb-2 text-primary">{areaTecnologica.jefatura.cargo}</p>
+                <OrganigramaPersona persona={areaTecnologica.jefatura} />
+            </div>
+
+            <div class="space-y-5">
+              {areaTecnologica.subareas.map((subarea: any) => (
+                <article class="rounded-xl border border-primary/25 bg-primary/5 p-4 md:p-5">
+                  <h4 class="text-lg font-semibold text-primary">{subarea.titulo}</h4>
+                  <p class="text-base text-base-content/70 mb-4">{subarea.descripcion}</p>
+                  <div class="space-y-3">
+                    {subarea.personas.map((persona: any) => (
+                      <OrganigramaPersona persona={persona} />
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
+      <section class="mt-16">
+        <h3 class="font-heading text-3xl font-bold text-base-content mb-3">Coordinadores activos</h3>
+        <p class="text-base-content/70 text-lg mb-6">Miembros activos apoyando transversalmente a la comunidad.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
+          {miembrosActivos.map((miembro: any) => (
+            <OrganigramaPersona persona={miembro} variante="mini" />
+          ))}
+        </div>
+      </section>
+
+      <section class="mt-16">
+        <h3 class="font-heading text-3xl font-bold text-base-content mb-3">Ex-coordinadores 🌙</h3>
+        <p class="text-base-content/70 text-lg mb-6">Gracias por todo lo que aportaron a la comunidad.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
+          {miembrosInactivos.map((miembro: any) => (
+            <OrganigramaPersona persona={miembro} variante="mini" />
+          ))}
+        </div>
+      </section>
     </div>
   </section>
-  
+
   <Valores />
   <Historia />
 </MainLayout>
+
+<style>
+  .organigrama-raiz::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -24px;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 24px;
+    background-color: hsl(var(--bc) / 0.35); 
+    border-radius: 4px;
+  }
+
+  .organigrama-ramas::before {
+    content: '';
+    position: absolute;
+    top: -24px;
+    left: calc(25% + 14px); 
+    right: calc(25% + 14px);
+    height: 16px;
+    border-top: 3px solid hsl(var(--bc) / 0.35);
+    border-left: 3px solid hsl(var(--bc) / 0.35);
+    border-right: 3px solid hsl(var(--bc) / 0.35);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    pointer-events: none;
+  }
+
+  @media (max-width: 1279px) {
+    .organigrama-ramas::before,
+    .organigrama-raiz::after {
+      display: none;
+    }
+  }
+</style>

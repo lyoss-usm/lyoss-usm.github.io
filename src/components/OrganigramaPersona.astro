@@ -1,0 +1,102 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Github, Linkedin, Instagram, Globe, Mountain, ChevronDown } from '@lucide/astro';
+
+interface Props {
+    // Ahora esperamos un objeto 'persona' con todos los datos
+    persona: {
+        nombre: string;
+        avatar: ImageMetadata | string;
+        cargo?: string;
+        bio?: string;
+        githubUrl?: string;
+        webUrl?: string;
+        linkedinUrl?: string;
+        instagramUrl?: string;
+        codebergUrl?: string;
+    };
+    variante?: 'normal' | 'mini';
+}
+
+const { persona, variante = 'normal' } = Astro.props;
+
+// Desestructuramos los datos desde el objeto persona
+const { nombre, avatar, cargo, bio, githubUrl, webUrl, linkedinUrl, instagramUrl, codebergUrl } = persona;
+
+// Extraemos la ruta del avatar de forma segura
+const avatarSrc = typeof avatar === 'string' ? avatar : avatar?.src;
+const isMini = variante === 'mini';
+---
+
+<details class:list={[
+    'group border border-base-content/10 transition-colors',
+    isMini ? 'card bg-base-200/50 open:bg-base-100/85' : 'rounded-xl bg-base-100/75 open:bg-base-100'
+]}>
+    <summary class:list={['list-none cursor-pointer', isMini ? 'p-3' : 'p-3 md:p-4']}>
+        <div class="flex items-center gap-3">
+            {avatarSrc && (
+                <img
+                    src={avatarSrc}
+                    alt={nombre}
+                    class:list={[
+                        'rounded-full object-cover border border-base-content/15',
+                        isMini ? 'w-10 h-10' : 'w-12 h-12'
+                    ]}
+                />
+            )}
+            <div class="flex-1 min-w-0">
+                <p class:list={[
+                    'text-base-content truncate',
+                    isMini ? 'font-medium leading-tight text-sm' : 'font-semibold text-base'
+                ]}>
+                    {nombre}
+                </p>
+                {cargo && (
+                    <p class:list={[
+                        'text-base-content/70 truncate',
+                        isMini ? 'text-xs' : 'text-xs md:text-sm'
+                    ]}>
+                        {cargo}
+                    </p>
+                )}
+            </div>
+            <ChevronDown size={isMini ? 16 : 18} class="text-base-content/60 transition-transform duration-200 group-open:rotate-180" />
+        </div>
+    </summary>
+
+    {(bio || githubUrl || webUrl || linkedinUrl || instagramUrl || codebergUrl) && (
+        <div class:list={[
+            'border-t border-base-content/10',
+            isMini ? 'px-3 pb-3' : 'px-3 md:px-4 pb-3 md:pb-4'
+        ]}>
+            {bio && <p class="text-sm text-base-content/80 leading-relaxed whitespace-pre-line mt-3">{bio}</p>}
+            <div class="flex gap-3 mt-3">
+                {githubUrl && (
+                    <a href={githubUrl} target="_blank" rel="noopener noreferrer" class="text-base-content/60 hover:text-base-content" aria-label="GitHub">
+                        <Github size={16} />
+                    </a>
+                )}
+                {linkedinUrl && (
+                    <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" class="text-base-content/60 hover:text-base-content" aria-label="LinkedIn">
+                        <Linkedin size={16} />
+                    </a>
+                )}
+                {instagramUrl && (
+                    <a href={instagramUrl} target="_blank" rel="noopener noreferrer" class="text-base-content/60 hover:text-base-content" aria-label="Instagram">
+                        <Instagram size={16} />
+                    </a>
+                )}
+                {webUrl && (
+                    <a href={webUrl} target="_blank" rel="noopener noreferrer" class="text-base-content/60 hover:text-base-content" aria-label="Sitio web">
+                        <Globe size={16} />
+                    </a>
+                )}
+                {codebergUrl && (
+                    <a href={codebergUrl} target="_blank" rel="noopener noreferrer" class="text-base-content/60 hover:text-base-content" aria-label="Codeberg">
+                        <Mountain size={16} />
+                    </a>
+                )}
+            </div>
+        </div>
+    )}
+</details>
