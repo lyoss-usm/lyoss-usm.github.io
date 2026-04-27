@@ -19,7 +19,7 @@
     {
         "id": "sofia-salazar",
         "nombre": "Sofía Salazar",
-        "rol": "Coordinadora de Área Administrativa",
+        "rol": "Coordinadora Administrativa",
         "estado": "organigrama",
         "bio": "Estudiante de Ingeniería Civil Industrial. Me apasiona la gestión de proyectos y la optimización de procesos mediante el uso de las herramientas digitales para colaborar en la organización y logística de nuestra comunidad tecnológica.",
         "avatar": "/src/assets/avatar/avatar_sofi.webp",
@@ -47,6 +47,32 @@
         "equipo": "Jefaturas de Proyecto",
         "cargoEquipo": "Proyecto Página Web y Club de Rol Sansano",
         "ordenEquipo": 20
+    },
+ {
+        "id": "angel-gonzalez",
+        "nombre": "Ángel González Peña",
+        "rol": "Coordinador de Finanzas",
+        "estado": "organigrama",
+        "bio": " Telemático al que le gusta el LOL y aprender diversas cosas. Fiel miembro de la comunidad LGBT 🏳️‍🌈.",
+        "avatar": "https://avatars.githubusercontent.com/u/167334538?v=4",
+        "githubUrl": "https://github.com/angelitop71",
+        "linkedinUrl": "https://www.linkedin.com/in/angel-gonzalez-pe%C3%B1a-a21046366/",
+        "area": "administrativa",
+        "equipo": "Fondos Concursables",
+        "cargoEquipo": "Encargado de Finanzas",
+        "ordenEquipo": 3
+    },
+    {
+        "id": "constanza-acosta",
+        "nombre": "Constanza Acosta",
+        "rol": "Coordinadora de Comunidad e Inclusión",
+        "estado": "organigrama",
+        "bio": "Estudiante de Ingeniería Civil Telemática, interesada en la creación de tecnología con propósito. Dog lover y creativa, siempre buscando crear soluciones innovadoras a problemas reales.",
+        "avatar": "/src/assets/avatar/avatar_cony.webp",
+        "area": "administrativa",
+        "equipo": "Comunidad e Inclusión",
+        "cargoEquipo": "Coordinadora de Comunidad e Inclusión",
+        "ordenEquipo": 1
     },
     {
         "id": "evol-olivares",
@@ -88,20 +114,6 @@
         "equipo": "Fondos Concursables",
         "cargoEquipo": "Subjefe",
         "ordenEquipo": 2
-    },
-    {
-        "id": "angel-gonzalez",
-        "nombre": "Ángel González Peña",
-        "rol": "Encargado de Finanzas",
-        "estado": "organigrama",
-        "bio": " Telemático al que le gusta el LOL y aprender diversas cosas. Fiel miembro de la comunidad LGBT 🏳️‍🌈.",
-        "avatar": "https://avatars.githubusercontent.com/u/167334538?v=4",
-        "githubUrl": "https://github.com/angelitop71",
-        "linkedinUrl": "https://www.linkedin.com/in/angel-gonzalez-pe%C3%B1a-a21046366/",
-        "area": "administrativa",
-        "equipo": "Fondos Concursables",
-        "cargoEquipo": "Encargado de Finanzas",
-        "ordenEquipo": 3
     },
     {
         "id": "isidora-cortes",
@@ -147,7 +159,7 @@
     {
         "id": "sebastian-torres",
         "nombre": "Sebastian Torres Valenta",
-        "rol": "Delegado San Joaquín",
+        "rol": "Delegado Campus San Joaquín",
         "estado": "organigrama",
         "bio": "Estudiante de Ingeniería Civil Telemática, me gusta la ciencia ficción, la radioafición y el self-hosting. NixOS btw.",
         "avatar": "https://avatars.githubusercontent.com/u/127623492?v=4",
@@ -161,7 +173,7 @@
     {
         "id": "yair-flores",
         "nombre": "Yair Flores Leiva",
-        "rol": "Delegado San Joaquín",
+        "rol": "Delegado Campus San Joaquín",
         "estado": "organigrama",
         "bio": "Estudiante de Ingeniería Civil Telemática, me gusta Linux, Rust y la privacidad. I use libreboot btw.",
         "avatar": "https://avatars.githubusercontent.com/u/109782222?v=4",
@@ -171,18 +183,6 @@
         "equipo": "Delegados en San Joaquín",
         "cargoEquipo": "Delegado",
         "ordenEquipo": 2
-    },
-    {
-        "id": "constanza-acosta",
-        "nombre": "Constanza Acosta",
-        "rol": "Coordinadora de Comunidad e Inclusión",
-        "estado": "organigrama",
-        "bio": "Estudiante de Ingeniería Civil Telemática, interesada en la creación de tecnología con propósito. Dog lover y creativa, siempre buscando crear soluciones innovadoras a problemas reales.",
-        "avatar": "/src/assets/avatar/avatar_cony.webp",
-        "area": "administrativa",
-        "equipo": "Comunidad e Inclusión",
-        "cargoEquipo": "Coordinadora de Comunidad e Inclusión",
-        "ordenEquipo": 1
     },
     {
         "id": "daniel-fernandez",
