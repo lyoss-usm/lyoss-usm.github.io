@@ -1,12 +1,23 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
-import OrganigramaPersona from '@/components/OrganigramaPersona.astro';
+import organigramaSvg from '@/assets/organigramaLight.svg';
+import organigramaSvgDark from '@/assets/organigramaDark.svg';
+import CartaMiembro from '@/components/CartaMiembro.astro';
 import { getCollection, getEntry, render } from 'astro:content'; 
-import { procesarEstructuraOrganigrama, filtrarMiembrosPorEstado } from '@/utils/organigrama';
 
-// 1. Carga de datos base
+// 1. Importamos el JSON original crudo solo para conocer el orden exacto
+import rawMiembros from '@/content/nosotros/miembros.json';
+
+// 2. Cargamos la colección de Astro (con las imágenes ya procesadas)
 const nosotrosEntries = await getCollection('nosotros');
-const miembros = nosotrosEntries.map(entry => entry.data);
+
+// 3. Creamos un mapa que asocia cada "id" con su posición en el JSON
+const ordenMap = new Map(rawMiembros.map((miembro, index) => [miembro.id, index]));
+
+// 4. Ordenamos las entradas usando el mapa y extraemos la data
+const miembros = nosotrosEntries
+  .sort((a, b) => (ordenMap.get(a.id) ?? 0) - (ordenMap.get(b.id) ?? 0))
+  .map(entry => entry.data);
 
 const valoresEntry = await getEntry('contenidos', 'valores');
 const historiaEntry = await getEntry('contenidos', 'historia');
@@ -17,29 +28,14 @@ if (!historiaEntry) throw new Error('No se encontró contenidos/historia');
 const { Content: Valores } = await render(valoresEntry);
 const { Content: Historia } = await render(historiaEntry);
 
-// 2. Definición de textos y descripciones
-const descripcionesEquipos: Record<string, string> = {
-  "Jefaturas de Proyecto": "Seguimiento técnico y coordinación de proyectos activos dentro de la comunidad.",
-  "Fondos Concursables": "Equipo clave encargado de la gestión financiera y postulación a fondos de la universidad.",
-  "Eventos": "Organización de Hackatón, Install Fest y actividades de vinculación con el medio.",
-  "Delegados en San Joaquín": "Representación local y apoyo constante para los miembros de la sede San Joaquín.",
-  "Comunidad e Inclusión": "Coordinación transversal de integración, sentido de pertenencia y diversidad."
-};
+const cargoTag = (m: any) => m.cargoDisplay || m.rol || 'Coordinador/a';
 
-// 3. Procesamiento y unión de datos
-const { presidencia, areaAdministrativa, areaTecnologica } = procesarEstructuraOrganigrama(miembros);
+// Filtros usando el array ya ordenado
+const miembrosActivos = miembros.filter((m: any) => ['organigrama', 'activo'].includes(m.estado));
+const miembrosInactivos = miembros.filter((m: any) => ['inactivo', 'dormido'].includes(m.estado));
 
-// Inyectamos las descripciones en las subáreas procesadas
-[areaAdministrativa, areaTecnologica].forEach(area => {
-  area.subareas.forEach(sub => {
-    sub.descripcion = descripcionesEquipos[sub.titulo] || "";
-  });
-});
-
-const miembrosActivos  = filtrarMiembrosPorEstado(miembros, 'activo');
-const miembrosInactivos = filtrarMiembrosPorEstado(miembros, 'inactivo');
-
-if (!presidencia) throw new Error('No hay presidencia configurada en miembros.json');
+const organigramaSvgSrc = typeof organigramaSvg === 'string' ? organigramaSvg : organigramaSvg.src;
+const organigramaSvgDarkSrc = typeof organigramaSvgDark === 'string' ? organigramaSvgDark : organigramaSvgDark.src;
 ---
 
 <MainLayout>
@@ -54,73 +50,31 @@ if (!presidencia) throw new Error('No hay presidencia configurada en miembros.js
         </p>
       </div>
 
-      <div class="flex justify-center mb-12">
-        <div class="w-full max-w-2xl rounded-2xl border border-primary/25 bg-base-100/90 p-5 md:p-6 relative organigrama-raiz">
-          <OrganigramaPersona persona={presidencia} />
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 xl:grid-cols-2 gap-7 relative organigrama-ramas items-start">
-        
-        {/* Renderizado directo del Área Administrativa */}
-        {areaAdministrativa.jefatura && (
-          <section class="rounded-2xl border border-secondary/30 p-5 md:p-6 bg-base-200/40">
-            <h3 class="font-heading text-3xl font-bold mb-5 text-secondary">{areaAdministrativa.titulo}</h3>
-            
-            <div class="rounded-xl border border-secondary/25 p-4 mb-6 bg-base-100/85">
-                <p class="text-sm uppercase font-bold tracking-wide mb-2 text-secondary">{areaAdministrativa.jefatura.cargo}</p>
-                <OrganigramaPersona persona={areaAdministrativa.jefatura} />
-            </div>
-
-            <div class="space-y-5">
-              {areaAdministrativa.subareas.map((subarea: any) => (
-                <article class="rounded-xl border border-secondary/25 bg-secondary/5 p-4 md:p-5">
-                  <h4 class="text-lg font-semibold text-secondary">{subarea.titulo}</h4>
-                  <p class="text-base text-base-content/70 mb-4">{subarea.descripcion}</p>
-                  <div class="space-y-3">
-                    {subarea.personas.map((persona: any) => (
-                      <OrganigramaPersona persona={persona} />
-                    ))}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Renderizado directo del Área Tecnológica */}
-        {areaTecnologica.jefatura && (
-          <section class="rounded-2xl border border-primary/30 p-5 md:p-6 bg-base-200/40">
-            <h3 class="font-heading text-3xl font-bold mb-5 text-primary">{areaTecnologica.titulo}</h3>
-            
-            <div class="rounded-xl border border-primary/25 p-4 mb-6 bg-base-100/85">
-                <p class="text-sm uppercase font-bold tracking-wide mb-2 text-primary">{areaTecnologica.jefatura.cargo}</p>
-                <OrganigramaPersona persona={areaTecnologica.jefatura} />
-            </div>
-
-            <div class="space-y-5">
-              {areaTecnologica.subareas.map((subarea: any) => (
-                <article class="rounded-xl border border-primary/25 bg-primary/5 p-4 md:p-5">
-                  <h4 class="text-lg font-semibold text-primary">{subarea.titulo}</h4>
-                  <p class="text-base text-base-content/70 mb-4">{subarea.descripcion}</p>
-                  <div class="space-y-3">
-                    {subarea.personas.map((persona: any) => (
-                      <OrganigramaPersona persona={persona} />
-                    ))}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
+      <section class="mb-16">
+        <h3 class="font-heading text-3xl font-bold text-base-content mb-3">Organigrama de cargos</h3>
+        <p class="text-base-content/70 text-lg mb-5">
+          Conoce como nos organizamos para llevar adelante todas las actividades de Lyoss. La comunidad siempre arriba.
+        </p>
+        <img
+          src={organigramaSvgSrc}
+          alt="Organigrama de cargos de Lyoss"
+          class="w-full h-auto rounded-xl bg-base-100 dark:hidden"
+          loading="lazy"
+        />
+        <img
+          src={organigramaSvgDarkSrc}
+          alt="Organigrama de cargos de Lyoss en tema oscuro"
+          class="hidden w-full h-auto rounded-xl bg-base-100 dark:block"
+          loading="lazy"
+        />
+      </section>
 
       <section class="mt-16">
         <h3 class="font-heading text-3xl font-bold text-base-content mb-3">Coordinadores activos</h3>
-        <p class="text-base-content/70 text-lg mb-6">Miembros activos apoyando transversalmente a la comunidad.</p>
+        <p class="text-base-content/70 text-lg mb-6">Miembros activos apoyando transversalmente a la comunidad</p>
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
           {miembrosActivos.map((miembro: any) => (
-            <OrganigramaPersona persona={miembro} variante="mini" />
+            <CartaMiembro {...miembro} rol={cargoTag(miembro)} />
           ))}
         </div>
       </section>
@@ -130,7 +84,7 @@ if (!presidencia) throw new Error('No hay presidencia configurada en miembros.js
         <p class="text-base-content/70 text-lg mb-6">Gracias por todo lo que aportaron a la comunidad.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
           {miembrosInactivos.map((miembro: any) => (
-            <OrganigramaPersona persona={miembro} variante="mini" />
+            <CartaMiembro {...miembro} rol={cargoTag(miembro)} />
           ))}
         </div>
       </section>
@@ -140,39 +94,3 @@ if (!presidencia) throw new Error('No hay presidencia configurada en miembros.js
   <Valores />
   <Historia />
 </MainLayout>
-
-<style>
-  .organigrama-raiz::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: -24px;
-    transform: translateX(-50%);
-    width: 3px;
-    height: 24px;
-    background-color: hsl(var(--bc) / 0.35); 
-    border-radius: 4px;
-  }
-
-  .organigrama-ramas::before {
-    content: '';
-    position: absolute;
-    top: -24px;
-    left: calc(25% + 14px); 
-    right: calc(25% + 14px);
-    height: 16px;
-    border-top: 3px solid hsl(var(--bc) / 0.35);
-    border-left: 3px solid hsl(var(--bc) / 0.35);
-    border-right: 3px solid hsl(var(--bc) / 0.35);
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    pointer-events: none;
-  }
-
-  @media (max-width: 1279px) {
-    .organigrama-ramas::before,
-    .organigrama-raiz::after {
-      display: none;
-    }
-  }
-</style>
