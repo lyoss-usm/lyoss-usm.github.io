@@ -31,20 +31,22 @@ const getRolColor = (rol: string): string => {
   if (r.includes("presidente")) return "text-orange-400";
   if (r.includes("secretaria")) return "text-amber-400";
   if (r.includes("finanzas")) return "text-blue-400";
-  if (r.includes("proyectos")) return "text-fuchsia-400";
+	if (r.includes("proyectos") || r.includes("proyecto")) return "text-cyan-400";
   if (r.includes("comunidad") && r.includes("inclusion")) return "text-fuchsia-400";
   if (r.includes("coordinador") || r.includes("coordinadora")) return "text-red-400";
-  if (r.includes("lider de proyecto")) return "text-cyan-400";
+	if (r.includes("lider de proyecto") || r.includes("jefe de proyecto")) return "text-cyan-400";
+	if (r.includes("delegado")) return "text-emerald-400";
+	if (r.includes("evento") || r.includes("hackaton") || r.includes("festival")) return "text-violet-400";
 
-  return "text-primary";
+	return "text-primary";
 };
 ---
 
-<div class="card bg-base-100 border border-base-content/10 hover:shadow-lg transition-all duration-300">
-	<div class="card-body p-6">
-		<div class="flex items-start gap-4 mb-4">
+<div class="card bg-base-100 border border-base-content/10 hover:shadow-md transition-all duration-300 h-full">
+	<div class="card-body p-4">
+		<div class="flex items-start gap-3 mb-3">
 			<div class="avatar flex-shrink-0">
-				<div class="w-16 h-16 rounded-full">
+				<div class="w-12 h-12 rounded-full">
 					{typeof avatar === "string" ? (
 						<img
 							src={avatar}
@@ -55,8 +57,8 @@ const getRolColor = (rol: string): string => {
 						<Image
 							src={avatar}
 							alt={nombre}
-							width={64}
-							height={64}
+							width={48}
+							height={48}
 							format="webp"
 							quality={90}
 						/>
@@ -64,23 +66,21 @@ const getRolColor = (rol: string): string => {
 				</div>
 			</div>
 
-			<div class="flex-1">
-				<div class={`text-sm uppercase font-medium mb-1 ${getRolColor(rol)}`}>
+			<div class="flex-1 min-w-0">
+				<div class={`text-xs uppercase font-medium mb-1 tracking-wide ${getRolColor(rol)}`}>
 					{rol}
 				</div>
-				<h3 class="font-heading text-lg font-semibold text-base-content">
+				<h3 class="font-heading text-base font-semibold text-base-content leading-tight truncate">
 					{nombre}
 				</h3>
 			</div>
 		</div>
 
-		<!-- Bio -->
-		<p class="text-base-content/80 text-sm mb-6 leading-relaxed whitespace-pre-line">
+		<p class="text-base-content/80 text-xs mb-4 leading-relaxed whitespace-pre-line">
 			{bio}
 		</p>
 
-		<!-- Redes sociales -->
-		<div class="flex gap-3">
+		<div class="flex gap-3 mt-auto">
 			{githubUrl && (
 				<a
 					href={githubUrl}
@@ -89,7 +89,7 @@ const getRolColor = (rol: string): string => {
 					class="text-base-content/60 hover:text-base-content transition-colors"
 					aria-label="GitHub"
 				>
-					<Github size={16} />
+					<Github size={14} />
 				</a>
 			)}
 			{linkedinUrl && (
@@ -100,7 +100,7 @@ const getRolColor = (rol: string): string => {
 					class="text-base-content/60 hover:text-base-content transition-colors"
 					aria-label="LinkedIn"
 				>
-					<Linkedin size={16} />
+					<Linkedin size={14} />
 				</a>
 			)}
 			{instagramUrl && (
@@ -111,7 +111,7 @@ const getRolColor = (rol: string): string => {
 					class="text-base-content/60 hover:text-base-content transition-colors"
 					aria-label="Instagram"
 				>
-					<Instagram size={16} />
+					<Instagram size={14} />
 				</a>
 			)}
 			{webUrl && (
@@ -122,7 +122,7 @@ const getRolColor = (rol: string): string => {
 					class="text-base-content/60 hover:text-base-content transition-colors"
 					aria-label="Sitio web"
 				>
-					<Globe size={16} />
+					<Globe size={14} />
 				</a>
 			)}
 			{codebergUrl && (
@@ -133,7 +133,7 @@ const getRolColor = (rol: string): string => {
 					class="text-base-content/60 hover:text-base-content transition-colors"
 					aria-label="Codeberg"
 				>
-					<Mountain size={16} />
+					<Mountain size={14} />
 				</a>
 			)}
 		</div>
