@@ -1,14 +1,17 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
-import { getEntry } from 'astro:content';
+// 1. Importamos render junto a getEntry
+import { getEntry, render } from 'astro:content';
 
+// 2. Buscamos la entrada (recuerda que el ID es el nombre del archivo sin extensión)
 const codigoEntry = await getEntry('contenidos', 'codigo-de-conducta');
 
 if (!codigoEntry) throw new Error('No se encontró contenidos/codigo-de-conducta');
 
-const { Content } = await codigoEntry.render();
+// 3. Usamos la nueva función render(entry)
+const { Content } = await render(codigoEntry);
 ---
 
 <MainLayout title="Código de Conducta | Lyoss" description="Código de Conducta de la comunidad Lyoss basado en el Contributor Covenant">
-	<Content />
+    <Content />
 </MainLayout>

@@ -11,14 +11,16 @@
 		"lint": "prettier --check . && eslint ."
 	},
 	"dependencies": {
-		"@astrojs/mdx": "4.3.13",
-		"@astrojs/sitemap": "^3.7.0",
+		"@astrojs/check": "0.9.8",
+		"@astrojs/mdx": "5.0.4",
+		"@astrojs/sitemap": "^3.7.2",
 		"@lucide/astro": "0.562.0",
 		"@tailwindcss/vite": "4.1.18",
-		"astro": "5.16.6",
+		"astro": "6.1.9",
 		"daisyui": "5.5.14",
 		"sharp": "0.34.5",
-		"tailwindcss": "4.1.18"
+		"tailwindcss": "4.1.18",
+		"typescript": "6.0.3"
 	},
 	"engines": {
 		"node": ">=22.0.0",

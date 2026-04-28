@@ -1,26 +1,44 @@
+# CONFIGURACION DE RELEASE NOTES (CHANGELOG)
+# Este archivo configura como se generan las notas de la version segun las etiquetas de los Pull Requests.
+# Si se trabajan con cambios feat/.. -> dev -> main, es recomendable usar la etiqueta 'Release'
+# en los PRs de dev a main para evitar duplicados en el CHANGELOG.
+#
+# Este archivo esta configurado con las labels de ejemplo.
+# Se puede ajustar segun las etiquetas que se usen en el proyecto.
+#
+# IMPORTANTE:
+#   si las labels no existen en el repositorio,
+#   deben crearse para que la clasificacion funcione correctamente.
+#
+# Ubicación requerida: .github/release.yml
+
 changelog:
+  # EXCLUDE
+  # Aqui se excluyen etiquetas o autores que no deben aparecer en el CHANGELOG.
   exclude:
     labels:
-      - "Oculto"
+      - 'Release'
     authors:
       - renovate
       - dependabot
 
+  # CATEGORIES
+  # Aqui se configuran las categorias del CHANGELOG segun las etiquetas del proyecto.
   categories:
-    - title: "Features"
+    - title: '🚀 Nuevas Funcionalidades'
       labels:
-        - "Funcionalidad"
-
-    - title: "Fixes"
+        - 'Funcionalidad'
+    - title: '🐛 Arreglos de Bugs'
       labels:
-        - "Bug"
-        - "Fix"
-
-    - title: "Maintenance"
+        - 'Fix'
+        - 'Bug'
+    - title: '🧰 Mantenimiento'
       labels:
-        - "Infraestructura"
-        - "Test"
-
-    - title: "Other Changes"
+        - 'Tarea Tecnica'
+        - 'Test'
+    - title: '📚 Documentación'
       labels:
-        - "*"
+        - 'Documentacion'
+    - title: 'Otros Cambios'
+      labels:
+        - '*' # Cualquier otra etiqueta no listada antes

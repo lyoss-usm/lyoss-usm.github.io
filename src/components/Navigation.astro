@@ -1,16 +1,19 @@
 ---
 import { Image } from 'astro:assets';
-import { getEntry } from 'astro:content';
 import { Github } from '@lucide/astro';
 import ToggleTheme from './ToggleTheme.astro';
 import Logo from '../assets/logo-0.webp';
+import { getCollection } from 'astro:content';
 
-const entry = await getEntry('canales', 'redes');
-if (!entry) {
-    throw new Error('No se encontró la entrada de contenido para canales/redes');
-}
-const discordLink = entry.data.find((canal) => canal.nombre === 'Discord')?.url || '#';
-const githubLink = entry.data.find((canal) => canal.nombre === 'GitHub')?.url || '#';
+// 1. Cargamos la colección completa en lugar de una entrada única
+const redesEntries = await getCollection('canales');
+
+// 2. Mapeamos para obtener solo los datos (.data)
+const redes = redesEntries.map(entry => entry.data);
+
+// 3. Buscamos los links usando el array 'redes'
+const discordLink = redes.find((canal) => canal.nombre === 'Discord')?.url || '#';
+const githubLink = redes.find((canal) => canal.nombre === 'GitHub')?.url || '#';
 
 const navLinks = [
     { name: 'Inicio', href: '/' },
