@@ -50,28 +50,7 @@ const organigramaSvgDarkSrc = typeof organigramaSvgDark === 'string' ? organigra
         </p>
       </div>
 
-      <section class="mb-16">
-        <h3 class="font-heading text-3xl font-bold text-base-content mb-3">Organigrama de cargos</h3>
-        <p class="text-base-content/70 text-lg mb-5">
-          Conoce como nos organizamos para llevar adelante todas las actividades de Lyoss. La comunidad siempre arriba.
-        </p>
-        <img
-          src={organigramaSvgSrc}
-          alt="Organigrama de cargos de Lyoss"
-          class="w-full h-auto rounded-xl bg-base-100 dark:hidden"
-          loading="lazy"
-        />
-        <img
-          src={organigramaSvgDarkSrc}
-          alt="Organigrama de cargos de Lyoss en tema oscuro"
-          class="hidden w-full h-auto rounded-xl bg-base-100 dark:block"
-          loading="lazy"
-        />
-      </section>
-
       <section class="mt-16">
-        <h3 class="font-heading text-3xl font-bold text-base-content mb-3">Coordinadores activos</h3>
-        <p class="text-base-content/70 text-lg mb-6">Miembros activos apoyando transversalmente a la comunidad</p>
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
           {miembrosActivos.map((miembro: any) => (
             <CartaMiembro {...miembro} rol={cargoTag(miembro)} />
