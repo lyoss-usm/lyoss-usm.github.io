@@ -27,7 +27,7 @@ export interface Orbit extends OrbitConfig {
 const DEFAULT_MEMBER_COUNT = 13;
 
 
-const avatarImages = import.meta.glob<{ default: string }>('/src/assets/avatar/*.{png,jpg,jpeg,webp,svg}', {
+const avatarImages = import.meta.glob<{ default: string }>('../assets/avatar/*.{png,jpg,jpeg,webp,svg}', {
     eager: true
 });
 
@@ -98,11 +98,14 @@ function resolveSource(path: string): string {
         return path;
     }
 
-    if (avatarImages[path]) {
-        return avatarImages[path].default;
+    // Convert ./avatar/filename to ../assets/avatar/filename format for glob
+    const normalizedPath = path.replace('./avatar/', '../assets/avatar/');
+    
+    if (avatarImages[normalizedPath]) {
+        return avatarImages[normalizedPath].default;
     }
 
-    console.warn(`Imagen local no encontrada: ${path}`);
+    // If not found in local avatars, just return as-is (might be a public URL)
     return path;
 }
 
