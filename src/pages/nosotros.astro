@@ -39,34 +39,41 @@ const organigramaSvgDarkSrc = typeof organigramaSvgDark === 'string' ? organigra
 ---
 
 <MainLayout>
-  <section class="bg-base-100 py-20 pt-36">
-    <div class="container mx-auto max-w-[1600px] px-5 lg:px-8">
+  <section class="bg-base-100 py-16 pt-32">
+    <div class="container mx-auto px-4">
+      <!-- Header -->
       <div class="text-left mb-16">
-        <h2 class="font-heading text-5xl lg:text-6xl font-bold text-base-content mb-4">
-          Conoce a la coordinación de <span class="text-primary">Lyoss</span>
+        <h2 class="font-heading text-4xl lg:text-5xl font-bold text-base-content mb-4">
+          Conoce a la <span class="text-primary">coordinación</span> de Lyoss
         </h2>
-        <p class="text-base-content/70 text-xl max-w-3xl">
-            El equipo organizador que lidera y coordina las actividades de nuestra comunidad. 
+        <p class="text-base-content/70 text-lg">
+          El equipo organizador que lidera y coordina las actividades de nuestra comunidad.
         </p>
       </div>
 
-      <section class="mt-16">
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
-          {miembrosActivos.map((miembro: any) => (
-            <CartaMiembro {...miembro} rol={cargoTag(miembro)} />
-          ))}
-        </div>
-      </section>
+      <!-- Coordinadores Activos -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {miembrosActivos.map((miembro: any) => (
+          <CartaMiembro {...miembro} rol={cargoTag(miembro)} />
+        ))}
+      </div>
 
-      <section class="mt-16">
-        <h3 class="font-heading text-3xl font-bold text-base-content mb-3">Ex-coordinadores 🌙</h3>
-        <p class="text-base-content/70 text-lg mb-6">Gracias por todo lo que aportaron a la comunidad.</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
-          {miembrosInactivos.map((miembro: any) => (
-            <CartaMiembro {...miembro} rol={cargoTag(miembro)} />
-          ))}
+      <!-- Ex-coordinadores -->
+      {miembrosInactivos.length > 0 && (
+        <div class="mt-20 pt-20 border-t border-base-content/10">
+          <h3 class="font-heading text-3xl font-bold text-base-content mb-4">
+            Ex-coordinadores 🌙
+          </h3>
+          <p class="text-base-content/70 text-base mb-8">
+            Gracias por todo lo que aportaron a la comunidad.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {miembrosInactivos.map((miembro: any) => (
+              <CartaMiembro {...miembro} rol={cargoTag(miembro)} />
+            ))}
+          </div>
         </div>
-      </section>
+      )}
     </div>
   </section>
 

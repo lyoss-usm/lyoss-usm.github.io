@@ -22,7 +22,7 @@
         "rol": "Coordinadora Administrativa",
         "estado": "organigrama",
         "bio": "Estudiante de Ingeniería Civil Industrial. Me apasiona la gestión de proyectos y la optimización de procesos mediante el uso de las herramientas digitales para colaborar en la organización y logística de nuestra comunidad tecnológica.",
-        "avatar": "/src/assets/avatar/avatar_sofi.webp",
+        "avatar": "./avatar/avatar_sofi.webp",
         "instagramUrl": "https://www.instagram.com/mnis_sofi.a?igsh=MXU4YXNnZmQ0YjZtcg==",
         "area": "administrativa",
         "esJefaturaArea": true,
@@ -68,7 +68,7 @@
         "rol": "Coordinadora de Comunidad e Inclusión",
         "estado": "organigrama",
         "bio": "Estudiante de Ingeniería Civil Telemática, interesada en la creación de tecnología con propósito. Dog lover y creativa, siempre buscando crear soluciones innovadoras a problemas reales.",
-        "avatar": "/src/assets/avatar/avatar_cony.webp",
+        "avatar": "./avatar/avatar_cony.webp",
         "area": "administrativa",
         "equipo": "Comunidad e Inclusión",
         "cargoEquipo": "Coordinadora de Comunidad e Inclusión",
@@ -108,7 +108,7 @@
         "rol": "Subjefe de Fondos Concursables",
         "estado": "organigrama",
         "bio": "En pocas palabras, a veces compilo canciones y otras compongo código. Busco aportar visión técnica con un toque diferente.",
-        "avatar": "/src/assets/avatar/avatar_matiacuña.webp",
+        "avatar": "./avatar/avatar_matiacuña.webp",
         "linkedinUrl": "https://www.linkedin.com/in/matias-acu%C3%B1a-76795b354",
         "area": "administrativa",
         "equipo": "Fondos Concursables",
@@ -190,7 +190,7 @@
         "rol": "Coordinador Activo",
         "estado": "activo",
         "bio": "Estudiante de Ingeniería Civil Telemática, entusiasta de drones y ciberseguridad. No me gusta la palta. I use Arch BTW, pero estoy condenado a jugar lol.",
-        "avatar": "/src/assets/avatar/avatar_leyrra.webp",
+        "avatar": "./avatar/avatar_leyrra.webp",
         "linkedinUrl": "https://www.linkedin.com/in/danielfernandeztel/",
         "instagramUrl": "https://www.instagram.com/leyrrad/"
     },
@@ -270,6 +270,6 @@
         "rol": "Ex-coordinador",
         "estado": "inactivo",
         "bio": "Estudiante de Ingeniería Civil Informática, me encanta el deporte, la música y los shooters.",
-        "avatar": "/src/assets/avatar/avatar_lucas.webp"
+        "avatar": "./avatar/avatar_lucas.webp"
     }
 ]
