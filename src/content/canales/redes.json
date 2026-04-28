@@ -1,23 +1,27 @@
 [
 	{
+		"id": "discord",
 		"nombre": "Discord",
 		"url": "https://discord.com/invite/vESGc8JajC",
 		"descripcion": "Únete a nuestra comunidad.",
 		"logo": "../../assets/discord.webp"
 	},
 	{
+		"id": "whatsapp",
 		"nombre": "WhatsApp",
 		"url": "https://chat.whatsapp.com/KI8bDUhXEpg5D4ieHJ44xT",
 		"descripcion": "Grupo de anuncios, comunidad y soporte.",
 		"logo": "../../assets/whatsapp.webp"
 	},
 	{
+		"id": "instagram",
 		"nombre": "Instagram",
 		"url": "https://www.instagram.com/lyoss.usm/",
 		"descripcion": "Fotos y eventos.",
 		"logo": "../../assets/instagram.webp"
 	},
 	{
+		"id": "github",
 		"nombre": "GitHub",
 		"url": "https://github.com/lyoss-usm",
 		"descripcion": "Nuestros proyectos.",
@@ -25,6 +29,7 @@
 		"logoDark": "../../assets/github-dark.webp"
 	},
 	{
+		"id": "correo",
 		"nombre": "Correo",
 		"url": "mailto:lyoss.utfsm@proton.me",
 		"descripcion": "Contáctanos por correo electrónico.",

@@ -1,14 +1,23 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
+import organigramaSvg from '@/assets/organigramaLight.svg';
+import organigramaSvgDark from '@/assets/organigramaDark.svg';
 import CartaMiembro from '@/components/CartaMiembro.astro';
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content'; 
 
-const nosotrosEntry = await getCollection('nosotros');
-const data0 = nosotrosEntry[0]?.data;
-const miembros =
-  Array.isArray(data0) ? data0
-  : Array.isArray((data0 as any)?.miembros) ? (data0 as any).miembros
-  : [];
+// 1. Importamos el JSON original crudo solo para conocer el orden exacto
+import rawMiembros from '@/content/nosotros/miembros.json';
+
+// 2. Cargamos la colección de Astro (con las imágenes ya procesadas)
+const nosotrosEntries = await getCollection('nosotros');
+
+// 3. Creamos un mapa que asocia cada "id" con su posición en el JSON
+const ordenMap = new Map(rawMiembros.map((miembro, index) => [miembro.id, index]));
+
+// 4. Ordenamos las entradas usando el mapa y extraemos la data
+const miembros = nosotrosEntries
+  .sort((a, b) => (ordenMap.get(a.id) ?? 0) - (ordenMap.get(b.id) ?? 0))
+  .map(entry => entry.data);
 
 const valoresEntry = await getEntry('contenidos', 'valores');
 const historiaEntry = await getEntry('contenidos', 'historia');
@@ -16,8 +25,17 @@ const historiaEntry = await getEntry('contenidos', 'historia');
 if (!valoresEntry) throw new Error('No se encontró contenidos/valores');
 if (!historiaEntry) throw new Error('No se encontró contenidos/historia');
 
-const { Content: Valores } = await valoresEntry.render();
-const { Content: Historia } = await historiaEntry.render();
+const { Content: Valores } = await render(valoresEntry);
+const { Content: Historia } = await render(historiaEntry);
+
+const cargoTag = (m: any) => m.cargoDisplay || m.rol || 'Coordinador/a';
+
+// Filtros usando el array ya ordenado
+const miembrosActivos = miembros.filter((m: any) => ['organigrama', 'activo'].includes(m.estado));
+const miembrosInactivos = miembros.filter((m: any) => ['inactivo', 'dormido'].includes(m.estado));
+
+const organigramaSvgSrc = typeof organigramaSvg === 'string' ? organigramaSvg : organigramaSvg.src;
+const organigramaSvgDarkSrc = typeof organigramaSvgDark === 'string' ? organigramaSvgDark : organigramaSvgDark.src;
 ---
 
 <MainLayout>
@@ -33,15 +51,32 @@ const { Content: Historia } = await historiaEntry.render();
         </p>
       </div>
 
-      <!-- Team Grid -->
+      <!-- Coordinadores Activos -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {miembros.map((miembro: any) => (
-          <CartaMiembro {...miembro} />
+        {miembrosActivos.map((miembro: any) => (
+          <CartaMiembro {...miembro} rol={cargoTag(miembro)} />
         ))}
       </div>
+
+      <!-- Ex-coordinadores -->
+      {miembrosInactivos.length > 0 && (
+        <div class="mt-20 pt-20 border-t border-base-content/10">
+          <h3 class="font-heading text-3xl font-bold text-base-content mb-4">
+            Ex-coordinadores 🌙
+          </h3>
+          <p class="text-base-content/70 text-base mb-8">
+            Gracias por todo lo que aportaron a la comunidad.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {miembrosInactivos.map((miembro: any) => (
+              <CartaMiembro {...miembro} rol={cargoTag(miembro)} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   </section>
-  
+
   <Valores />
   <Historia />
 </MainLayout>

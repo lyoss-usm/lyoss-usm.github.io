@@ -1,46 +1,53 @@
 ---
 import { Image } from 'astro:assets';
 import Logo from '../assets/logo-1.webp';
-import { getEntry } from 'astro:content';
+// 1. Cambiamos getEntry por getCollection
+import { getCollection } from 'astro:content';
 
-const entry = await getEntry('canales', 'redes');
-if (!entry) {
-	throw new Error('No se encontró la entrada de contenido para canales/redes');
+// 2. Cargamos toda la colección de canales
+const redesEntries = await getCollection('canales');
+
+// 3. Extraemos los datos de cada entrada
+const redes = redesEntries.map(entry => entry.data);
+
+// Si necesitas verificar que haya datos (opcional, pero buena práctica)
+if (redes.length === 0) {
+    console.warn('No se encontraron canales en la colección');
 }
 ---
 
 <footer class="footer bg-base-200 p-10 text-base-content sm:footer-horizontal">
-	<aside>
-		<Image
-			src={Logo}
-			alt="Logo"
-			loading="eager"
-			fetchpriority="high"
-			width={128}
-			height={128}
-			class="h-16 w-16"
-		/>
-		<p>
-			Linux y Open Source USM org.
-			<br />
-			Hecho con ❤️ para la comunidad universitaria.
-		</p>
-	</aside>
-	<nav>
-		<h3 class="footer-title">Recursos</h3>
-		<a href="/proyectos" class="link link-hover">Proyectos</a>
-		<a href="/nosotros" class="link link-hover">Nosotros</a>
-		<a href="/contacto" class="link link-hover">Contacto</a>
-		<a href="/codigo-de-conducta" class="link link-hover">Codigo de Conducta</a>
-	</nav>
-	<nav>
-		<h3 class="footer-title">Enlaces</h3>
-		{
-			entry.data.map((canal) => (
-				<a href={canal.url} class="link link-hover" target="_blank" rel="noopener noreferrer">
-					{canal.nombre}
-				</a>
-			))
-		}
-	</nav>
+    <aside>
+        <Image
+            src={Logo}
+            alt="Logo"
+            loading="eager"
+            fetchpriority="high"
+            width={128}
+            height={128}
+            class="h-16 w-16"
+        />
+        <p>
+            Linux y Open Source USM org.
+            <br />
+            Hecho con ❤️ para la comunidad universitaria.
+        </p>
+    </aside>
+    <nav>
+        <h3 class="footer-title">Recursos</h3>
+        <a href="/proyectos" class="link link-hover">Proyectos</a>
+        <a href="/nosotros" class="link link-hover">Nosotros</a>
+        <a href="/contacto" class="link link-hover">Contacto</a>
+        <a href="/codigo-de-conducta" class="link link-hover">Codigo de Conducta</a>
+    </nav>
+    <nav>
+        <h3 class="footer-title">Enlaces</h3>
+        {
+            redes.map((canal) => (
+                <a href={canal.url} class="link link-hover" target="_blank" rel="noopener noreferrer">
+                    {canal.nombre}
+                </a>
+            ))
+        }
+    </nav>
 </footer>
