@@ -1,6 +1,5 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
-import { Image } from 'astro:assets';
 // 1. Importamos render y getCollection
 import { getEntry, getCollection, render } from 'astro:content';
 
@@ -42,32 +41,13 @@ const { Content } = await render(entry_content);
                                 class="group flex items-center gap-4 rounded-2xl border border-base-300 bg-base-200 p-6 shadow-sm transition-all duration-300 hover:scale-105 hover:border-primary/30 hover:bg-base-300 hover:shadow-lg"
                             >
                                 <div class="rounded-xl bg-base-100 p-3 shadow-sm transition-colors duration-300 group-hover:bg-primary/10">
-                                    {canal.logoDark ? (
-                                        <div class="relative h-8 w-8">
-                                            <Image
-                                                src={canal.logo}
-                                                alt={canal.nombre}
-                                                width={64}
-                                                height={64}
-                                                class="hidden h-8 w-8 object-contain dark:block"
-                                            />
-                                            <Image
-                                                src={canal.logoDark}
-                                                alt={canal.nombre}
-                                                width={64}
-                                                height={64}
-                                                class="h-8 w-8 object-contain dark:hidden"
-                                            />
-                                        </div>
-                                    ) : (
-                                        <Image
-                                            src={canal.logo}
-                                            alt={canal.nombre}
-                                            width={64}
-                                            height={64}
-                                            class="h-8 w-8 object-contain"
-                                        />
-                                    )}
+                                    <img
+                                        src={canal.logo.src}
+                                        alt={canal.nombre}
+                                        class="h-8 w-8 object-contain"
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
                                 </div>
                                 <div class="flex-1">
                                     <div class="text-lg font-bold text-base-content">{canal.nombre}</div>
