@@ -1,9 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import Logo from '@/assets/logo-1.webp';
-import { getOrbitsData } from '@/utils/orbit';
-// 1. Importamos 'render' desde astro:content
-import { getEntry, render } from 'astro:content';
+import { generateOrbits } from '@/utils/orbit';
+import { getEntry, getCollection, render } from 'astro:content';
 
 const entry_content = await getEntry('contenidos', 'hero');
 
@@ -11,9 +10,14 @@ if (!entry_content) {
     throw new Error('No se encontró la entrada de contenido para contenidos/hero');
 }
 
-// 2. Usamos la nueva función render(entry)
 const { Content } = await render(entry_content);
-const orbits = getOrbitsData();
+
+// Obtenemos los miembros desde la colección de Astro
+const nosotrosEntries = await getCollection('nosotros');
+const miembros = nosotrosEntries.map(entry => entry.data);
+
+// Generamos las órbitas pasándole los miembros procesados
+const orbits = generateOrbits(miembros);
 ---
 
 <section id="hero" class="relative hero min-h-svh overflow-hidden pt-16">
@@ -32,15 +36,23 @@ const orbits = getOrbitsData();
                             {orbit.items.map((item) => (
                                 <div class={`absolute ${item.position}`}>
                                     <div class={orbit.avatarClass}>
-                                        <Image
-                                            src={item.src}
-                                            alt="Member"
-                                            width={32}
-                                            height={32}
-                                            format="webp"
-                                            quality={80}
-                                            class={`${item.size} rounded-full border-2 border-base-100 bg-base-100 object-cover shadow-md`}
-                                        />
+                                        {typeof item.src === "string" ? (
+                                            <img
+                                                src={item.src}
+                                                alt="Member"
+                                                class={`${item.size} rounded-full border-2 border-base-100 bg-base-100 object-cover shadow-md`}
+                                            />
+                                        ) : (
+                                            <Image
+                                                src={item.src}
+                                                alt="Member"
+                                                width={32}
+                                                height={32}
+                                                format="webp"
+                                                quality={80}
+                                                class={`${item.size} rounded-full border-2 border-base-100 bg-base-100 object-cover shadow-md`}
+                                            />
+                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -49,17 +61,17 @@ const orbits = getOrbitsData();
                 }
             </div>
 
-                    <Image
-                        src={Logo}
-                        loading="eager"
-                        fetchpriority="high"
-                        alt="Linux y Open Source USM Logo"
-                        class="relative z-10 max-w-xs rounded-lg drop-shadow-2xl lg:max-w-sm"
-                        width={348}
-                        height={348}
-                        widths={[320, 348]}
-                        sizes="(max-width: 1024px) 320px, 348px"
-                    />
+            <Image
+                src={Logo}
+                loading="eager"
+                fetchpriority="high"
+                alt="Linux y Open Source USM Logo"
+                class="relative z-10 max-w-xs rounded-lg drop-shadow-2xl lg:max-w-sm"
+                width={348}
+                height={348}
+                widths={[320, 348]}
+                sizes="(max-width: 1024px) 320px, 348px"
+            />
         </div>
 
         <div class="z-10 text-center lg:text-left">

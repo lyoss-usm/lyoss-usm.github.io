@@ -1,9 +1,7 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
-import organigramaSvg from '@/assets/organigramaLight.svg';
-import organigramaSvgDark from '@/assets/organigramaDark.svg';
 import CartaMiembro from '@/components/CartaMiembro.astro';
-import { getCollection, getEntry, render } from 'astro:content'; 
+import { getCollection, getEntry, render } from 'astro:content';
 
 // 1. Importamos el JSON original crudo solo para conocer el orden exacto
 import rawMiembros from '@/content/nosotros/miembros.json';
@@ -33,9 +31,6 @@ const cargoTag = (m: any) => m.cargoDisplay || m.rol || 'Coordinador/a';
 // Filtros usando el array ya ordenado
 const miembrosActivos = miembros.filter((m: any) => ['organigrama', 'activo'].includes(m.estado));
 const miembrosInactivos = miembros.filter((m: any) => ['inactivo', 'dormido'].includes(m.estado));
-
-const organigramaSvgSrc = typeof organigramaSvg === 'string' ? organigramaSvg : organigramaSvg.src;
-const organigramaSvgDarkSrc = typeof organigramaSvgDark === 'string' ? organigramaSvgDark : organigramaSvgDark.src;
 ---
 
 <MainLayout>
