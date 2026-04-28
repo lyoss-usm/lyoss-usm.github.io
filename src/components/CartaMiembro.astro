@@ -1,12 +1,14 @@
 ---
 import type { ImageMetadata } from "astro";
 import { Github, Linkedin, Instagram, Globe, Mountain } from "@lucide/astro";
+import { Image } from "astro:assets";
 
 interface Props {
   nombre: string;
   rol: string;
   bio: string;
-  avatar: ImageMetadata | string;
+  avatar?: ImageMetadata;
+  avatarURL?: string;
   githubUrl?: string;
   webUrl?: string;
   linkedinUrl?: string;
@@ -14,7 +16,7 @@ interface Props {
   codebergUrl?: string;
 }
 
-const { nombre, rol, bio, avatar, githubUrl, webUrl, linkedinUrl, instagramUrl, codebergUrl } = Astro.props;
+const { nombre, rol, bio, avatar, avatarURL, githubUrl, webUrl, linkedinUrl, instagramUrl, codebergUrl } = Astro.props;
 
 const normalize = (s: string) =>
   s
@@ -45,15 +47,30 @@ const getRolColor = (rol: string): string => {
 	<div class="card-body p-6">
 		<div class="flex items-start gap-4 mb-4">
 			<div class="avatar flex-shrink-0">
-				<div class="w-16 h-16 rounded-full">
-					<img
-						src={typeof avatar === "string" ? avatar : avatar.src}
-						alt={nombre}
-						class="rounded-full"
-						loading="lazy"
-						decoding="async"
-					/>
-				</div>
+			<div class="w-16 h-16 rounded-full">
+
+			{avatarURL ? (
+                    <img
+                        src={avatarURL}
+                        alt={nombre}
+                        class="rounded-full w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                    />
+                ) : avatar ? (
+                    <Image
+                        src={avatar}
+                        alt={nombre}
+                        class="rounded-full w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                    />
+                ) : (
+                    <div class="bg-base-content/10 w-full h-full rounded-full flex items-center justify-center text-base-content/50">
+                        <span class="text-sm">Sin foto</span>
+                    </div>
+                )}
+            </div>
 			</div>
 
 			<div class="flex-1">
