@@ -2,6 +2,9 @@
 
 name: Astro Deploy to GitHub Pages
 on:
+  schedule:
+    # Se ejecuta a las 00:00 UTC cada lunes (inicio de semana)
+    - cron: '0 0 * * 1'
   push:
     tags:
       - "latest"
@@ -20,6 +23,11 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Collect data
+        env:
+            GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        run: ./scripts/scrap-org.sh
 
       - name: Install and Build
         uses: withastro/action@v3
