@@ -27,7 +27,7 @@ jobs:
       - name: Collect data
         env:
             GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-        run: ./scripts/scrap-org.sh
+        run: node ./scripts/scrap-org.js
 
       - name: Install and Build
         uses: withastro/action@v3
