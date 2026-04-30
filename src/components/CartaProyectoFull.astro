@@ -1,0 +1,191 @@
+---
+import type { Proyecto } from '@/utils/collect';
+import {
+	Github,
+	Disc,
+	Star,
+	Users,
+	CircleCheckBig,
+	HeartHandshake,
+	Globe,
+	GitFork
+} from '@lucide/astro';
+import { Picture } from 'astro:assets';
+import { Heading, Sub, Badge } from 'MDX';
+
+type Props = Proyecto;
+
+const {
+	name,
+	bannerUrl,
+	stars,
+	forks,
+	issues,
+	description,
+	techs,
+	isActive,
+	needHelp,
+	people,
+	url,
+	homepage,
+	latest
+} = Astro.props;
+const hasBanner = !bannerUrl.startsWith('https://opengraph.githubassets.com/');
+const issuesUrl = url + '/issues';
+const avatarMAX = 5;
+---
+
+<div
+	class="card overflow-hidden border border-base-content/10 bg-base-100 transition-all duration-300 hover:border-base-content/20 hover:shadow-lg"
+>
+	<!-- Banner or colored background -->
+	<div class={`h-32 relative ${hasBanner ? '' : 'bg-linear-to-r from-primary/20 to-secondary/20'}`}>
+		{
+			hasBanner && (
+				<Picture
+					src={bannerUrl}
+					alt="Project banner"
+					class="h-full w-full object-cover"
+					width={400}
+					height={128}
+					format="webp"
+					quality={80}
+				/>
+			)
+		}
+		{!hasBanner && <div class="h-full w-full" />}
+		<!-- Project Logo overlay -->
+		<div class="absolute top-3 right-3 avatar-group -space-x-4">
+			{
+				(people.length > avatarMAX ? people.slice(0, avatarMAX) : people).map((p) => (
+					<div class="avatar border-0">
+						<Picture src={p.avatar_url} alt={p.name} width={40} height={40} format="webp" />
+					</div>
+				))
+			}
+			{
+				people.length > avatarMAX && (
+					<div class="avatar avatar-placeholder border-0">
+						<div class="h-10 w-10 bg-neutral text-neutral-content">
+							<span>+{people.length - avatarMAX}</span>
+						</div>
+					</div>
+				)
+			}
+		</div>
+
+		<!-- Status indicators -->
+		{
+			(isActive || needHelp) && (
+				<div class="absolute top-3 left-3 flex gap-2">
+					{isActive && (
+						<div
+							data-tip="Activo"
+							class="tooltip tooltip-right z-20 flex h-8 w-8 items-center justify-center rounded-full border border-success/20 bg-success/90 backdrop-blur-sm"
+						>
+							<CircleCheckBig class="h-4 w-4 text-success-content" />
+						</div>
+					)}
+					{needHelp && (
+						<div
+							data-tip="Necesitamos ayuda"
+							class="tooltip tooltip-right flex h-8 w-8 items-center justify-center rounded-full border border-error/20 bg-error/90 backdrop-blur-sm"
+						>
+							<HeartHandshake class="h-4 w-4 text-error-content" />
+						</div>
+					)}
+				</div>
+			)
+		}
+	</div>
+
+	<div class="card-body p-6">
+		<div class="mb-3 flex items-center gap-2">
+			<Heading variant="xs">{name}</Heading>
+			{latest && <span class="badge badge-soft badge-sm dark:badge-success">{latest.tag}</span>}
+		</div>
+		<Sub class="mb-4" variant="sm">{description}</Sub>
+		<div class="mb-6 flex flex-wrap gap-2">
+			{techs.map((t) => <Badge>{t}</Badge>)}
+		</div>
+
+		<!-- Footer with stats and GitHub link -->
+		<div class="flex items-center justify-between">
+			<div class="flex items-center gap-4 text-sm text-base-content/60">
+				{
+					stars > 0 && (
+						<span class="flex items-center gap-1">
+							<Star class="h-4 w-4" />
+							{stars}
+						</span>
+					)
+				}
+				{
+					people.length > 0 && (
+						<span class="flex items-center gap-1">
+							<Users class="h-4 w-4" />
+							{people.length}
+						</span>
+					)
+				}
+				{
+					forks > 0 && (
+						<span class="flex items-center gap-1 max-sm:hidden">
+							<GitFork class="h-4 w-4" />
+							{forks}
+						</span>
+					)
+				}
+				{
+					issues > 0 && (
+						<span class="flex items-center gap-1">
+							<Disc class="h-4 w-4" />
+							{issues}
+						</span>
+					)
+				}
+			</div>
+
+			<div class="flex items-center gap-2">
+				<a
+					href={url}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="tooltip tooltip-left inline-flex h-8 w-8 items-center justify-center rounded-lg border border-base-content/20 bg-base-content/5 text-base-content/80 transition-all duration-200 hover:border-base-content/30 hover:bg-base-content/10 hover:text-base-content"
+					data-tip="Repositorio"
+					aria-label="View project on GitHub"
+				>
+					<Github class="h-4 w-4" />
+				</a>
+				{
+					issues > 0 && (
+						<a
+							href={issuesUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="tooltip tooltip-left inline-flex h-8 w-8 items-center justify-center rounded-lg border border-base-content/20 bg-base-content/5 text-base-content/80 transition-all duration-200 hover:border-base-content/30 hover:bg-base-content/10 hover:text-base-content"
+							data-tip="Issues"
+							aria-label="View project issues"
+						>
+							<Disc class="h-4 w-4" />
+						</a>
+					)
+				}
+				{
+					!!homepage && (
+						<a
+							href={homepage}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="tooltip tooltip-left inline-flex h-8 w-8 items-center justify-center rounded-lg border border-base-content/20 bg-base-content/5 text-base-content/80 transition-all duration-200 hover:border-base-content/30 hover:bg-base-content/10 hover:text-base-content"
+							data-tip="Web"
+							aria-label="Visit project website"
+						>
+							<Globe class="h-4 w-4" />
+						</a>
+					)
+				}
+			</div>
+		</div>
+	</div>
+</div>
