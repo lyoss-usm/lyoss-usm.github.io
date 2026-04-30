@@ -24,9 +24,23 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
       - name: Collect data
         env:
-            GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+            GH_TOKEN: ${{ secrets.GH_PAT }}
         run: node ./scripts/scrap-org.js
 
       - name: Install and Build
