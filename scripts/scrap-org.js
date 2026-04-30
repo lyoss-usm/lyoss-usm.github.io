@@ -22,11 +22,11 @@ async function run() {
 			per_page: 100
 		});
 
-        const customPropsMap = {};
-        const homepagesMap = {};
+		const customPropsMap = {};
+		const homepagesMap = {};
 		for (const repo of allReposRest) {
-            customPropsMap[repo.name] = repo.custom_properties || {};
-            homepagesMap[repo.name] = repo.homepage || "";
+			customPropsMap[repo.name] = repo.custom_properties || {};
+			homepagesMap[repo.name] = repo.homepage || '';
 		}
 
 		console.log('[2/3] Obteniendo datos ricos de repositorios (GraphQL)...');
@@ -93,11 +93,11 @@ async function run() {
 				issues: repo.issues.totalCount,
 				pullRequests: repo.pullRequests.totalCount,
 				latestRelease: repo.latestRelease,
-				license: repo.licenseInfo.name || "",
+				license: repo.licenseInfo.name || '',
 				repositoryTopics: repo.repositoryTopics.nodes.map((n) => n.topic.name) || [],
 				languages: repo.languages.edges || [],
-                custom_properties: customPropsMap[repo.name] || {},
-				homepage: homepagesMap[repo.name] || "",
+				custom_properties: customPropsMap[repo.name] || {},
+				homepage: homepagesMap[repo.name] || ''
 			}));
 
 		console.log(`  -> Guardando ${targetRepos.length} repositorios válidos en repos.json`);

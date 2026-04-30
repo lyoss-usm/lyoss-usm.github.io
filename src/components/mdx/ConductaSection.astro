@@ -7,10 +7,10 @@ const { title, class: className = '' } = Astro.props;
 ---
 
 <section class={`mb-12 ${className}`}>
-	<h2 class="font-heading text-2xl font-bold text-primary mb-4 md:text-3xl">
+	<h2 class="mb-4 font-heading text-2xl font-bold text-primary md:text-3xl">
 		{title}
 	</h2>
-	<div class="prose prose-lg max-w-none text-base-content/80">
+	<div class="prose-lg prose max-w-none text-base-content/80">
 		<slot />
 	</div>
 </section>
