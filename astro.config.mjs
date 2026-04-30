@@ -9,14 +9,14 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-    vite: {
-        plugins: [tailwindcss()]
-    },
-    image: {
-        domains: ['avatars.githubusercontent.com', 'github.com']
-    },
-    output: 'static',
-    site: 'https://lyoss.org',
-    compressHTML: true,
-    integrations: [mdx(), sitemap()]
+	vite: {
+		plugins: [tailwindcss()]
+	},
+	image: {
+		domains: ['avatars.githubusercontent.com', 'github.com']
+	},
+	output: 'static',
+	site: 'https://lyoss.org',
+	compressHTML: true,
+	integrations: [mdx(), sitemap()]
 });

@@ -1,76 +1,91 @@
 ---
-import type { ImageMetadata } from "astro";
-import { Github, Linkedin, Instagram, Globe, Mountain } from "@lucide/astro";
-import { Image } from "astro:assets";
+import type { ImageMetadata } from 'astro';
+import { Github, Linkedin, Instagram, Globe, Mountain } from '@lucide/astro';
+import { Image } from 'astro:assets';
 
 interface Props {
-  nombre: string;
-  rol: string;
-  bio: string;
-  avatar?: ImageMetadata;
-  avatarURL?: string;
-  githubUrl?: string;
-  webUrl?: string;
-  linkedinUrl?: string;
-  instagramUrl?: string;
-  codebergUrl?: string;
+	nombre: string;
+	rol: string;
+	bio: string;
+	avatar?: ImageMetadata;
+	avatarURL?: string;
+	githubUrl?: string;
+	webUrl?: string;
+	linkedinUrl?: string;
+	instagramUrl?: string;
+	codebergUrl?: string;
 }
 
-const { nombre, rol, bio, avatar, avatarURL, githubUrl, webUrl, linkedinUrl, instagramUrl, codebergUrl } = Astro.props;
+const {
+	nombre,
+	rol,
+	bio,
+	avatar,
+	avatarURL,
+	githubUrl,
+	webUrl,
+	linkedinUrl,
+	instagramUrl,
+	codebergUrl
+} = Astro.props;
 
 const normalize = (s: string) =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
+	s
+		.toLowerCase()
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.replace(/\s+/g, ' ')
+		.trim();
 
 const getRolColor = (rol: string): string => {
-  const r = normalize(rol);
+	const r = normalize(rol);
 
-  if (r.includes("presidente")) return "text-orange-400";
-  if (r.includes("secretaria")) return "text-amber-400";
-  if (r.includes("finanzas")) return "text-blue-400";
-	if (r.includes("proyectos") || r.includes("proyecto")) return "text-cyan-400";
-  if (r.includes("comunidad") && r.includes("inclusion")) return "text-fuchsia-400";
-  if (r.includes("coordinador") || r.includes("coordinadora")) return "text-red-400";
-	if (r.includes("lider de proyecto") || r.includes("jefe de proyecto")) return "text-cyan-400";
-	if (r.includes("delegado")) return "text-emerald-400";
-	if (r.includes("evento") || r.includes("hackaton") || r.includes("festival")) return "text-violet-400";
+	if (r.includes('presidente')) return 'text-orange-400';
+	if (r.includes('secretaria')) return 'text-amber-400';
+	if (r.includes('finanzas')) return 'text-blue-400';
+	if (r.includes('proyectos') || r.includes('proyecto')) return 'text-cyan-400';
+	if (r.includes('comunidad') && r.includes('inclusion')) return 'text-fuchsia-400';
+	if (r.includes('coordinador') || r.includes('coordinadora')) return 'text-red-400';
+	if (r.includes('lider de proyecto') || r.includes('jefe de proyecto')) return 'text-cyan-400';
+	if (r.includes('delegado')) return 'text-emerald-400';
+	if (r.includes('evento') || r.includes('hackaton') || r.includes('festival'))
+		return 'text-violet-400';
 
-	return "text-primary";
+	return 'text-primary';
 };
 ---
 
-<div class="card bg-base-100 border border-base-content/10 hover:shadow-lg transition-all duration-300">
+<div
+	class="card border border-base-content/10 bg-base-100 transition-all duration-300 hover:shadow-lg"
+>
 	<div class="card-body p-6">
-		<div class="flex items-start gap-4 mb-4">
+		<div class="mb-4 flex items-start gap-4">
 			<div class="avatar flex-shrink-0">
-			<div class="w-16 h-16 rounded-full">
-
-			{avatarURL ? (
-                    <img
-                        src={avatarURL}
-                        alt={nombre}
-                        class="rounded-full w-full h-full object-cover"
-                        loading="lazy"
-                        decoding="async"
-                    />
-                ) : avatar ? (
-                    <Image
-                        src={avatar}
-                        alt={nombre}
-                        class="rounded-full w-full h-full object-cover"
-                        loading="lazy"
-                        decoding="async"
-                    />
-                ) : (
-                    <div class="bg-base-content/10 w-full h-full rounded-full flex items-center justify-center text-base-content/50">
-                        <span class="text-sm">Sin foto</span>
-                    </div>
-                )}
-            </div>
+				<div class="h-16 w-16 rounded-full">
+					{
+						avatarURL ? (
+							<img
+								src={avatarURL}
+								alt={nombre}
+								class="h-full w-full rounded-full object-cover"
+								loading="lazy"
+								decoding="async"
+							/>
+						) : avatar ? (
+							<Image
+								src={avatar}
+								alt={nombre}
+								class="h-full w-full rounded-full object-cover"
+								loading="lazy"
+								decoding="async"
+							/>
+						) : (
+							<div class="flex h-full w-full items-center justify-center rounded-full bg-base-content/10 text-base-content/50">
+								<span class="text-sm">Sin foto</span>
+							</div>
+						)
+					}
+				</div>
 			</div>
 
 			<div class="flex-1">
@@ -83,67 +98,77 @@ const getRolColor = (rol: string): string => {
 			</div>
 		</div>
 
-		<p class="text-base-content/80 text-sm mb-6 leading-relaxed whitespace-pre-line">
+		<p class="mb-6 text-sm leading-relaxed whitespace-pre-line text-base-content/80">
 			{bio}
 		</p>
 
 		<!-- Redes sociales -->
 		<div class="flex gap-3">
-			{githubUrl && (
-				<a
-					href={githubUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="text-base-content/60 hover:text-base-content transition-colors"
-					aria-label="GitHub"
-				>
-					<Github size={16} />
-				</a>
-			)}
-			{linkedinUrl && (
-				<a
-					href={linkedinUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="text-base-content/60 hover:text-base-content transition-colors"
-					aria-label="LinkedIn"
-				>
-					<Linkedin size={16} />
-				</a>
-			)}
-			{instagramUrl && (
-				<a
-					href={instagramUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="text-base-content/60 hover:text-base-content transition-colors"
-					aria-label="Instagram"
-				>
-					<Instagram size={16} />
-				</a>
-			)}
-			{webUrl && (
-				<a
-					href={webUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="text-base-content/60 hover:text-base-content transition-colors"
-					aria-label="Sitio web"
-				>
-					<Globe size={16} />
-				</a>
-			)}
-			{codebergUrl && (
-				<a
-					href={codebergUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="text-base-content/60 hover:text-base-content transition-colors"
-					aria-label="Codeberg"
-				>
-					<Mountain size={16} />
-				</a>
-			)}
+			{
+				githubUrl && (
+					<a
+						href={githubUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-base-content/60 transition-colors hover:text-base-content"
+						aria-label="GitHub"
+					>
+						<Github size={16} />
+					</a>
+				)
+			}
+			{
+				linkedinUrl && (
+					<a
+						href={linkedinUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-base-content/60 transition-colors hover:text-base-content"
+						aria-label="LinkedIn"
+					>
+						<Linkedin size={16} />
+					</a>
+				)
+			}
+			{
+				instagramUrl && (
+					<a
+						href={instagramUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-base-content/60 transition-colors hover:text-base-content"
+						aria-label="Instagram"
+					>
+						<Instagram size={16} />
+					</a>
+				)
+			}
+			{
+				webUrl && (
+					<a
+						href={webUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-base-content/60 transition-colors hover:text-base-content"
+						aria-label="Sitio web"
+					>
+						<Globe size={16} />
+					</a>
+				)
+			}
+			{
+				codebergUrl && (
+					<a
+						href={codebergUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-base-content/60 transition-colors hover:text-base-content"
+						aria-label="Codeberg"
+					>
+						<Mountain size={16} />
+					</a>
+				)
+			}
 		</div>
 	</div>
 </div>

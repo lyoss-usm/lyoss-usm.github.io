@@ -2,7 +2,6 @@
 
 Este es el repositorio oficial del sitio web de Lyoss. Diseñado para proporcionar información sobre nuestros proyectos y actividades relacionadas con Linux y el software de código abierto.
 
-
 ## Seguimiento
 
 - Puedes seguir el progreso del proyecto en [GitHub Projects](https://github.com/orgs/lyoss-usm/projects/17).

@@ -3,13 +3,16 @@ import '@/styles/global.css';
 import Navigation from '@/components/Navigation.astro';
 import Footer from '@/components/Footer.astro';
 
-
 interface Props {
 	title?: string;
 	description?: string;
-	image?: string;	
+	image?: string;
 }
-const { title = 'Lyoss', description = 'Comunidad Linux y Open source USM', image='banner-0.webp' } = Astro.props;
+const {
+	title = 'Lyoss',
+	description = 'Comunidad Linux y Open source USM',
+	image = 'banner-0.webp'
+} = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImageURL = new URL(image, Astro.site);
@@ -21,12 +24,20 @@ const socialImageURL = new URL(image, Astro.site);
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" onload="this.rel='stylesheet'">
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="preload"
+			as="style"
+			href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+			onload="this.rel='stylesheet'"
+		/>
 		<noscript>
-			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap">
+			<link
+				rel="stylesheet"
+				href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+			/>
 		</noscript>
 
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -51,7 +62,10 @@ const socialImageURL = new URL(image, Astro.site);
 		<meta property="twitter:description" content={description} />
 		<meta property="twitter:image" content={socialImageURL} />
 
-		<script defer src="https://cloud.umami.is/script.js" data-website-id="f8946262-cda5-452d-b645-4d69dbc0fea1"></script>
+		<script
+			defer
+			src="https://cloud.umami.is/script.js"
+			data-website-id="f8946262-cda5-452d-b645-4d69dbc0fea1"></script>
 	</head>
 	<body>
 		<Navigation />
