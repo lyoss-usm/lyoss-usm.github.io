@@ -1,26 +1,6 @@
-// src/content.config.ts
 import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob, file } from 'astro/loaders';
-
-const proyectosCollection = defineCollection({
-	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/proyectos' }),
-	schema: ({ image }) =>
-		z.object({
-			stars: z.number().optional(),
-			contributors: z.number().optional(),
-			forks: z.number().optional(),
-			issues: z.number().optional(),
-			active: z.boolean(),
-			helpWanted: z.boolean().optional(),
-			bannerUrl: image().optional(),
-			logoUrl: image().optional(),
-			githubUrl: z.url().optional(),
-			siteUrl: z.url().optional(),
-			issuesUrl: z.url().optional(),
-			findBy: z.array(z.string()).optional()
-		})
-});
 
 const canalesCollection = defineCollection({
 	loader: file('./src/content/canales/redes.json'),
@@ -66,7 +46,6 @@ const nosotrosCollection = defineCollection({
 });
 
 export const collections = {
-	proyectos: proyectosCollection,
 	canales: canalesCollection,
 	contenidos: contenidosCollection,
 	nosotros: nosotrosCollection
