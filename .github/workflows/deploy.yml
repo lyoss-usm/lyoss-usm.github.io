@@ -54,7 +54,6 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
-          name: github-pages-${{ github.run_number }}
 
   # DEPLOY
   # Llama al workflow reutilizable para hacer el deploy y auditoria con Lighthouse
