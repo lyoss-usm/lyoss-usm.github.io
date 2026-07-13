@@ -1,7 +1,6 @@
 ---
 import type { Proyecto } from '@/utils/collect';
 import {
-	Github,
 	Disc,
 	Star,
 	Users,
@@ -10,6 +9,7 @@ import {
 	Globe,
 	GitFork
 } from '@lucide/astro';
+import GitHub from '@/components/GitHub.astro';
 import { Picture } from 'astro:assets';
 import { Heading, Sub, Badge } from 'MDX';
 
@@ -155,7 +155,7 @@ const avatarMAX = 5;
 					data-tip="Repositorio"
 					aria-label="View project on GitHub"
 				>
-					<Github class="h-4 w-4" />
+					<GitHub class="h-4 w-4" />
 				</a>
 				{
 					issues > 0 && (

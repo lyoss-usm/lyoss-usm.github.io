@@ -1,6 +1,9 @@
 ---
 import type { ImageMetadata } from 'astro';
-import { Github, Linkedin, Instagram, Globe, Mountain } from '@lucide/astro';
+import { Globe, Mountain } from '@lucide/astro';
+import GitHub from '@/components/GitHub.astro';
+import LinkedIn from '@/components/LinkedIn.astro';
+import Instagram from '@/components/Instagram.astro';
 import { Image } from 'astro:assets';
 
 interface Props {
@@ -113,7 +116,7 @@ const getRolColor = (rol: string): string => {
 						class="text-base-content/60 transition-colors hover:text-base-content"
 						aria-label="GitHub"
 					>
-						<Github size={16} />
+						<GitHub size={16} />
 					</a>
 				)
 			}
@@ -126,7 +129,7 @@ const getRolColor = (rol: string): string => {
 						class="text-base-content/60 transition-colors hover:text-base-content"
 						aria-label="LinkedIn"
 					>
-						<Linkedin size={16} />
+						<LinkedIn size={16} />
 					</a>
 				)
 			}

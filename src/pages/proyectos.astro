@@ -1,6 +1,7 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
-import { Search, Filter, Github } from '@lucide/astro';
+import { Search, Filter } from '@lucide/astro';
+import GitHub from '@/components/GitHub.astro';
 import { getProyectos } from '@/utils/collect';
 import CartaProyectoFull from '@/components/CartaProyectoFull.astro';
 
@@ -12,7 +13,7 @@ const [proyectos, techs] = getProyectos();
 		<div class="container mx-auto px-4 py-8">
 			<div class="mb-8">
 				<div class="mb-4 flex items-center gap-3">
-					<Github class="h-10 w-10 text-base-content" />
+					<GitHub class="h-10 w-10 text-base-content" />
 					<h1 class="font-heading text-4xl font-bold text-base-content lg:text-5xl">
 						Nuestros Proyectos
 					</h1>

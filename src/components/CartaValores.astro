@@ -1,15 +1,15 @@
 ---
-import { Heart, Users, Code2, Lightbulb, Shield, Globe } from '@lucide/astro';
+import { Heart, Users, CodeXml, Lightbulb, Shield, Globe } from '@lucide/astro';
 
 interface Item {
 	titulo: string;
 	descripcion: string;
-	icon?: 'Heart' | 'Users' | 'Code2' | 'Lightbulb' | 'Shield' | 'Globe';
+	icon?: 'Heart' | 'Users' | 'CodeXml' | 'Lightbulb' | 'Shield' | 'Globe';
 }
 
 const { items = [] } = Astro.props as { items: Item[] };
 
-const icons = { Heart, Users, Code2, Lightbulb, Shield, Globe } as const;
+const icons = { Heart, Users, CodeXml, Lightbulb, Shield, Globe } as const;
 ---
 
 <section id="valores" class="py-24">

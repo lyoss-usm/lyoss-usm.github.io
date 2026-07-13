@@ -1,7 +1,9 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
 import CartaMiembro from '@/components/CartaMiembro.astro';
+import CartaValores from '@/components/CartaValores.astro';
 import { getCollection, getEntry, render } from 'astro:content';
+import { valores } from '@/content/contenidos/valores.mdx';
 
 // 1. Importamos el JSON original crudo solo para conocer el orden exacto
 import rawMiembros from '@/content/nosotros/miembros.json';
@@ -17,13 +19,10 @@ const miembros = nosotrosEntries
 	.sort((a, b) => (ordenMap.get(a.id) ?? 0) - (ordenMap.get(b.id) ?? 0))
 	.map((entry) => entry.data);
 
-const valoresEntry = await getEntry('contenidos', 'valores');
 const historiaEntry = await getEntry('contenidos', 'historia');
 
-if (!valoresEntry) throw new Error('No se encontró contenidos/valores');
 if (!historiaEntry) throw new Error('No se encontró contenidos/historia');
 
-const { Content: Valores } = await render(valoresEntry);
 const { Content: Historia } = await render(historiaEntry);
 
 const cargoTag = (m: any) => m.cargoDisplay || m.rol || 'Coordinador/a';
@@ -76,6 +75,6 @@ const miembrosInactivos = miembros.filter((m: any) => ['inactivo', 'dormido'].in
 		</div>
 	</section>
 
-	<Valores />
+	<CartaValores items={valores} />
 	<Historia />
 </MainLayout>
