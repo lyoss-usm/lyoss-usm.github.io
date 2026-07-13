@@ -39,21 +39,21 @@ const classes = colorClasses[color];
 ---
 
 <div class={`rounded-xl border p-6 ${classes.bg} ${classes.border}`}>
-	<div class="flex items-center gap-3 mb-4">
+	<div class="mb-4 flex items-center gap-3">
 		<span class={`badge ${classes.badge} badge-lg font-bold`}>{numero}</span>
 		<h4 class={`font-heading text-xl font-bold ${classes.text}`}>{titulo}</h4>
 	</div>
-	
+
 	<div class="space-y-4">
 		<div>
-			<p class="text-sm font-semibold text-base-content/60 uppercase tracking-wide mb-1">
+			<p class="mb-1 text-sm font-semibold tracking-wide text-base-content/60 uppercase">
 				Impacto en la Comunidad
 			</p>
 			<p class="text-base-content/80">{impacto}</p>
 		</div>
-		
+
 		<div>
-			<p class="text-sm font-semibold text-base-content/60 uppercase tracking-wide mb-1">
+			<p class="mb-1 text-sm font-semibold tracking-wide text-base-content/60 uppercase">
 				Consecuencia
 			</p>
 			<p class="text-base-content/80">{consecuencia}</p>

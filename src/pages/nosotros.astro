@@ -14,8 +14,8 @@ const ordenMap = new Map(rawMiembros.map((miembro, index) => [miembro.id, index]
 
 // 4. Ordenamos las entradas usando el mapa y extraemos la data
 const miembros = nosotrosEntries
-  .sort((a, b) => (ordenMap.get(a.id) ?? 0) - (ordenMap.get(b.id) ?? 0))
-  .map(entry => entry.data);
+	.sort((a, b) => (ordenMap.get(a.id) ?? 0) - (ordenMap.get(b.id) ?? 0))
+	.map((entry) => entry.data);
 
 const valoresEntry = await getEntry('contenidos', 'valores');
 const historiaEntry = await getEntry('contenidos', 'historia');
@@ -34,44 +34,48 @@ const miembrosInactivos = miembros.filter((m: any) => ['inactivo', 'dormido'].in
 ---
 
 <MainLayout>
-  <section class="bg-base-100 py-16 pt-32">
-    <div class="container mx-auto px-4">
-      <!-- Header -->
-      <div class="text-left mb-16">
-        <h2 class="font-heading text-4xl lg:text-5xl font-bold text-base-content mb-4">
-          Conoce a la <span class="text-primary">coordinación</span> de Lyoss
-        </h2>
-        <p class="text-base-content/70 text-lg">
-          El equipo organizador que lidera y coordina las actividades de nuestra comunidad.
-        </p>
-      </div>
+	<section class="bg-base-100 py-16 pt-32">
+		<div class="container mx-auto px-4">
+			<!-- Header -->
+			<div class="mb-16 text-left">
+				<h2 class="mb-4 font-heading text-4xl font-bold text-base-content lg:text-5xl">
+					Conoce a la <span class="text-primary">coordinación</span> de Lyoss
+				</h2>
+				<p class="text-lg text-base-content/70">
+					El equipo organizador que lidera y coordina las actividades de nuestra comunidad.
+				</p>
+			</div>
 
-      <!-- Coordinadores Activos -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {miembrosActivos.map((miembro: any) => (
-          <CartaMiembro {...miembro} rol={cargoTag(miembro)} />
-        ))}
-      </div>
+			<!-- Coordinadores Activos -->
+			<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+				{
+					miembrosActivos.map((miembro: any) => (
+						<CartaMiembro {...miembro} rol={cargoTag(miembro)} />
+					))
+				}
+			</div>
 
-      <!-- Ex-coordinadores -->
-      {miembrosInactivos.length > 0 && (
-        <div class="mt-20 pt-20 border-t border-base-content/10">
-          <h3 class="font-heading text-3xl font-bold text-base-content mb-4">
-            Ex-coordinadores 🌙
-          </h3>
-          <p class="text-base-content/70 text-base mb-8">
-            Gracias por todo lo que aportaron a la comunidad.
-          </p>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {miembrosInactivos.map((miembro: any) => (
-              <CartaMiembro {...miembro} rol={cargoTag(miembro)} />
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  </section>
+			<!-- Ex-coordinadores -->
+			{
+				miembrosInactivos.length > 0 && (
+					<div class="mt-20 border-t border-base-content/10 pt-20">
+						<h3 class="mb-4 font-heading text-3xl font-bold text-base-content">
+							Ex-coordinadores 🌙
+						</h3>
+						<p class="mb-8 text-base text-base-content/70">
+							Gracias por todo lo que aportaron a la comunidad.
+						</p>
+						<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+							{miembrosInactivos.map((miembro: any) => (
+								<CartaMiembro {...miembro} rol={cargoTag(miembro)} />
+							))}
+						</div>
+					</div>
+				)
+			}
+		</div>
+	</section>
 
-  <Valores />
-  <Historia />
+	<Valores />
+	<Historia />
 </MainLayout>

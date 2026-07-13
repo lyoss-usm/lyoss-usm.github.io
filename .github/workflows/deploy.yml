@@ -1,10 +1,14 @@
-# Este workflow compila y despliega un sitio Astro a GitHub Pages automaticamente.
+# USO DE DEPLOY ASTRO
+# Este workflow compila y despliega un sitio Astro a GitHub Pages.
+#
+# Copia este contenido a: .github/workflows/deploy.yml en tu repositorio de Astro.
 
 name: Astro Deploy to GitHub Pages
+
 on:
-  push:
-    tags:
-      - "latest"
+  # schedule:
+  #   # Se ejecuta a las 00:00 UTC cada lunes (inicio de semana)
+  #   - cron: '0 0 * * 1'
   workflow_dispatch: # <- Boton manual en GitHub
 
 permissions:
@@ -14,15 +18,35 @@ permissions:
 
 jobs:
   # BUILD
+  # Compila el sitio Astro y sube el artifact para Pages
   build:
     name: Build Astro
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Collect data
+        env:
+            GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: pnpm run scrap
 
       - name: Install and Build
-        uses: withastro/action@v3
+        uses: withastro/action@v6
         with:
             # CONFIGURACION DE BUILD
             # Configura la ruta, version de node y package manager
@@ -33,7 +57,7 @@ jobs:
       # UPLOAD ARTIFACT
       # Sube la carpeta 'dist' como artifact para GitHub Pages, asi lo puede usar el siguiente job.
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
           name: github-pages-${{ github.run_number }}

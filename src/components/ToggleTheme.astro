@@ -19,19 +19,16 @@
 </button>
 
 <script>
-	// Función para obtener el tema actual
 	function getCurrentTheme() {
 		return document.documentElement.getAttribute('data-theme') || 'light';
 	}
 
-	// Función para cambiar el tema
 	function setTheme(theme: string) {
 		document.documentElement.setAttribute('data-theme', theme);
 		localStorage.setItem('theme', theme);
 		updateToggleButton(theme);
 	}
 
-	// Función para actualizar la apariencia del botón
 	function updateToggleButton(theme: string) {
 		const button = document.getElementById('theme-toggle');
 		if (button) {
@@ -43,30 +40,13 @@
 		}
 	}
 
-	// Función para alternar el tema
 	function toggleTheme() {
 		const currentTheme = getCurrentTheme();
-		const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-		setTheme(newTheme);
+		setTheme(currentTheme === 'dark' ? 'light' : 'dark');
 	}
 
-	// Inicializar el tema cuando se carga la página
-	function initTheme() {
-		// Intentar obtener el tema guardado del localStorage
-		const savedTheme = localStorage.getItem('theme');
-
-		if (savedTheme) {
-			setTheme(savedTheme);
-		} else {
-			// Si no hay tema guardado, usar preferencia del sistema
-			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-			setTheme(prefersDark ? 'dark' : 'light');
-		}
-	}
-
-	// Event listener para el botón
 	document.addEventListener('DOMContentLoaded', () => {
-		initTheme();
+		updateToggleButton(getCurrentTheme());
 
 		const toggleButton = document.getElementById('theme-toggle');
 		if (toggleButton) {
@@ -74,9 +54,7 @@
 		}
 	});
 
-	// Escuchar cambios en la preferencia del sistema
 	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-		// Solo cambiar si no hay tema guardado manualmente
 		if (!localStorage.getItem('theme')) {
 			setTheme(e.matches ? 'dark' : 'light');
 		}
