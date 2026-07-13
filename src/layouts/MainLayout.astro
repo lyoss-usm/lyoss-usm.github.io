@@ -66,6 +66,17 @@ const socialImageURL = new URL(image, Astro.site);
 			defer
 			src="https://cloud.umami.is/script.js"
 			data-website-id="f8946262-cda5-452d-b645-4d69dbc0fea1"></script>
+
+		<script is:inline>
+			(function () {
+				var theme = localStorage.getItem('theme');
+				if (theme) {
+					document.documentElement.setAttribute('data-theme', theme);
+				} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					document.documentElement.setAttribute('data-theme', 'dark');
+				}
+			})();
+		</script>
 	</head>
 	<body>
 		<Navigation />
