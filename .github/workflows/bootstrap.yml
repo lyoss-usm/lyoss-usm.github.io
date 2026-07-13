@@ -1,0 +1,38 @@
+name: Setup Repo Labels and Rulesets
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync-labels:
+    uses: lyoss-usm/workflows/.github/workflows/sync-labels.yml@main
+    permissions:
+      issues: write
+
+  sync-rulesets:
+    needs: sync-labels
+    uses: lyoss-usm/workflows/.github/workflows/sync-rulesets.yml@main
+    secrets: inherit
+    permissions:
+      contents: write
+      repository-projects: write
+
+  self-destruct:
+    needs: sync-rulesets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Remove bootstrap workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          rm .github/workflows/bootstrap.yml
+          git add .github/workflows/bootstrap.yml
+          git commit -m "chore: remove bootstrap workflow"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
