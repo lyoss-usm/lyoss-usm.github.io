@@ -43,7 +43,7 @@ jobs:
       - name: Collect data
         env:
             GH_TOKEN: ${{ secrets.GH_PAT }}
-        run: node ./scripts/scrap-org.js
+        run: pnpm run scrap
 
       - name: Install and Build
         uses: withastro/action@v6
