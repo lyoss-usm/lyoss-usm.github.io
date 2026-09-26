@@ -1,0 +1,38 @@
+---
+import { CalendarX } from '@lucide/astro';
+
+type Props = {
+	id?: string;
+	titulo: string;
+	detalle: string;
+	conAccion?: boolean;
+	clas?: string;
+	oculto?: boolean;
+	// Los data-* que se le pasen se reenvian al elemento raiz
+} & Record<string, unknown>;
+
+const { id, titulo, detalle, conAccion = false, clas = '', oculto = true, ...resto } = Astro.props;
+/*
+ * Estado vacio del calendario, el mismo para la agenda y para un mes de la rejilla.
+ * El script reescribe [data-vacio-titulo] y [data-vacio-detalle] segun el filtro,
+ * asi que la copia de aqui es la que se ve sin filtros.
+ */
+---
+
+<div
+	{...resto}
+	id={id}
+	hidden={oculto}
+	class={`rounded-2xl border border-dashed border-base-content/20 bg-base-200/30 px-6 py-12 text-center ${clas}`}
+>
+	<CalendarX class="mx-auto mb-4 h-10 w-10 text-base-content/30" aria-hidden="true" />
+	<p class="font-heading text-xl font-bold text-base-content" data-vacio-titulo>{titulo}</p>
+	<p class="mx-auto mt-2 max-w-md text-sm text-base-content/60" data-vacio-detalle>{detalle}</p>
+	{
+		conAccion && (
+			<button type="button" class="btn mt-6 btn-sm btn-primary" data-quitar-filtro>
+				Ver todos los eventos
+			</button>
+		)
+	}
+</div>

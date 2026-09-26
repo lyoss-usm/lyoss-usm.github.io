@@ -7,6 +7,7 @@ import Encabezado from '@/components/calendario/Encabezado.astro';
 import Controles from '@/components/calendario/Controles.astro';
 import Agenda from '@/components/calendario/Agenda.astro';
 import Rejilla from '@/components/calendario/Rejilla.astro';
+import Vacio from '@/components/calendario/Vacio.astro';
 import { getCollection } from 'astro:content';
 import {
 	TIPOS_EVENTO,
@@ -26,6 +27,10 @@ const agenda = eventos.map((evento) => ({
 	evento,
 	estado: calcularEstado(evento.fechaInicio, evento.fechaFin)
 }));
+
+// Si la coleccion llega vacia, se decide aqui y no en el navegador: el build
+// entrega el estado vacio ya visible, sin depender de un primer clic
+const hayEventos = eventos.length > 0;
 
 const grupos = agruparPorMes(agenda);
 const meses = construirMeses(agenda, grupos);
@@ -51,13 +56,21 @@ if (primero && ultimo) {
 		<div class="container mx-auto px-4 py-8">
 			<Encabezado total={eventos.length} resumen={resumen} />
 			<Controles tipos={tiposPresentes} />
-			<Agenda grupos={grupos} />
-			<Rejilla meses={meses} />
+			<Vacio
+				id="calendario-vacio"
+				titulo="Todavia no hay eventos en el calendario"
+				detalle="Cuando carguemos las fechas te avisamos por aqui."
+				conAccion={hayEventos}
+				oculto={hayEventos}
+				clas="mb-8"
+			/>
+			<Agenda grupos={grupos} oculto={!hayEventos} />
+			<Rejilla meses={meses} oculto={!hayEventos} />
 		</div>
 	</div>
 
 	<script>
-		import { ESTADOS_EVENTO, calcularEstado } from '@/utils/eventos';
+		import { ESTADOS_EVENTO, TIPOS_EVENTO, calcularEstado, type TipoEvento } from '@/utils/eventos';
 
 		// Estado real: se calcula con la fecha de quien visita
 		const clasesEstado = Object.values(ESTADOS_EVENTO).map((estado) => estado.badge);
@@ -82,59 +95,82 @@ if (primero && ultimo) {
 		};
 		pintarEstados(document);
 
-		// Vista agenda / rejilla
+		// Vista agenda / rejilla, y el estado vacio que las reemplaza
 		const botonesVista = document.querySelectorAll<HTMLButtonElement>('.cambiar-vista');
 		const agenda = document.getElementById('vista-agenda');
 		const rejilla = document.getElementById('vista-rejilla');
+		const bloqueVacio = document.getElementById('calendario-vacio');
+		const itemsAgenda = document.querySelectorAll<HTMLElement>('.evento');
+		let vistaActiva: 'agenda' | 'rejilla' = 'agenda';
+		let tipoActivo = 'todos';
+
+		const visible = (elemento: HTMLElement) => !elemento.classList.contains('hidden');
+		const sinResultados = () => !Array.from(itemsAgenda).some(visible);
+
+		const pintarVistas = () => {
+			const vacio = sinResultados();
+			bloqueVacio?.toggleAttribute('hidden', !vacio);
+
+			if (vacio && bloqueVacio) {
+				const quitar = bloqueVacio.querySelector('[data-quitar-filtro]');
+				const titulo = bloqueVacio.querySelector('[data-vacio-titulo]');
+				const detalle = bloqueVacio.querySelector('[data-vacio-detalle]');
+				const filtrando = tipoActivo !== 'todos';
+
+				if (titulo) {
+					titulo.textContent = filtrando
+						? `No hay eventos de tipo ${TIPOS_EVENTO[tipoActivo as TipoEvento].label}`
+						: 'Todavia no hay eventos en el calendario';
+				}
+				if (detalle) {
+					detalle.textContent = filtrando
+						? 'Quita el filtro para volver a ver todos los eventos.'
+						: 'Cuando carguemos las fechas te avisamos por aqui.';
+				}
+				quitar?.toggleAttribute('hidden', !filtrando);
+			}
+
+			agenda?.classList.toggle('hidden', vacio || vistaActiva !== 'agenda');
+			rejilla?.classList.toggle('hidden', vacio || vistaActiva !== 'rejilla');
+		};
 
 		botonesVista.forEach((boton) => {
 			boton.addEventListener('click', () => {
-				const esRejilla = boton.dataset.vista === 'rejilla';
+				vistaActiva = boton.dataset.vista === 'rejilla' ? 'rejilla' : 'agenda';
 				botonesVista.forEach((otro) => {
 					const activo = otro === boton;
 					otro.setAttribute('aria-pressed', String(activo));
 					otro.classList.toggle('btn-primary', activo);
 					otro.classList.toggle('btn-outline', !activo);
 				});
-				agenda?.classList.toggle('hidden', esRejilla);
-				rejilla?.classList.toggle('hidden', !esRejilla);
+				pintarVistas();
 			});
 		});
 
-		// Navegación entre meses: se saltan los meses sin eventos visibles al filtrar
+		// Navegacion entre meses: se recorren todos, incluso los que no tienen eventos
 		const bloques = Array.from(document.querySelectorAll<HTMLElement>('.mes-rejilla'));
 		const botonesAnterior = document.querySelectorAll<HTMLButtonElement>('.mes-anterior');
 		const botonesSiguiente = document.querySelectorAll<HTMLButtonElement>('.mes-siguiente');
-		let bloqueActual: HTMLElement | null = null;
-
-		const mesesVisibles = () =>
-			bloques.filter((bloque) => !bloque.classList.contains('sin-eventos'));
+		let mesActual = 0;
 
 		const pintarMes = () => {
-			const visibles = mesesVisibles();
-			// Al filtrar puede quedar fuera el mes que se estaba viendo
-			if (!bloqueActual || !visibles.includes(bloqueActual)) {
-				bloqueActual = visibles[0] ?? null;
-			}
+			mesActual = Math.min(Math.max(mesActual, 0), Math.max(bloques.length - 1, 0));
 			// Se ocultan todos los bloques y se revela solo el mes actual
-			bloques.forEach((bloque) => {
-				bloque.hidden = bloque !== bloqueActual;
+			bloques.forEach((bloque, indice) => {
+				bloque.hidden = indice !== mesActual;
 			});
-			const indice = bloqueActual ? visibles.indexOf(bloqueActual) : 0;
-			botonesAnterior.forEach((boton) => (boton.disabled = indice === 0));
-			botonesSiguiente.forEach((boton) => (boton.disabled = indice === visibles.length - 1));
+			botonesAnterior.forEach((boton) => (boton.disabled = mesActual === 0));
+			botonesSiguiente.forEach((boton) => (boton.disabled = mesActual === bloques.length - 1));
 		};
 
 		const moverMes = (delta: number) => {
-			const visibles = mesesVisibles();
-			const indice = bloqueActual ? visibles.indexOf(bloqueActual) : 0;
-			const destino = visibles[indice + delta];
-			if (!destino) return;
-			bloqueActual = destino;
+			const destino = mesActual + delta;
+			if (destino < 0 || destino >= bloques.length) return;
+			mesActual = destino;
 			pintarMes();
 		};
 
-		// Cada mes trae su propio par de botones, así que se escuchan por delegación
+		// Cada mes trae su propio par de botones, asi que se escuchan por delegacion
 		rejilla?.addEventListener('click', (evento) => {
 			const boton = (evento.target as HTMLElement).closest<HTMLButtonElement>(
 				'.mes-anterior, .mes-siguiente'
@@ -144,8 +180,8 @@ if (primero && ultimo) {
 		});
 		pintarMes();
 
-		// Detalle del día: bajo 400px el chip es solo un punto, así que la celda
-		// completa es un botón que clona la plantilla del día en el dialog
+		// Detalle del dia: bajo sm el chip no es un link, asi que la celda completa
+		// es un boton que clona la plantilla del dia en el dialog
 		const modalDia = document.getElementById('dia-modal') as HTMLDialogElement | null;
 		const modalTitulo = document.getElementById('dia-modal-titulo');
 		const modalCuerpo = document.getElementById('dia-modal-cuerpo');
@@ -168,58 +204,79 @@ if (primero && ultimo) {
 			if ((evento.target as HTMLElement).closest('[data-cerrar-dia]')) modalDia.close();
 		});
 
-		// Filtro por tipo: afecta a la agenda y a los chips de la rejilla
+		// Filtro por tipo: afecta a la agenda, a los chips de la rejilla y a los meses sin eventos
 		const botonesFiltro = document.querySelectorAll<HTMLButtonElement>('.filtro-tipo');
-		const itemsAgenda = document.querySelectorAll<HTMLElement>('.evento');
 		const chips = document.querySelectorAll<HTMLElement>('.evento-chip');
-		const seccionesAgenda = document.querySelectorAll<HTMLElement>('.mes-agenda');
 		const botonesDia = document.querySelectorAll<HTMLButtonElement>('.abrir-dia');
 		const contador = document.getElementById('evento-count');
-		let tipoActivo = 'todos';
-
-		const visible = (elemento: HTMLElement) => !elemento.classList.contains('hidden');
 
 		const aplicarFiltro = () => {
-			itemsAgenda.forEach((item) => {
-				item.classList.toggle('hidden', tipoActivo !== 'todos' && item.dataset.tipo !== tipoActivo);
-			});
-			chips.forEach((chip) => {
-				chip.classList.toggle('hidden', tipoActivo !== 'todos' && chip.dataset.tipo !== tipoActivo);
+			const coincide = (elemento: HTMLElement) =>
+				tipoActivo === 'todos' || elemento.dataset.tipo === tipoActivo;
+
+			itemsAgenda.forEach((item) => item.classList.toggle('hidden', !coincide(item)));
+			chips.forEach((chip) => chip.classList.toggle('hidden', !coincide(chip)));
+
+			// Agenda y rejilla comparten el mismo estado vacio por mes: si el filtro
+			// deja el mes sin nada, se avisa en vez de desaparecer en silencio.
+			// En la agenda los items son .evento y en la rejilla .evento-chip
+			const etiqueta = tipoActivo === 'todos' ? null : TIPOS_EVENTO[tipoActivo as TipoEvento].label;
+			document.querySelectorAll<HTMLElement>('.mes-agenda, .mes-rejilla').forEach((bloque) => {
+				const quedan = Array.from(
+					bloque.querySelectorAll<HTMLElement>('.evento, .evento-chip')
+				).some(visible);
+				bloque.querySelector<HTMLElement>('[data-items-mes]')?.toggleAttribute('hidden', !quedan);
+
+				const aviso = bloque.querySelector<HTMLElement>('[data-mes-vacio]');
+				aviso?.toggleAttribute('hidden', quedan);
+				if (!aviso || quedan) return;
+				const titulo = aviso.querySelector('[data-vacio-titulo]');
+				const detalle = aviso.querySelector('[data-vacio-detalle]');
+				const nombre = bloque.dataset.mesNombre ?? '';
+				if (titulo) {
+					titulo.textContent = etiqueta
+						? `No hay eventos de tipo ${etiqueta} en ${nombre}`
+						: `No hay eventos en ${nombre}`;
+				}
+				if (detalle) {
+					detalle.textContent = etiqueta
+						? 'Quita el filtro o prueba con otro tipo de evento.'
+						: 'No hay eventos en este mes por ahora.';
+				}
+				aviso.querySelector('[data-quitar-filtro]')?.toggleAttribute('hidden', !etiqueta);
 			});
 
-			// Un mes sin eventos visibles no debe dejar su encabezado ocupando espacio
-			seccionesAgenda.forEach((seccion) => {
-				const items = seccion.querySelectorAll<HTMLElement>('.evento');
-				const quedan = Array.from(items).some(visible);
-				seccion.classList.toggle('hidden', !quedan);
-			});
-			bloques.forEach((bloque) => {
-				const chipsDelMes = bloque.querySelectorAll<HTMLElement>('.evento-chip');
-				bloque.classList.toggle('sin-eventos', !Array.from(chipsDelMes).some(visible));
-			});
-			// El botón de día solo queda activo si ese día conserva algún evento visible
+			// El boton de dia solo queda activo si ese dia conserva algun evento visible
 			botonesDia.forEach((boton) => {
 				const chipsDelDia = boton.parentElement?.querySelectorAll<HTMLElement>('.evento-chip');
 				boton.hidden = !chipsDelDia || !Array.from(chipsDelDia).some(visible);
 			});
-			pintarMes();
 
 			if (contador) {
 				contador.textContent = String(Array.from(itemsAgenda).filter(visible).length);
 			}
+			pintarVistas();
+		};
+
+		const aplicarTipo = (tipo: string) => {
+			tipoActivo = tipo;
+			botonesFiltro.forEach((boton) => {
+				const activo = boton.dataset.tipo === tipo;
+				boton.setAttribute('aria-pressed', String(activo));
+				boton.classList.toggle('btn-outline', !activo);
+				if (boton.dataset.clase) boton.classList.toggle(boton.dataset.clase, activo);
+			});
+			aplicarFiltro();
 		};
 
 		botonesFiltro.forEach((boton) => {
-			boton.addEventListener('click', () => {
-				tipoActivo = boton.dataset.tipo ?? 'todos';
-				botonesFiltro.forEach((otro) => {
-					const activo = otro === boton;
-					otro.setAttribute('aria-pressed', String(activo));
-					otro.classList.toggle('btn-outline', !activo);
-					if (otro.dataset.clase) otro.classList.toggle(otro.dataset.clase, activo);
-				});
-				aplicarFiltro();
-			});
+			boton.addEventListener('click', () => aplicarTipo(boton.dataset.tipo ?? 'todos'));
+		});
+		// El build ya entrego el estado inicial, aqui solo se sincroniza por si el
+		// HTML se regenero con datos distintos a los que pinto el servidor
+		aplicarFiltro();
+		document.querySelectorAll('[data-quitar-filtro]').forEach((boton) => {
+			boton.addEventListener('click', () => aplicarTipo('todos'));
 		});
 	</script>
 

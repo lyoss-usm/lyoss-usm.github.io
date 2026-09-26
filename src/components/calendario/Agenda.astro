@@ -1,15 +1,17 @@
 ---
 import type { GrupoMes } from '@/utils/calendario';
 import TarjetaEvento from './TarjetaEvento.astro';
+import Vacio from './Vacio.astro';
 
 type Props = {
 	grupos: GrupoMes[];
+	oculto?: boolean;
 };
 
-const { grupos } = Astro.props;
+const { grupos, oculto = false } = Astro.props;
 ---
 
-<div id="vista-agenda" class="flex flex-col gap-10">
+<div id="vista-agenda" class="flex flex-col gap-10" hidden={oculto}>
 	{
 		grupos.map(({ mes, items }) => (
 			<section class="mes-agenda">

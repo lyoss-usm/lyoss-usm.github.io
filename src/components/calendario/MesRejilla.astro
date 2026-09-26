@@ -13,6 +13,7 @@ import {
 	formatearRangoFechas
 } from '@/utils/eventos';
 import ChipEvento from './ChipEvento.astro';
+import Vacio from './Vacio.astro';
 
 type Props = {
 	mes: MesCalendario;
@@ -22,7 +23,7 @@ type Props = {
 const { mes, indice } = Astro.props;
 ---
 
-<section class="mes-rejilla" data-mes={indice} hidden={indice > 0}>
+<section class="mes-rejilla" data-mes={indice} data-mes-nombre={mes.nombre} hidden={indice > 0}>
 	<div class="mb-4 flex items-center justify-between">
 		<button class="mes-anterior btn btn-circle btn-ghost btn-sm" aria-label="Mes anterior">
 			<ChevronLeft class="h-5 w-5" />
@@ -35,7 +36,16 @@ const { mes, indice } = Astro.props;
 		</button>
 	</div>
 
-	<div class="overflow-x-auto">
+	<Vacio
+		titulo={`No hay eventos en ${mes.nombre}`}
+		detalle="No hay eventos en este mes por ahora."
+		conAccion
+		clas="mb-4"
+		data-mes-vacio
+		hidden
+	/>
+
+	<div class="rejilla-dias overflow-x-auto" data-items-mes>
 		<div
 			class="grid grid-cols-7 gap-px overflow-hidden rounded-2xl border border-base-content/10 bg-base-content/10"
 		>
