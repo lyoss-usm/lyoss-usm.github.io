@@ -231,6 +231,12 @@ const fmtLargo = formateador({
 	hour12: false
 });
 const fmtMesAnio = formateador({ month: 'long', year: 'numeric' });
+const fmtDiaLargo = formateador({
+	weekday: 'long',
+	day: 'numeric',
+	month: 'long',
+	year: 'numeric'
+});
 
 /** "YYYY-MM-DD" en hora de Chile: sirve para agrupar y comparar dias. */
 export function claveDia(fecha: Date): string {
@@ -255,6 +261,11 @@ export function formatearMesCorto(fecha: Date): string {
 
 export function formatearMesAnio(fecha: Date): string {
 	return capitalizar(fmtMesAnio.format(fecha));
+}
+
+/** "Jueves 24 de septiembre de 2026" */
+export function formatearDiaLargo(fecha: Date): string {
+	return capitalizar(fmtDiaLargo.format(fecha));
 }
 
 export function formatearFechaLarga(fecha: Date): string {

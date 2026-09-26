@@ -60,19 +60,27 @@ if (primero && ultimo) {
 		import { ESTADOS_EVENTO, calcularEstado } from '@/utils/eventos';
 
 		// Estado real: se calcula con la fecha de quien visita
-		document.querySelectorAll<HTMLElement>('[data-estado]').forEach((elemento) => {
-			const contenedor = elemento.closest<HTMLElement>('.evento, .evento-chip');
-			if (!contenedor) return;
-			const inicio = contenedor.dataset.inicio;
-			const fin = contenedor.dataset.fin;
-			if (!inicio) return;
+		const clasesEstado = Object.values(ESTADOS_EVENTO).map((estado) => estado.badge);
 
-			const estado = calcularEstado(new Date(inicio), fin ? new Date(fin) : undefined);
-			elemento.dataset.estado = estado;
-			elemento.classList.add(ESTADOS_EVENTO[estado].badge);
-			elemento.textContent = ESTADOS_EVENTO[estado].label;
-			contenedor.classList.toggle('evento-finalizado', estado === 'finalizado');
-		});
+		const pintarEstados = (raiz: ParentNode) => {
+			raiz.querySelectorAll<HTMLElement>('[data-estado]').forEach((elemento) => {
+				const contenedor = elemento.closest<HTMLElement>('[data-inicio]');
+				if (!contenedor) return;
+				const inicio = contenedor.dataset.inicio;
+				const fin = contenedor.dataset.fin;
+				if (!inicio) return;
+
+				const estado = calcularEstado(new Date(inicio), fin ? new Date(fin) : undefined);
+				elemento.dataset.estado = estado;
+				// Se limpian las clases de estado anteriores: si el markup ya traia una,
+				// se quedaria pegada junto a la nueva y ganaria la que llegue ultima en el CSS
+				clasesEstado.forEach((clase) => elemento.classList.remove(clase));
+				elemento.classList.add(ESTADOS_EVENTO[estado].badge);
+				elemento.textContent = ESTADOS_EVENTO[estado].label;
+				contenedor.classList.toggle('evento-finalizado', estado === 'finalizado');
+			});
+		};
+		pintarEstados(document);
 
 		// Vista agenda / rejilla
 		const botonesVista = document.querySelectorAll<HTMLButtonElement>('.cambiar-vista');
@@ -136,11 +144,36 @@ if (primero && ultimo) {
 		});
 		pintarMes();
 
+		// Detalle del día: bajo 400px el chip es solo un punto, así que la celda
+		// completa es un botón que clona la plantilla del día en el dialog
+		const modalDia = document.getElementById('dia-modal') as HTMLDialogElement | null;
+		const modalTitulo = document.getElementById('dia-modal-titulo');
+		const modalCuerpo = document.getElementById('dia-modal-cuerpo');
+
+		rejilla?.addEventListener('click', (evento) => {
+			const boton = (evento.target as HTMLElement).closest<HTMLButtonElement>('.abrir-dia');
+			const plantilla = boton?.parentElement?.querySelector<HTMLTemplateElement>('.plantilla-dia');
+			if (!boton || !plantilla || !modalDia || !modalCuerpo) return;
+
+			modalCuerpo.replaceChildren(plantilla.content.cloneNode(true));
+			modalCuerpo.querySelectorAll<HTMLElement>('[data-tipo]').forEach((item) => {
+				item.classList.toggle('hidden', tipoActivo !== 'todos' && item.dataset.tipo !== tipoActivo);
+			});
+			if (modalTitulo) modalTitulo.textContent = boton.dataset.titulo ?? '';
+			pintarEstados(modalCuerpo);
+			modalDia.showModal();
+		});
+
+		modalDia?.addEventListener('click', (evento) => {
+			if ((evento.target as HTMLElement).closest('[data-cerrar-dia]')) modalDia.close();
+		});
+
 		// Filtro por tipo: afecta a la agenda y a los chips de la rejilla
 		const botonesFiltro = document.querySelectorAll<HTMLButtonElement>('.filtro-tipo');
 		const itemsAgenda = document.querySelectorAll<HTMLElement>('.evento');
 		const chips = document.querySelectorAll<HTMLElement>('.evento-chip');
 		const seccionesAgenda = document.querySelectorAll<HTMLElement>('.mes-agenda');
+		const botonesDia = document.querySelectorAll<HTMLButtonElement>('.abrir-dia');
 		const contador = document.getElementById('evento-count');
 		let tipoActivo = 'todos';
 
@@ -163,6 +196,11 @@ if (primero && ultimo) {
 			bloques.forEach((bloque) => {
 				const chipsDelMes = bloque.querySelectorAll<HTMLElement>('.evento-chip');
 				bloque.classList.toggle('sin-eventos', !Array.from(chipsDelMes).some(visible));
+			});
+			// El botón de día solo queda activo si ese día conserva algún evento visible
+			botonesDia.forEach((boton) => {
+				const chipsDelDia = boton.parentElement?.querySelectorAll<HTMLElement>('.evento-chip');
+				boton.hidden = !chipsDelDia || !Array.from(chipsDelDia).some(visible);
 			});
 			pintarMes();
 

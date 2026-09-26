@@ -24,6 +24,17 @@ export type Celda = {
 
 export type MesCalendario = { nombre: string; items: EventoConEstado[]; celdas: Celda[] };
 
+/** Cuantos chips entran en una celda antes de resumir el resto con "+N". */
+export const MAX_CHIPS_CELDA = 3;
+
+/**
+ * La clave "YYYY-MM-DD" es un dia del calendario, no un instante: se ancla al
+ * mediodia UTC para que al formatearla en hora de Chile siga siendo el mismo dia.
+ */
+export function fechaDeClave(clave: string): Date {
+	return new Date(`${clave}T12:00:00Z`);
+}
+
 /* Agenda agrupada por mes, en orden cronologico */
 
 export function agruparPorMes(agenda: EventoConEstado[]): GrupoMes[] {
@@ -93,7 +104,6 @@ function eventosDelDia(agenda: EventoConEstado[], clave: string): ChipEnCelda[] 
 		.filter(({ evento }) =>
 			clavesDelRango(evento.fechaInicio, evento.fechaFin ?? evento.fechaInicio).includes(clave)
 		)
-		.slice(0, 3)
 		.map(({ evento, estado }) => ({
 			evento,
 			estado,

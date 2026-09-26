@@ -1,6 +1,17 @@
 ---
-import { ChevronLeft, ChevronRight } from '@lucide/astro';
-import { NOMBRES_DIAS, type MesCalendario } from '@/utils/calendario';
+import { ArrowRight, ChevronLeft, ChevronRight } from '@lucide/astro';
+import {
+	MAX_CHIPS_CELDA,
+	NOMBRES_DIAS,
+	fechaDeClave,
+	type MesCalendario
+} from '@/utils/calendario';
+import {
+	ESTADOS_EVENTO,
+	TIPOS_EVENTO,
+	formatearDiaLargo,
+	formatearRangoFechas
+} from '@/utils/eventos';
 import ChipEvento from './ChipEvento.astro';
 
 type Props = {
@@ -37,19 +48,85 @@ const { mes, indice } = Astro.props;
 			}
 
 			{
-				mes.celdas.map((celda) => (
-					<div
-						class="min-h-24 bg-base-100 p-1.5 sm:min-h-28"
-						class:list={[celda.delMesVecino && 'bg-base-200/40 text-base-content/40']}
-					>
-						<span class="mb-1 block px-1 text-xs">{celda.numero}</span>
-						<div class="flex flex-col gap-1">
-							{celda.eventos.map(({ evento, estado, primerDia }) => (
-								<ChipEvento evento={evento} estado={estado} primerDia={primerDia} />
-							))}
+				mes.celdas.map((celda) => {
+					const conEventos = celda.eventos.length > 0;
+					const etiqueta =
+						celda.clave && conEventos ? formatearDiaLargo(fechaDeClave(celda.clave)) : '';
+					const chips = celda.eventos.slice(0, MAX_CHIPS_CELDA);
+					const restantes = celda.eventos.length - chips.length;
+
+					return (
+						<div
+							class="relative min-h-24 bg-base-100 p-1.5 sm:min-h-28"
+							class:list={[celda.delMesVecino && 'bg-base-200/40 text-base-content/40']}
+						>
+							{/* Tap en toda la celda bajo 400px, donde el chip es solo un punto */}
+							{conEventos && (
+								<button
+									type="button"
+									class="abrir-dia absolute inset-0 block sm:hidden"
+									aria-haspopup="dialog"
+									aria-label={`Ver ${celda.eventos.length} ${celda.eventos.length === 1 ? 'evento' : 'eventos'} del ${etiqueta.toLowerCase()}`}
+									data-titulo={etiqueta}
+								/>
+							)}
+
+							<span class="mb-1 block px-1 text-xs">{celda.numero}</span>
+
+							<div class="pointer-events-none relative flex flex-col gap-1 sm:pointer-events-auto">
+								{chips.map((chip) => (
+									<ChipEvento
+										evento={chip.evento}
+										estado={chip.estado}
+										primerDia={chip.primerDia}
+									/>
+								))}
+								{restantes > 0 && (
+									<span class="px-1 text-[11px] text-base-content/60">+{restantes}</span>
+								)}
+							</div>
+
+							{/* El modal clona esta plantilla: los eventos en grande y como enlaces */}
+							{conEventos && (
+								<template class="plantilla-dia">
+									{celda.eventos.map(({ evento, estado, primerDia }) => (
+										<li
+											data-tipo={evento.tipo}
+											data-inicio={evento.fechaInicio.toISOString()}
+											data-fin={evento.fechaFin?.toISOString()}
+										>
+											<a
+												href={`/eventos/${evento.slug}`}
+												class="flex items-start gap-3 rounded-xl border border-base-content/10 bg-base-200/50 p-3 transition-colors hover:border-primary/50"
+											>
+												<span
+													class={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${TIPOS_EVENTO[evento.tipo].punto}`}
+												/>
+												<span class="min-w-0 flex-1">
+													<span class="block text-sm leading-snug font-semibold text-base-content">
+														{evento.titulo}
+													</span>
+													<span class="mt-0.5 block text-xs text-base-content/60">
+														{primerDia
+															? formatearRangoFechas(evento.fechaInicio, evento.fechaFin)
+															: 'continúa'}
+													</span>
+													<span
+														class="badge-estado mt-1.5 badge border-0 badge-sm"
+														data-estado={estado}
+													>
+														{ESTADOS_EVENTO[estado].label}
+													</span>
+												</span>
+												<ArrowRight class="mt-0.5 h-4 w-4 shrink-0 text-base-content/30" />
+											</a>
+										</li>
+									))}
+								</template>
+							)}
 						</div>
-					</div>
-				))
+					);
+				})
 			}
 		</div>
 	</div>

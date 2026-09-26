@@ -1,6 +1,7 @@
 ---
 import type { MesCalendario } from '@/utils/calendario';
 import MesRejilla from './MesRejilla.astro';
+import ModalDia from './ModalDia.astro';
 
 type Props = {
 	meses: MesCalendario[];
@@ -11,4 +12,5 @@ const { meses } = Astro.props;
 
 <div id="vista-rejilla" class="hidden">
 	{meses.map((mes, indice) => <MesRejilla mes={mes} indice={indice} />)}
+	<ModalDia />
 </div>
