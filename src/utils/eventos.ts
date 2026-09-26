@@ -120,19 +120,50 @@ export type TipoEvento = 'institucional' | 'taller' | 'hackaton' | 'coloquio' | 
 
 export const TIPOS_EVENTO: Record<
 	TipoEvento,
-	{ label: string; badge: string; punto: string; orden: number }
+	{ label: string; badge: string; punto: string; boton: string; orden: number }
 > = {
 	institucional: {
 		label: 'Institucional',
 		badge: 'badge-primary',
 		punto: 'bg-primary',
+		boton: 'btn-primary',
 		orden: 0
 	},
-	taller: { label: 'Taller', badge: 'badge-info', punto: 'bg-info', orden: 1 },
-	hackaton: { label: 'Hackaton', badge: 'badge-secondary', punto: 'bg-secondary', orden: 2 },
-	coloquio: { label: 'Coloquio', badge: 'badge-accent', punto: 'bg-accent', orden: 3 },
-	charla: { label: 'Charla', badge: 'badge-success', punto: 'bg-success', orden: 4 },
-	otro: { label: 'Otro', badge: 'badge-neutral', punto: 'bg-neutral', orden: 5 }
+	taller: {
+		label: 'Taller',
+		badge: 'badge-info',
+		punto: 'bg-info',
+		boton: 'btn-info',
+		orden: 1
+	},
+	hackaton: {
+		label: 'Hackaton',
+		badge: 'badge-secondary',
+		punto: 'bg-secondary',
+		boton: 'btn-secondary',
+		orden: 2
+	},
+	coloquio: {
+		label: 'Coloquio',
+		badge: 'badge-accent',
+		punto: 'bg-accent',
+		boton: 'btn-accent',
+		orden: 3
+	},
+	charla: {
+		label: 'Charla',
+		badge: 'badge-success',
+		punto: 'bg-success',
+		boton: 'btn-success',
+		orden: 4
+	},
+	otro: {
+		label: 'Otro',
+		badge: 'badge-neutral',
+		punto: 'bg-neutral',
+		boton: 'btn-neutral',
+		orden: 5
+	}
 };
 
 /* Formateo: siempre en hora de Chile, sin importar donde se renderice */
@@ -141,7 +172,9 @@ function formateador(opciones: Intl.DateTimeFormatOptions) {
 	return new Intl.DateTimeFormat('es-CL', { timeZone: ZONA_HORARIA, ...opciones });
 }
 
+const fmtDia = formateador({ day: 'numeric' });
 const fmtDiaMes = formateador({ day: 'numeric', month: 'short' });
+const fmtMesCorto = formateador({ month: 'short' });
 const fmtDiaMesAnio = formateador({ day: 'numeric', month: 'short', year: 'numeric' });
 const fmtHora = formateador({ hour: '2-digit', minute: '2-digit', hour12: false });
 const fmtLargo = formateador({
@@ -164,8 +197,16 @@ export function formatearHora(fecha: Date): string {
 	return fmtHora.format(fecha);
 }
 
+export function formatearDia(fecha: Date): string {
+	return fmtDia.format(fecha);
+}
+
 export function formatearDiaMes(fecha: Date): string {
 	return fmtDiaMes.format(fecha);
+}
+
+export function formatearMesCorto(fecha: Date): string {
+	return fmtMesCorto.format(fecha);
 }
 
 export function formatearMesAnio(fecha: Date): string {
