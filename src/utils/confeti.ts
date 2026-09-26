@@ -48,9 +48,11 @@ function nivelPara(ancho: number): Nivel {
 /** Lanza el confeti usando el aviso como punto de partida de la descarga. */
 export function lanzarConfeti(ancla: HTMLElement): void {
 	// 1. El canvas ocupa la pantalla. Un canvas es un elemento reemplazado, asi que
-	// con solo inset-0 no se estira y hay que darle el tamano explicito
+	// con solo inset-0 no se estira y hay que darle el tamano explicito: el ancho
+	// va con w-screen para que el scrollbar no deje una franja sin cubrir, y el
+	// alto con h-full para que en el telefono siga a la parte visible de la pantalla
 	const canvas = document.createElement('canvas');
-	canvas.className = 'pointer-events-none fixed inset-0 h-full w-full z-100';
+	canvas.className = 'pointer-events-none fixed inset-0 h-full w-screen z-100';
 	canvas.setAttribute('aria-hidden', 'true');
 	document.body.append(canvas);
 
