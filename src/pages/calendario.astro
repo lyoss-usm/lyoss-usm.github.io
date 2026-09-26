@@ -4,37 +4,34 @@
  * Sirve para revisar el diseño antes de conectar la colección de eventos.
  */
 import MainLayout from '@/layouts/MainLayout.astro';
-import { CalendarDays, MapPin, Clock, ChevronLeft, ChevronRight, ArrowRight } from '@lucide/astro';
+import Encabezado from '@/components/calendario/Encabezado.astro';
+import Controles from '@/components/calendario/Controles.astro';
+import Agenda from '@/components/calendario/Agenda.astro';
+import Rejilla from '@/components/calendario/Rejilla.astro';
 import {
 	TIPOS_EVENTO,
-	ESTADOS_EVENTO,
 	calcularEstado,
-	type EstadoEvento,
-	type TipoEvento,
 	interpretarFecha,
-	claveDia,
-	formatearDia,
-	formatearHora,
-	formatearMesAnio,
-	formatearMesCorto,
-	formatearRangoFechas
+	type Evento,
+	type TipoEvento
 } from '@/utils/eventos';
+import { agruparPorMes, construirMeses } from '@/utils/calendario';
 
 const fecha = (valor: string) => interpretarFecha(valor) as Date;
 
-/* DATOS MOCK */
+/* DATOS MOCK: se reemplazan por getCollection('eventos') */
 
-const eventosMock = [
+const eventosMock: Evento[] = [
 	{
 		slug: 'coloquio-software-libre',
 		titulo: 'Coloquio: Linux y el software libre en la universidad',
-		tipo: 'coloquio' as TipoEvento,
+		tipo: 'coloquio',
 		serie: undefined,
 		fechaInicio: fecha('2026-09-02 11:00'),
 		fechaFin: fecha('2026-09-02 13:00'),
 		ubicacion: 'Aula A-201, USM',
 		descripcion:
-			'Conversación abierta coniamigos de la carrera sobre prácticas de código libre en el campus.',
+			'Conversación abierta con amigos de la carrera sobre prácticas de código libre en el campus.',
 		enlace: undefined,
 		textoEnlace: 'Ver resumen',
 		destacado: false
@@ -42,7 +39,7 @@ const eventosMock = [
 	{
 		slug: 'install-day-arch-linux',
 		titulo: 'Install Day: Arch Linux',
-		tipo: 'institucional' as TipoEvento,
+		tipo: 'institucional',
 		serie: undefined,
 		fechaInicio: fecha('2026-09-19 10:00'),
 		fechaFin: fecha('2026-09-19 16:00'),
@@ -56,7 +53,7 @@ const eventosMock = [
 	{
 		slug: 'taller-git-clase-0',
 		titulo: 'Taller de Git · Clase 0: Bienvenida y entorno de trabajo',
-		tipo: 'taller' as TipoEvento,
+		tipo: 'taller',
 		serie: 'Taller de Git',
 		fechaInicio: fecha('2026-09-25 18:00'),
 		fechaFin: fecha('2026-09-27 13:00'),
@@ -70,7 +67,7 @@ const eventosMock = [
 	{
 		slug: 'taller-git-clase-1',
 		titulo: 'Taller de Git · Clase 1: Primeros pasos',
-		tipo: 'taller' as TipoEvento,
+		tipo: 'taller',
 		serie: 'Taller de Git',
 		fechaInicio: fecha('2026-10-06 18:00'),
 		fechaFin: fecha('2026-10-06 20:30'),
@@ -84,7 +81,7 @@ const eventosMock = [
 	{
 		slug: 'taller-git-clase-2',
 		titulo: 'Taller de Git · Clase 2: Ramas y pull requests',
-		tipo: 'taller' as TipoEvento,
+		tipo: 'taller',
 		serie: 'Taller de Git',
 		fechaInicio: fecha('2026-10-13 18:00'),
 		fechaFin: fecha('2026-10-13 20:30'),
@@ -97,7 +94,7 @@ const eventosMock = [
 	{
 		slug: 'taller-git-clase-3',
 		titulo: 'Taller de Git · Clase 3: Rebase y conflictos',
-		tipo: 'taller' as TipoEvento,
+		tipo: 'taller',
 		serie: 'Taller de Git',
 		fechaInicio: fecha('2026-10-20 18:00'),
 		fechaFin: fecha('2026-10-20 20:30'),
@@ -111,13 +108,13 @@ const eventosMock = [
 	{
 		slug: 'hackaton-2026',
 		titulo: 'Hackaton LyOSS 2026',
-		tipo: 'hackaton' as TipoEvento,
+		tipo: 'hackaton',
 		serie: undefined,
 		fechaInicio: fecha('2026-11-13 18:00'),
 		fechaFin: fecha('2026-11-15 14:00'),
 		ubicacion: 'Por definir · USM',
 		descripcion:
-			'Fin de semana de programación en equipo para developing open source. Cronograma, categorías y premios en la landing.',
+			'Fin de semana de programación en equipo para desarrollar open source. Cronograma, categorías y premios en la landing.',
 		enlace: undefined,
 		textoEnlace: 'Bases e inscripción',
 		destacado: true
@@ -125,7 +122,7 @@ const eventosMock = [
 	{
 		slug: 'charla-contribuir-oss',
 		titulo: 'Charla: Cómo empezar a contribuir en open source',
-		tipo: 'charla' as TipoEvento,
+		tipo: 'charla',
 		serie: undefined,
 		fechaInicio: fecha('2026-12-10 17:00'),
 		fechaFin: fecha('2026-12-10 19:00'),
@@ -138,290 +135,31 @@ const eventosMock = [
 	}
 ];
 
-type ItemAgenda = { evento: (typeof eventosMock)[number]; estado: EstadoEvento };
-
 const eventos = [...eventosMock].sort((a, b) => a.fechaInicio.getTime() - b.fechaInicio.getTime());
 
-// Estado inicial para el HTML; el script lo recalcula con la fecha de quien visita
-const agenda: ItemAgenda[] = eventos.map((evento) => ({
+const agenda = eventos.map((evento) => ({
 	evento,
 	estado: calcularEstado(evento.fechaInicio, evento.fechaFin)
 }));
 
-// Agenda agrupada por mes, en orden cronológico
-const porMes: { mes: string; items: ItemAgenda[] }[] = [];
-for (const item of agenda) {
-	const mes = formatearMesAnio(item.evento.fechaInicio);
-	const grupo = porMes.find((existente) => existente.mes === mes);
-	if (grupo) grupo.items.push(item);
-	else porMes.push({ mes, items: [item] });
-}
+const grupos = agruparPorMes(agenda);
+const meses = construirMeses(agenda, grupos);
 
 const tiposPresentes = (Object.keys(TIPOS_EVENTO) as TipoEvento[]).filter((tipo) =>
 	eventos.some((evento) => evento.tipo === tipo)
 );
-
-/* REJILLA MENSUAL: un bloque por mes que tiene eventos, con navegación entre ellos */
-
-const NOMBRES_DIAS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-
-function clavesDelRango(desde: Date, hasta: Date): string[] {
-	const claves: string[] = [];
-	const actual = new Date(`${claveDia(desde)}T00:00:00Z`);
-	const fin = new Date(`${claveDia(hasta)}T00:00:00Z`);
-	while (actual.getTime() <= fin.getTime()) {
-		claves.push(claveDia(actual));
-		actual.setUTCDate(actual.getUTCDate() + 1);
-	}
-	return claves;
-}
-
-const diasDelMes = (anio: number, mes: number) => new Date(Date.UTC(anio, mes + 1, 0)).getUTCDate();
-
-const meses = porMes.map(({ mes: nombre, items }) => {
-	const { fechaInicio } = items[0].evento;
-	const anio = fechaInicio.getUTCFullYear();
-	const mes = fechaInicio.getUTCMonth();
-
-	// Domingo es 0 en getUTCDay(), pero la semana parte el lunes
-	const desplazamiento = (new Date(Date.UTC(anio, mes, 1)).getUTCDay() + 6) % 7;
-	const totalDias = diasDelMes(anio, mes);
-	const totalCeldas = Math.ceil((desplazamiento + totalDias) / 7) * 7;
-
-	const clave = (dia: number) =>
-		`${anio}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
-
-	const celdas = Array.from({ length: totalCeldas }, (_, indice) => {
-		const numero = indice - desplazamiento + 1;
-		const dentroDelMes = numero >= 1 && numero <= totalDias;
-		// Los dias del mes vecino se muestran atenuados, con su numero real
-		const diaVecino = numero < 1 ? numero + diasDelMes(anio, mes - 1) : numero - totalDias;
-		const claveCelda = dentroDelMes ? clave(numero) : null;
-
-		return {
-			numero: dentroDelMes ? numero : diaVecino,
-			clave: claveCelda,
-			delMesVecino: !dentroDelMes,
-			eventos: claveCelda
-				? agenda
-						.filter(({ evento }) =>
-							clavesDelRango(evento.fechaInicio, evento.fechaFin ?? evento.fechaInicio).includes(
-								claveCelda
-							)
-						)
-						.slice(0, 3)
-						// La hora solo se muestra el primer dia: los demas son continuacion
-						.map(({ evento, estado }) => ({
-							evento,
-							estado,
-							primerDia: claveDia(evento.fechaInicio) === claveCelda
-						}))
-				: []
-		};
-	});
-
-	return { nombre, items, celdas };
-});
 ---
 
 <MainLayout title="Calendario | Lyoss" description="Todos los eventos de Lyoss en un solo lugar">
 	<div class="min-h-screen bg-base-100 pt-20">
 		<div class="container mx-auto px-4 py-8">
-			<header class="mb-8">
-				<div class="mb-4 flex items-center gap-3">
-					<CalendarDays class="h-10 w-10 text-base-content" />
-					<h1 class="font-heading text-4xl font-bold text-base-content lg:text-5xl">Calendario</h1>
-				</div>
-				<p class="text-lg text-base-content/70">
-					<span id="evento-count" aria-live="polite">{eventos.length}</span> eventos entre septiembre
-					y diciembre · agenda y mes a la vista
-				</p>
-			</header>
-
-			<!-- CONTROLES: filtros por tipo y cambio de vista -->
-			<div
-				class="mb-8 flex flex-col gap-4 rounded-2xl border border-base-content/10 bg-base-200/50 p-4 lg:flex-row lg:items-center lg:justify-between"
-			>
-				<div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filtrar por tipo">
-					<button
-						class="filtro-tipo btn btn-sm btn-primary"
-						data-tipo="todos"
-						data-clase="btn-primary"
-						aria-pressed="true"
-					>
-						Todos
-					</button>
-					{
-						tiposPresentes.map((tipo) => (
-							<button
-								class="filtro-tipo btn btn-outline btn-sm"
-								data-tipo={tipo}
-								data-clase={TIPOS_EVENTO[tipo].boton}
-								aria-pressed="false"
-							>
-								<span class={`inline-block h-2 w-2 rounded-full ${TIPOS_EVENTO[tipo].punto}`} />
-								{TIPOS_EVENTO[tipo].label}
-							</button>
-						))
-					}
-				</div>
-
-				<div class="join" role="group" aria-label="Cambiar de vista">
-					<button
-						class="cambiar-vista btn join-item btn-sm btn-primary"
-						data-vista="agenda"
-						aria-pressed="true"
-					>
-						Agenda
-					</button>
-					<button
-						class="cambiar-vista btn join-item btn-outline btn-sm"
-						data-vista="rejilla"
-						aria-pressed="false"
-					>
-						Mes
-					</button>
-				</div>
-			</div>
-
-			<!-- VISTA AGENDA -->
-			<div id="vista-agenda" class="flex flex-col gap-10">
-				{
-					porMes.map(({ mes, items }) => (
-						<section class="mes-agenda">
-							<h2 class="sticky top-16 z-10 mb-4 border-b border-base-content/10 bg-base-100/90 py-2 font-heading text-2xl font-bold text-base-content backdrop-blur">
-								{mes}
-							</h2>
-							<ul class="flex flex-col gap-4">
-								{items.map(({ evento, estado }) => (
-									<li
-										class="evento"
-										data-tipo={evento.tipo}
-										data-inicio={evento.fechaInicio.toISOString()}
-										data-fin={evento.fechaFin?.toISOString()}
-									>
-										<a
-											href={`/eventos/${evento.slug}`}
-											class="group flex flex-col gap-4 rounded-2xl border border-base-content/10 bg-base-200/50 p-5 transition-colors hover:border-primary/40 hover:bg-base-200 sm:flex-row sm:items-start"
-										>
-											<div class="flex shrink-0 items-baseline gap-2 sm:w-28 sm:flex-col sm:items-start sm:gap-0">
-												<span class="font-heading text-3xl font-bold text-base-content">
-													{formatearDia(evento.fechaInicio)}
-												</span>
-												<span class="text-sm text-base-content/60">
-													{formatearMesCorto(evento.fechaInicio)}
-												</span>
-											</div>
-
-											<div class="min-w-0 flex-1">
-												<div class="mb-2 flex flex-wrap items-center gap-2">
-													<span
-														class={`badge border-0 badge-sm ${TIPOS_EVENTO[evento.tipo].badge}`}
-													>
-														{TIPOS_EVENTO[evento.tipo].label}
-													</span>
-													<span class="badge-estado badge border-0 badge-sm" data-estado={estado}>
-														{ESTADOS_EVENTO[estado].label}
-													</span>
-													{evento.serie && (
-														<span class="text-xs text-base-content/50">{evento.serie}</span>
-													)}
-												</div>
-
-												<h3 class="mb-1 font-heading text-lg font-semibold text-base-content transition-colors group-hover:text-primary">
-													{evento.titulo}
-												</h3>
-
-												<p class="mb-3 text-sm text-base-content/70">{evento.descripcion}</p>
-
-												<div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-base-content/60">
-													<span class="inline-flex items-center gap-1">
-														<Clock class="h-4 w-4" />
-														{formatearRangoFechas(evento.fechaInicio, evento.fechaFin)}
-													</span>
-													<span class="inline-flex items-center gap-1">
-														<MapPin class="h-4 w-4" />
-														{evento.ubicacion}
-													</span>
-												</div>
-											</div>
-
-											<ArrowRight class="hidden h-5 w-5 shrink-0 text-base-content/30 transition-transform group-hover:translate-x-1 sm:block" />
-										</a>
-									</li>
-								))}
-							</ul>
-						</section>
-					))
-				}
-			</div>
-
-			<!-- VISTA REJILLA MENSUAL -->
-			<div id="vista-rejilla" class="hidden">
-				{
-					meses.map((mes, indice) => (
-						<section class="mes-rejilla" data-mes={indice} hidden={indice > 0}>
-							<div class="mb-4 flex items-center justify-between">
-								<button
-									class="mes-anterior btn btn-circle btn-ghost btn-sm"
-									aria-label="Mes anterior"
-								>
-									<ChevronLeft class="h-5 w-5" />
-								</button>
-								<h2 class="font-heading text-2xl font-bold text-base-content" aria-live="polite">
-									{mes.nombre}
-								</h2>
-								<button
-									class="mes-siguiente btn btn-circle btn-ghost btn-sm"
-									aria-label="Mes siguiente"
-								>
-									<ChevronRight class="h-5 w-5" />
-								</button>
-							</div>
-
-							<div class="overflow-x-auto">
-								<div class="grid min-w-[640px] grid-cols-7 gap-px overflow-hidden rounded-2xl border border-base-content/10 bg-base-content/10">
-									{NOMBRES_DIAS.map((dia) => (
-										<div class="bg-base-200 py-2 text-center text-xs font-semibold tracking-wide text-base-content/60 uppercase">
-											{dia}
-										</div>
-									))}
-
-									{mes.celdas.map((celda) => (
-										<div
-											class="min-h-24 bg-base-100 p-1.5 sm:min-h-28"
-											class:list={[celda.delMesVecino && 'bg-base-200/40 text-base-content/40']}
-										>
-											<span class="mb-1 block px-1 text-xs">{celda.numero}</span>
-											<div class="flex flex-col gap-1">
-												{celda.eventos.map(({ evento, estado, primerDia }) => (
-													<a
-														href={`/eventos/${evento.slug}`}
-														class="evento-chip flex items-center gap-1.5 rounded-lg border border-base-content/10 bg-base-200 px-1.5 py-1 text-[11px] leading-tight text-base-content transition-colors hover:border-primary/50"
-														data-tipo={evento.tipo}
-														data-inicio={evento.fechaInicio.toISOString()}
-														data-fin={evento.fechaFin?.toISOString()}
-														title={evento.titulo}
-													>
-														<span
-															class={`h-1.5 w-1.5 shrink-0 rounded-full ${TIPOS_EVENTO[evento.tipo].punto}`}
-														/>
-														<span class="truncate max-xs:hidden">
-															{primerDia && `${formatearHora(evento.fechaInicio)} `}
-															{evento.titulo}
-														</span>
-														<span class="badge-estado sr-only" data-estado={estado} />
-													</a>
-												))}
-											</div>
-										</div>
-									))}
-								</div>
-							</div>
-						</section>
-					))
-				}
-			</div>
+			<Encabezado
+				total={eventos.length}
+				resumen="eventos entre septiembre y diciembre · agenda y mes a la vista"
+			/>
+			<Controles tipos={tiposPresentes} />
+			<Agenda grupos={grupos} />
+			<Rejilla meses={meses} />
 		</div>
 	</div>
 
@@ -544,10 +282,9 @@ const meses = porMes.map(({ mes: nombre, items }) => {
 		});
 	</script>
 
-	<style>
-		/* Los eventos que ya terminaron se atenúan, en la agenda y en la rejilla */
+	<style is:global>
 		.evento-finalizado {
-			opacity: 0.6;
+			opacity: 0.4;
 		}
 	</style>
 </MainLayout>

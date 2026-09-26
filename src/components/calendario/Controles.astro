@@ -1,0 +1,55 @@
+---
+import { TIPOS_EVENTO, type TipoEvento } from '@/utils/eventos';
+
+type Props = {
+	// Solo los tipos que tienen eventos, para no mostrar filtros vacios
+	tipos: TipoEvento[];
+};
+
+const { tipos } = Astro.props;
+---
+
+<div
+	class="mb-8 flex flex-col gap-4 rounded-2xl border border-base-content/10 bg-base-200/50 p-4 lg:flex-row lg:items-center lg:justify-between"
+>
+	<div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filtrar por tipo">
+		<button
+			class="filtro-tipo btn btn-sm btn-primary"
+			data-tipo="todos"
+			data-clase="btn-primary"
+			aria-pressed="true"
+		>
+			Todos
+		</button>
+		{
+			tipos.map((tipo) => (
+				<button
+					class="filtro-tipo btn btn-outline btn-sm"
+					data-tipo={tipo}
+					data-clase={TIPOS_EVENTO[tipo].boton}
+					aria-pressed="false"
+				>
+					<span class={`inline-block h-2 w-2 rounded-full ${TIPOS_EVENTO[tipo].punto}`} />
+					{TIPOS_EVENTO[tipo].label}
+				</button>
+			))
+		}
+	</div>
+
+	<div class="join" role="group" aria-label="Cambiar de vista">
+		<button
+			class="cambiar-vista btn join-item btn-sm btn-primary"
+			data-vista="agenda"
+			aria-pressed="true"
+		>
+			Agenda
+		</button>
+		<button
+			class="cambiar-vista btn join-item btn-outline btn-sm"
+			data-vista="rejilla"
+			aria-pressed="false"
+		>
+			Mes
+		</button>
+	</div>
+</div>

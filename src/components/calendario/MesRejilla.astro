@@ -1,0 +1,56 @@
+---
+import { ChevronLeft, ChevronRight } from '@lucide/astro';
+import { NOMBRES_DIAS, type MesCalendario } from '@/utils/calendario';
+import ChipEvento from './ChipEvento.astro';
+
+type Props = {
+	mes: MesCalendario;
+	indice: number;
+};
+
+const { mes, indice } = Astro.props;
+---
+
+<section class="mes-rejilla" data-mes={indice} hidden={indice > 0}>
+	<div class="mb-4 flex items-center justify-between">
+		<button class="mes-anterior btn btn-circle btn-ghost btn-sm" aria-label="Mes anterior">
+			<ChevronLeft class="h-5 w-5" />
+		</button>
+		<h2 class="font-heading text-2xl font-bold text-base-content" aria-live="polite">
+			{mes.nombre}
+		</h2>
+		<button class="mes-siguiente btn btn-circle btn-ghost btn-sm" aria-label="Mes siguiente">
+			<ChevronRight class="h-5 w-5" />
+		</button>
+	</div>
+
+	<div class="overflow-x-auto">
+		<div
+			class="grid min-w-[640px] grid-cols-7 gap-px overflow-hidden rounded-2xl border border-base-content/10 bg-base-content/10"
+		>
+			{
+				NOMBRES_DIAS.map((dia) => (
+					<div class="bg-base-200 py-2 text-center text-xs font-semibold tracking-wide text-base-content/60 uppercase">
+						{dia}
+					</div>
+				))
+			}
+
+			{
+				mes.celdas.map((celda) => (
+					<div
+						class="min-h-24 bg-base-100 p-1.5 sm:min-h-28"
+						class:list={[celda.delMesVecino && 'bg-base-200/40 text-base-content/40']}
+					>
+						<span class="mb-1 block px-1 text-xs">{celda.numero}</span>
+						<div class="flex flex-col gap-1">
+							{celda.eventos.map(({ evento, estado, primerDia }) => (
+								<ChipEvento evento={evento} estado={estado} primerDia={primerDia} />
+							))}
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>

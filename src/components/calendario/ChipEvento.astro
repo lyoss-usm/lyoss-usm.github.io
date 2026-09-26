@@ -1,0 +1,27 @@
+---
+import { TIPOS_EVENTO, formatearHora, type Evento, type EstadoEvento } from '@/utils/eventos';
+
+type Props = {
+	evento: Evento;
+	estado: EstadoEvento;
+	primerDia: boolean;
+};
+
+const { evento, estado, primerDia } = Astro.props;
+---
+
+<a
+	href={`/eventos/${evento.slug}`}
+	class="evento-chip flex items-center gap-1.5 rounded-lg border border-base-content/10 bg-base-200 px-1.5 py-1 text-[11px] leading-tight text-base-content transition-colors hover:border-primary/50"
+	data-tipo={evento.tipo}
+	data-inicio={evento.fechaInicio.toISOString()}
+	data-fin={evento.fechaFin?.toISOString()}
+	title={evento.titulo}
+>
+	<span class={`h-1.5 w-1.5 shrink-0 rounded-full ${TIPOS_EVENTO[evento.tipo].punto}`}></span>
+	<span class="truncate max-xs:hidden">
+		{primerDia && `${formatearHora(evento.fechaInicio)} `}
+		{evento.titulo}
+	</span>
+	<span class="badge-estado sr-only" data-estado={estado}></span>
+</a>

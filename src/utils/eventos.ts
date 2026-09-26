@@ -118,6 +118,26 @@ export function calcularEstado(
 
 export type TipoEvento = 'institucional' | 'taller' | 'hackaton' | 'coloquio' | 'charla' | 'otro';
 
+/* Evento: la forma que usan las vistas, con las fechas ya interpretadas */
+
+export type Evento = {
+	slug: string;
+	titulo: string;
+	tipo: TipoEvento;
+	serie?: string;
+	fechaInicio: Date;
+	fechaFin?: Date;
+	ubicacion: string;
+	descripcion: string;
+	enlace?: string;
+	textoEnlace?: string;
+	destacado?: boolean;
+};
+
+/* Un evento ya resuelto con su estado, que es lo que pintan las vistas */
+
+export type EventoConEstado = { evento: Evento; estado: EstadoEvento };
+
 export const TIPOS_EVENTO: Record<
 	TipoEvento,
 	{ label: string; badge: string; punto: string; boton: string; orden: number }
