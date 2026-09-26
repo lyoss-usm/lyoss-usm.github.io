@@ -95,34 +95,44 @@ if (primero && ultimo) {
 
 		// Navegación entre meses: se saltan los meses sin eventos visibles al filtrar
 		const bloques = Array.from(document.querySelectorAll<HTMLElement>('.mes-rejilla'));
-		const botonAnterior = document.querySelector<HTMLButtonElement>('.mes-anterior');
-		const botonSiguiente = document.querySelector<HTMLButtonElement>('.mes-siguiente');
-		let mesActual = 0;
+		const botonesAnterior = document.querySelectorAll<HTMLButtonElement>('.mes-anterior');
+		const botonesSiguiente = document.querySelectorAll<HTMLButtonElement>('.mes-siguiente');
+		let bloqueActual: HTMLElement | null = null;
 
 		const mesesVisibles = () =>
 			bloques.filter((bloque) => !bloque.classList.contains('sin-eventos'));
 
 		const pintarMes = () => {
 			const visibles = mesesVisibles();
-			mesActual = Math.min(Math.max(mesActual, 0), Math.max(visibles.length - 1, 0));
+			// Al filtrar puede quedar fuera el mes que se estaba viendo
+			if (!bloqueActual || !visibles.includes(bloqueActual)) {
+				bloqueActual = visibles[0] ?? null;
+			}
 			// Se ocultan todos los bloques y se revela solo el mes actual
 			bloques.forEach((bloque) => {
-				bloque.hidden = true;
+				bloque.hidden = bloque !== bloqueActual;
 			});
-			visibles.forEach((bloque, indice) => {
-				bloque.hidden = indice !== mesActual;
-			});
-			if (botonAnterior) botonAnterior.disabled = mesActual === 0;
-			if (botonSiguiente) botonSiguiente.disabled = mesActual === visibles.length - 1;
+			const indice = bloqueActual ? visibles.indexOf(bloqueActual) : 0;
+			botonesAnterior.forEach((boton) => (boton.disabled = indice === 0));
+			botonesSiguiente.forEach((boton) => (boton.disabled = indice === visibles.length - 1));
 		};
 
-		botonAnterior?.addEventListener('click', () => {
-			mesActual = Math.max(0, mesActual - 1);
+		const moverMes = (delta: number) => {
+			const visibles = mesesVisibles();
+			const indice = bloqueActual ? visibles.indexOf(bloqueActual) : 0;
+			const destino = visibles[indice + delta];
+			if (!destino) return;
+			bloqueActual = destino;
 			pintarMes();
-		});
-		botonSiguiente?.addEventListener('click', () => {
-			mesActual = Math.min(mesesVisibles().length - 1, mesActual + 1);
-			pintarMes();
+		};
+
+		// Cada mes trae su propio par de botones, así que se escuchan por delegación
+		rejilla?.addEventListener('click', (evento) => {
+			const boton = (evento.target as HTMLElement).closest<HTMLButtonElement>(
+				'.mes-anterior, .mes-siguiente'
+			);
+			if (!boton || boton.disabled) return;
+			moverMes(boton.classList.contains('mes-anterior') ? -1 : 1);
 		});
 		pintarMes();
 
