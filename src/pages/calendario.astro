@@ -1,141 +1,26 @@
 ---
 /*
- * PROTOTIPO de /calendario con datos mock inline.
- * Sirve para revisar el diseño antes de conectar la colección de eventos.
+ * Calendario de eventos con datos de la colección 'eventos'.
  */
 import MainLayout from '@/layouts/MainLayout.astro';
 import Encabezado from '@/components/calendario/Encabezado.astro';
 import Controles from '@/components/calendario/Controles.astro';
 import Agenda from '@/components/calendario/Agenda.astro';
 import Rejilla from '@/components/calendario/Rejilla.astro';
+import { getCollection } from 'astro:content';
 import {
 	TIPOS_EVENTO,
 	calcularEstado,
-	interpretarFecha,
-	type Evento,
+	aEvento,
+	formatearMesAnio,
 	type TipoEvento
 } from '@/utils/eventos';
 import { agruparPorMes, construirMeses } from '@/utils/calendario';
 
-const fecha = (valor: string) => interpretarFecha(valor) as Date;
-
-/* DATOS MOCK: se reemplazan por getCollection('eventos') */
-
-const eventosMock: Evento[] = [
-	{
-		slug: 'coloquio-software-libre',
-		titulo: 'Coloquio: Linux y el software libre en la universidad',
-		tipo: 'coloquio',
-		serie: undefined,
-		fechaInicio: fecha('2026-09-02 11:00'),
-		fechaFin: fecha('2026-09-02 13:00'),
-		ubicacion: 'Aula A-201, USM',
-		descripcion:
-			'Conversación abierta con amigos de la carrera sobre prácticas de código libre en el campus.',
-		enlace: undefined,
-		textoEnlace: 'Ver resumen',
-		destacado: false
-	},
-	{
-		slug: 'install-day-arch-linux',
-		titulo: 'Install Day: Arch Linux',
-		tipo: 'institucional',
-		serie: undefined,
-		fechaInicio: fecha('2026-09-19 10:00'),
-		fechaFin: fecha('2026-09-19 16:00'),
-		ubicacion: 'Laboratorio de computación, USM',
-		descripcion:
-			'Acompañamos la instalación de Arch Linux desde cero. Trae tu equipo y una USB con el instalador.',
-		enlace: undefined,
-		textoEnlace: 'Reservar lugar',
-		destacado: false
-	},
-	{
-		slug: 'taller-git-clase-0',
-		titulo: 'Taller de Git · Clase 0: Bienvenida y entorno de trabajo',
-		tipo: 'taller',
-		serie: 'Taller de Git',
-		fechaInicio: fecha('2026-09-25 18:00'),
-		fechaFin: fecha('2026-09-27 13:00'),
-		ubicacion: 'Sala de estudio, USM',
-		descripcion:
-			'Sesión de apertura del taller: instalamos las herramientas y dejamos cada equipo listo para partir.',
-		enlace: undefined,
-		textoEnlace: 'Inscribirme',
-		destacado: false
-	},
-	{
-		slug: 'taller-git-clase-1',
-		titulo: 'Taller de Git · Clase 1: Primeros pasos',
-		tipo: 'taller',
-		serie: 'Taller de Git',
-		fechaInicio: fecha('2026-10-06 18:00'),
-		fechaFin: fecha('2026-10-06 20:30'),
-		ubicacion: 'Sala de estudio, USM',
-		descripcion:
-			'Configuración inicial, staged, commits y cómo leer el historial de un repositorio.',
-		enlace: undefined,
-		textoEnlace: 'Inscribirme',
-		destacado: false
-	},
-	{
-		slug: 'taller-git-clase-2',
-		titulo: 'Taller de Git · Clase 2: Ramas y pull requests',
-		tipo: 'taller',
-		serie: 'Taller de Git',
-		fechaInicio: fecha('2026-10-13 18:00'),
-		fechaFin: fecha('2026-10-13 20:30'),
-		ubicacion: 'Sala de estudio, USM',
-		descripcion: 'Ramas, merges, pull requests y el flujo de trabajo que usamos en Lyoss.',
-		enlace: undefined,
-		textoEnlace: 'Inscribirme',
-		destacado: false
-	},
-	{
-		slug: 'taller-git-clase-3',
-		titulo: 'Taller de Git · Clase 3: Rebase y conflictos',
-		tipo: 'taller',
-		serie: 'Taller de Git',
-		fechaInicio: fecha('2026-10-20 18:00'),
-		fechaFin: fecha('2026-10-20 20:30'),
-		ubicacion: 'Sala de estudio, USM',
-		descripcion:
-			'Cómo sobrevivir a un rebase conflictivo y qué reglas seguimos para mantener un historial sano.',
-		enlace: undefined,
-		textoEnlace: 'Inscribirme',
-		destacado: false
-	},
-	{
-		slug: 'hackaton-2026',
-		titulo: 'Hackaton LyOSS 2026',
-		tipo: 'hackaton',
-		serie: undefined,
-		fechaInicio: fecha('2026-11-13 18:00'),
-		fechaFin: fecha('2026-11-15 14:00'),
-		ubicacion: 'Por definir · USM',
-		descripcion:
-			'Fin de semana de programación en equipo para desarrollar open source. Cronograma, categorías y premios en la landing.',
-		enlace: undefined,
-		textoEnlace: 'Bases e inscripción',
-		destacado: true
-	},
-	{
-		slug: 'charla-contribuir-oss',
-		titulo: 'Charla: Cómo empezar a contribuir en open source',
-		tipo: 'charla',
-		serie: undefined,
-		fechaInicio: fecha('2026-12-10 17:00'),
-		fechaFin: fecha('2026-12-10 19:00'),
-		ubicacion: 'Online · Discord',
-		descripcion:
-			'Qué hace un buen primer PR, cómo elegir un proyecto y qué esperar de la revisión de código.',
-		enlace: undefined,
-		textoEnlace: 'Quedarme atento',
-		destacado: false
-	}
-];
-
-const eventos = [...eventosMock].sort((a, b) => a.fechaInicio.getTime() - b.fechaInicio.getTime());
+const entradas = await getCollection('eventos');
+const eventos = entradas
+	.map(aEvento)
+	.sort((a, b) => a.fechaInicio.getTime() - b.fechaInicio.getTime());
 
 const agenda = eventos.map((evento) => ({
 	evento,
@@ -148,15 +33,23 @@ const meses = construirMeses(agenda, grupos);
 const tiposPresentes = (Object.keys(TIPOS_EVENTO) as TipoEvento[]).filter((tipo) =>
 	eventos.some((evento) => evento.tipo === tipo)
 );
+
+// El periodo del resumen sale de los propios eventos, no de meses escritos a mano
+const primero = eventos[0]?.fechaInicio;
+const ultimo = eventos.at(-1)?.fechaInicio;
+let resumen = 'eventos por confirmar · agenda y mes a la vista';
+if (primero && ultimo) {
+	const desde = formatearMesAnio(primero);
+	const hasta = formatearMesAnio(ultimo);
+	const periodo = desde === hasta ? desde : `${desde.toLowerCase()} a ${hasta.toLowerCase()}`;
+	resumen = `eventos de ${periodo} · agenda y mes a la vista`;
+}
 ---
 
 <MainLayout title="Calendario | Lyoss" description="Todos los eventos de Lyoss en un solo lugar">
 	<div class="min-h-screen bg-base-100 pt-20">
 		<div class="container mx-auto px-4 py-8">
-			<Encabezado
-				total={eventos.length}
-				resumen="eventos entre septiembre y diciembre · agenda y mes a la vista"
-			/>
+			<Encabezado total={eventos.length} resumen={resumen} />
 			<Controles tipos={tiposPresentes} />
 			<Agenda grupos={grupos} />
 			<Rejilla meses={meses} />

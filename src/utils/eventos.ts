@@ -138,6 +138,30 @@ export type Evento = {
 
 export type EventoConEstado = { evento: Evento; estado: EstadoEvento };
 
+/*
+ * Adaptador: la colección de astro entrega { id, data } y las vistas quieren un Evento.
+ * El id del archivo es el slug. Las fechas llegan como Date | null porque el schema
+ * las valida con refine, asi que se estrechan aqui con un error claro.
+ */
+
+type EntradaEvento = {
+	id: string;
+	data: Omit<Evento, 'slug'> & { fechaInicio: Date | null; fechaFin?: Date | null };
+};
+
+export function aEvento(entrada: EntradaEvento): Evento {
+	const { fechaInicio, fechaFin, ...resto } = entrada.data;
+	if (!(fechaInicio instanceof Date) || Number.isNaN(fechaInicio.getTime())) {
+		throw new Error(`El evento ${entrada.id} no tiene una fechaInicio válida`);
+	}
+	return {
+		...resto,
+		slug: entrada.id,
+		fechaInicio,
+		...(fechaFin ? { fechaFin } : {})
+	};
+}
+
 export const TIPOS_EVENTO: Record<
 	TipoEvento,
 	{ label: string; badge: string; punto: string; boton: string; orden: number }
