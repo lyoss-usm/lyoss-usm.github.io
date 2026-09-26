@@ -1,6 +1,11 @@
 import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob, file } from 'astro/loaders';
+import { interpretarFecha } from './utils/eventos';
+
+// Las fechas se escriben en hora de Chile: 2026-11-13 o '2026-11-13 18:00'.
+// Entrecomilla el valor cuando incluyas hora o zona horaria, para que js-yaml no
+// lo convierta a un Date ambiguo. Ver interpretarFecha en utils/eventos.ts
 
 const canalesCollection = defineCollection({
 	loader: file('./src/content/canales/redes.json'),
@@ -16,6 +21,32 @@ const canalesCollection = defineCollection({
 
 const contenidosCollection = defineCollection({
 	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/contenidos' })
+});
+
+const fecha = z
+	.union([z.string(), z.date()])
+	.transform((valor) => interpretarFecha(valor))
+	.refine((valor) => valor instanceof Date, {
+		message: 'Si la fecha incluye hora o zona horaria, entrecomilla el valor: 2026-11-13 18:00'
+	})
+	.refine((valor) => !(valor instanceof Date) || !Number.isNaN(valor.getTime()), {
+		message: 'Fecha no válida. Usa 2026-11-13 o, entrecomillado, 2026-11-13 18:00'
+	});
+
+const eventosCollection = defineCollection({
+	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/eventos' }),
+	schema: z.object({
+		titulo: z.string(),
+		tipo: z.enum(['institucional', 'taller', 'hackaton', 'coloquio', 'charla', 'otro']),
+		serie: z.string().optional(),
+		fechaInicio: fecha,
+		fechaFin: fecha.optional(),
+		ubicacion: z.string(),
+		descripcion: z.string().max(300),
+		enlace: z.url().optional(),
+		textoEnlace: z.string().default('Más información'),
+		destacado: z.boolean().default(false)
+	})
 });
 
 const nosotrosCollection = defineCollection({
@@ -48,5 +79,6 @@ const nosotrosCollection = defineCollection({
 export const collections = {
 	canales: canalesCollection,
 	contenidos: contenidosCollection,
+	eventos: eventosCollection,
 	nosotros: nosotrosCollection
 };
