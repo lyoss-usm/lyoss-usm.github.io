@@ -52,14 +52,16 @@ const destacado = destacados.at(0) ?? null;
 
 <script>
 	import { ESTADOS_EVENTO, calcularEstado } from '@/utils/eventos';
+	import { lanzarConfeti } from '@/utils/confeti';
+
+	const alerta = document.querySelector<HTMLElement>('[data-alerta-evento]');
+	const inicio = alerta?.dataset.inicio;
 
 	/*
 	 * El build decide si el aviso se muestra, pero un sitio estatico puede quedar
 	 * publicado con el evento ya terminado. Si al cargar ya vencio, el aviso se
 	 * retira para no seguir anunciando algo que ya paso.
 	 */
-	const alerta = document.querySelector<HTMLElement>('[data-alerta-evento]');
-	const inicio = alerta?.dataset.inicio;
 	if (alerta && inicio) {
 		const estado = calcularEstado(
 			new Date(inicio),
@@ -76,5 +78,15 @@ const destacado = destacados.at(0) ?? null;
 				badge.textContent = ESTADOS_EVENTO[estado].label;
 			}
 		}
+	}
+
+	/*
+	 * Confeti: sale en cada carga de la pagina, no se repite solo. Solo si el
+	 * aviso sigue en pie y la persona no pidio menos movimiento.
+	 */
+	if (alerta?.isConnected && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		// Del origen y del tamano se encarga el confeti, que mide el canvas y
+		// adjusts la descarga segun el nivel de pantalla
+		lanzarConfeti(alerta);
 	}
 </script>
