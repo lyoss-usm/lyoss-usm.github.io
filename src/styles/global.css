@@ -124,3 +124,10 @@
 		transform: rotate(360deg);
 	}
 }
+
+/* Un evento que ya termino se apaga, igual en el calendario y en "Mas de" de la ficha.
+   La clase la agrega el script de cada pagina segun la fecha de quien visita, asi que
+   el marcado solo la usa si el bloque esta marcado con data-atenuar */
+.evento-finalizado {
+	opacity: 0.4;
+}

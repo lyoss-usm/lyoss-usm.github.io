@@ -35,6 +35,7 @@ const hermanos = evento.serie
 					{hermanos.map(({ evento: otro, estado }) => (
 						<li
 							data-evento
+							data-atenuar
 							data-inicio={otro.fechaInicio.toISOString()}
 							data-fin={otro.fechaFin?.toISOString()}
 						>

@@ -53,7 +53,8 @@ const agenda: EventoConEstado[] = (await getCollection('eventos')).map(aEvento).
 	/*
 	 * El build resuelve el estado con su propia fecha, pero un sitio estatico
 	 * puede quedar publicado con el evento ya vencido. Con la hora de quien
-	 * visita se repintan los badges, igual que en el calendario y en la alerta.
+	 * visita se repintan los badges y se apagan los eventos vencidos, igual que
+	 * en el calendario y en la alerta.
 	 */
 	document.querySelectorAll<HTMLElement>('[data-evento]').forEach((bloque) => {
 		const inicio = bloque.dataset.inicio;
@@ -70,5 +71,11 @@ const agenda: EventoConEstado[] = (await getCollection('eventos')).map(aEvento).
 		Object.values(ESTADOS_EVENTO).forEach((otro) => badge.classList.remove(otro.badge));
 		badge.classList.add(ESTADOS_EVENTO[estado].badge);
 		badge.textContent = ESTADOS_EVENTO[estado].label;
+
+		// Solo se apagan los bloques marcados con data-atenuar. La cabecera de la ficha
+		// no lo lleva: tiene que seguir legible aunque el evento ya haya pasado.
+		if (bloque.hasAttribute('data-atenuar')) {
+			bloque.classList.toggle('evento-finalizado', estado === 'finalizado');
+		}
 	});
 </script>
