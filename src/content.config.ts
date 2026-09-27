@@ -33,6 +33,17 @@ const fecha = z
 		message: 'Fecha no válida. Usa 2026-11-13 o, entrecomillado, 2026-11-13 18:00'
 	});
 
+/*
+ * Un evento puede llevar varios llamados a la accion (inscribirse, ver las bases,
+ * repositorio). Cada uno con su texto, su destino y su color, asi que la lista
+ * se recorre en el orden en que se escribio.
+ */
+const enlaceEvento = z.object({
+	texto: z.string(),
+	url: z.url(),
+	color: z.enum(['primary', 'secondary', 'accent', 'neutral']).default('primary')
+});
+
 const eventosCollection = defineCollection({
 	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/eventos' }),
 	schema: z.object({
@@ -43,8 +54,7 @@ const eventosCollection = defineCollection({
 		fechaFin: fecha.optional(),
 		ubicacion: z.string(),
 		descripcion: z.string().max(300),
-		enlace: z.url().optional(),
-		textoEnlace: z.string().default('Más información'),
+		enlaces: z.array(enlaceEvento).default([]),
 		destacado: z.boolean().default(false)
 	})
 });

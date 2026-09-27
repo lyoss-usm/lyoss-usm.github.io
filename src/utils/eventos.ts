@@ -118,6 +118,16 @@ export function calcularEstado(
 
 export type TipoEvento = 'institucional' | 'taller' | 'hackaton' | 'coloquio' | 'charla' | 'otro';
 
+/* Enlaces: un evento puede tener varios, cada uno con su color de boton */
+
+export type ColorEnlace = 'primary' | 'secondary' | 'accent' | 'neutral';
+
+export type EnlaceEvento = {
+	texto: string;
+	url: string;
+	color: ColorEnlace;
+};
+
 /* Evento: la forma que usan las vistas, con las fechas ya interpretadas */
 
 export type Evento = {
@@ -129,8 +139,7 @@ export type Evento = {
 	fechaFin?: Date;
 	ubicacion: string;
 	descripcion: string;
-	enlace?: string;
-	textoEnlace?: string;
+	enlaces: EnlaceEvento[];
 	destacado?: boolean;
 };
 
@@ -208,6 +217,15 @@ export const TIPOS_EVENTO: Record<
 		boton: 'btn-neutral',
 		orden: 5
 	}
+};
+
+/* Los enlaces declaran su color por nombre, y aqui se traduce a la clase de daisyUI */
+
+export const COLORES_ENLACE: Record<ColorEnlace, string> = {
+	primary: 'btn-primary',
+	secondary: 'btn-secondary',
+	accent: 'btn-accent',
+	neutral: 'btn-neutral'
 };
 
 /* Formateo: siempre en hora de Chile, sin importar donde se renderice */

@@ -1,0 +1,86 @@
+---
+import { ArrowLeft, ArrowUpRight, Clock, MapPin } from '@lucide/astro';
+import {
+	COLORES_ENLACE,
+	ESTADOS_EVENTO,
+	TIPOS_EVENTO,
+	formatearRangoFechas,
+	type Evento,
+	type EstadoEvento
+} from '@/utils/eventos';
+
+type Props = { evento: Evento; estado: EstadoEvento };
+
+const { evento, estado } = Astro.props;
+
+/*
+ * Cabecera del evento: tipo, estado, fechas, ubicacion y enlaces salen del
+ * frontmatter, asi que agregar un evento nuevo no obliga a tocar este archivo.
+ * Lo unico que se redacta por evento es el cuerpo en MDX.
+ */
+---
+
+<section
+	class="bg-base-100 pt-20"
+	data-evento
+	data-inicio={evento.fechaInicio.toISOString()}
+	data-fin={evento.fechaFin?.toISOString()}
+>
+	<div class="container mx-auto max-w-4xl px-4 py-12 lg:py-16">
+		<a
+			href="/calendario"
+			class="mb-8 inline-flex items-center gap-2 text-sm text-base-content/60 transition-colors hover:text-primary"
+		>
+			<ArrowLeft class="h-4 w-4" aria-hidden="true" />
+			Todos los eventos
+		</a>
+
+		<div class="mb-4 flex flex-wrap items-center gap-2">
+			<span class={`badge badge-sm border-0 ${TIPOS_EVENTO[evento.tipo].badge}`}>
+				{TIPOS_EVENTO[evento.tipo].label}
+			</span>
+			<span class="badge-estado badge border-0 badge-sm" data-estado={estado}>
+				{ESTADOS_EVENTO[estado].label}
+			</span>
+			{evento.serie && <span class="text-xs text-base-content/50">{evento.serie}</span>}
+		</div>
+
+		<h1 class="mb-4 font-heading text-4xl font-bold text-base-content lg:text-5xl">
+			{evento.titulo}
+		</h1>
+
+		<p class="mb-8 text-lg text-base-content/70">{evento.descripcion}</p>
+
+		<div class="rounded-2xl border border-base-content/10 bg-base-200/50 p-5">
+			<div class="flex flex-col gap-2 text-sm text-base-content/70">
+				<span class="inline-flex items-center gap-2">
+					<Clock class="h-4 w-4 shrink-0 text-base-content/50" aria-hidden="true" />
+					{formatearRangoFechas(evento.fechaInicio, evento.fechaFin)}
+				</span>
+				<span class="inline-flex items-center gap-2">
+					<MapPin class="h-4 w-4 shrink-0 text-base-content/50" aria-hidden="true" />
+					{evento.ubicacion}
+				</span>
+			</div>
+
+			{
+				evento.enlaces.length > 0 && (
+					<div class="mt-5 flex flex-wrap gap-3 border-t border-base-content/10 pt-5">
+						{evento.enlaces.map((enlace) => (
+							<a
+								href={enlace.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								class={`btn ${COLORES_ENLACE[enlace.color]}`}
+								data-umami-event="evento-cta"
+							>
+								{enlace.texto}
+								<ArrowUpRight class="h-4 w-4" aria-hidden="true" />
+							</a>
+						))}
+					</div>
+				)
+			}
+		</div>
+	</div>
+</section>
