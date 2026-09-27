@@ -14,8 +14,9 @@ type Props = {
 const { id, titulo, detalle, conAccion = false, clas = '', oculto = true, ...resto } = Astro.props;
 /*
  * Estado vacio del calendario, el mismo para la agenda y para un mes de la rejilla.
- * El script reescribe [data-vacio-titulo] y [data-vacio-detalle] segun el filtro,
- * asi que la copia de aqui es la que se ve sin filtros.
+ * El script reescribe [data-vacio-titulo] y [data-vacio-detalle] segun el filtro, y
+ * decide que hace el boton con [data-vacio-accion], asi que la copia de aqui es la
+ * que se ve sin filtros.
  */
 ---
 
@@ -30,7 +31,7 @@ const { id, titulo, detalle, conAccion = false, clas = '', oculto = true, ...res
 	<p class="mx-auto mt-2 max-w-md text-sm text-base-content/60" data-vacio-detalle>{detalle}</p>
 	{
 		conAccion && (
-			<button type="button" class="btn mt-6 btn-sm btn-primary" data-quitar-filtro>
+			<button type="button" class="btn mt-6 btn-sm btn-primary" data-vacio-accion="filtro">
 				Ver todos los eventos
 			</button>
 		)

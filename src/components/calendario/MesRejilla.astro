@@ -13,7 +13,6 @@ import {
 	formatearRangoFechas
 } from '@/utils/eventos';
 import ChipEvento from './ChipEvento.astro';
-import Vacio from './Vacio.astro';
 
 type Props = {
 	mes: MesCalendario;
@@ -21,6 +20,10 @@ type Props = {
 };
 
 const { mes, indice } = Astro.props;
+/*
+ * data-mes-sin-eventos lo pone el script cuando el mes se queda sin eventos visibles:
+ * el bloque se retira y el mes deja de ofrecerse en la navegacion.
+ */
 ---
 
 <section class="mes-rejilla" data-mes={indice} data-mes-nombre={mes.nombre} hidden={indice > 0}>
@@ -36,16 +39,7 @@ const { mes, indice } = Astro.props;
 		</button>
 	</div>
 
-	<Vacio
-		titulo={`No hay eventos en ${mes.nombre}`}
-		detalle="No hay eventos en este mes por ahora."
-		conAccion
-		clas="mb-4"
-		data-mes-vacio
-		hidden
-	/>
-
-	<div class="rejilla-dias overflow-x-auto" data-items-mes>
+	<div class="rejilla-dias overflow-x-auto">
 		<div
 			class="grid grid-cols-7 gap-px overflow-hidden rounded-2xl border border-base-content/10 bg-base-content/10"
 		>
@@ -60,8 +54,7 @@ const { mes, indice } = Astro.props;
 			{
 				mes.celdas.map((celda) => {
 					const conEventos = celda.eventos.length > 0;
-					const etiqueta =
-						celda.clave && conEventos ? formatearDiaLargo(fechaDeClave(celda.clave)) : '';
+					const etiqueta = conEventos ? formatearDiaLargo(fechaDeClave(celda.clave)) : '';
 					const chips = celda.eventos.slice(0, MAX_CHIPS_CELDA);
 					const restantes = celda.eventos.length - chips.length;
 

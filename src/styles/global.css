@@ -131,3 +131,9 @@
 .evento-finalizado {
 	opacity: 0.4;
 }
+
+/* Un mes que se quedo sin nada que mostrar se retira entero: ni seccion en la agenda
+   ni mes navegable en la rejilla */
+[data-mes-sin-eventos] {
+	display: none;
+}

@@ -1,7 +1,6 @@
 ---
 import type { GrupoMes } from '@/utils/calendario';
 import TarjetaEvento from './TarjetaEvento.astro';
-import Vacio from './Vacio.astro';
 
 type Props = {
 	grupos: GrupoMes[];
@@ -9,6 +8,10 @@ type Props = {
 };
 
 const { grupos, oculto = false } = Astro.props;
+/*
+ * Los meses sin eventos visibles se ocultan enteros con data-mes-sin-eventos, asi que
+ * no hace falta un estado vacio por mes: el que importa es el general, en calendario.
+ */
 ---
 
 <div id="vista-agenda" class="flex flex-col gap-10" hidden={oculto}>
@@ -18,15 +21,7 @@ const { grupos, oculto = false } = Astro.props;
 				<h2 class="sticky top-16 z-10 mb-4 border-b border-base-content/10 bg-base-100/90 py-2 font-heading text-2xl font-bold text-base-content backdrop-blur">
 					{mes}
 				</h2>
-				<Vacio
-					titulo={`No hay eventos en ${mes}`}
-					detalle="No hay eventos en este mes por ahora."
-					conAccion
-					clas="py-10"
-					data-mes-vacio
-					hidden
-				/>
-				<ul class="flex flex-col gap-4" data-items-mes>
+				<ul class="flex flex-col gap-4">
 					{items.map(({ evento, estado }) => (
 						<TarjetaEvento evento={evento} estado={estado} />
 					))}

@@ -1,4 +1,5 @@
 ---
+import { History } from '@lucide/astro';
 import { TIPOS_EVENTO, type TipoEvento } from '@/utils/eventos';
 
 type Props = {
@@ -38,26 +39,40 @@ const { tipos } = Astro.props;
 
 	<span class="h-px w-full shrink-0 bg-base-content/10 lg:hidden" aria-hidden="true"></span>
 
-	<!-- Control segmentado: un solo borde con una línea divisoria entre las dos vistas -->
-	<div
-		class="inline-flex items-center self-start overflow-hidden rounded-lg border border-base-content/20"
-		role="group"
-		aria-label="Cambiar de vista"
-	>
+	<div class="flex flex-wrap items-center gap-3 self-start">
+		<!-- Por defecto se ven solo los eventos que no pasaron; el boton destapa el historial -->
 		<button
-			class="cambiar-vista btn rounded-none border-0 btn-sm btn-primary"
-			data-vista="agenda"
-			aria-pressed="true"
-		>
-			Agenda
-		</button>
-		<span class="w-px self-stretch bg-base-content/20" aria-hidden="true"></span>
-		<button
-			class="cambiar-vista btn rounded-none border-0 btn-outline btn-sm"
-			data-vista="rejilla"
+			class="ver-historial btn btn-outline btn-sm"
+			data-ver-historial
 			aria-pressed="false"
+			aria-controls="vista-agenda"
 		>
-			Mes
+			<History class="h-4 w-4" aria-hidden="true" />
+			<span data-historial-etiqueta>Ver todo el historial</span>
+			<span class="badge badge-sm" data-historial-cantidad>0</span>
 		</button>
+
+		<!-- Control segmentado: un solo borde con una línea divisoria entre las dos vistas -->
+		<div
+			class="inline-flex items-center overflow-hidden rounded-lg border border-base-content/20"
+			role="group"
+			aria-label="Cambiar de vista"
+		>
+			<button
+				class="cambiar-vista btn rounded-none border-0 btn-sm btn-primary"
+				data-vista="agenda"
+				aria-pressed="true"
+			>
+				Agenda
+			</button>
+			<span class="w-px self-stretch bg-base-content/20" aria-hidden="true"></span>
+			<button
+				class="cambiar-vista btn rounded-none border-0 btn-outline btn-sm"
+				data-vista="rejilla"
+				aria-pressed="false"
+			>
+				Mes
+			</button>
+		</div>
 	</div>
 </div>

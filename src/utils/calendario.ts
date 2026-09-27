@@ -16,8 +16,9 @@ export type ChipEnCelda = EventoConEstado & {
 
 export type Celda = {
 	numero: number;
-	// Clave del dia (AAAA-MM-DD) si la celda pertenece al mes, null si es del vecino
-	clave: string | null;
+	// Clave del dia real de la celda (AAAA-MM-DD), tambien en los dias del mes vecino:
+	// esos dias muestran sus eventos igual, solo que atenuados
+	clave: string;
 	delMesVecino: boolean;
 	eventos: ChipEnCelda[];
 };
@@ -54,14 +55,18 @@ export function construirMeses(agenda: EventoConEstado[], grupos: GrupoMes[]): M
 	return grupos.map(({ mes: nombre, items }) => ({
 		nombre,
 		items,
-		celdas: construirCeldas(agenda, items[0].evento.fechaInicio)
+		// La rejilla se arma sobre la fecha local del primer evento del mes, no sobre
+		// los campos UTC del instante: un evento de la noche cruzaria al mes siguiente
+		celdas: construirCeldas(agenda, fechaDeClave(claveDia(items[0].evento.fechaInicio)))
 	}));
 }
 
 function clavesDelRango(desde: Date, hasta: Date): string[] {
 	const claves: string[] = [];
-	const actual = new Date(`${claveDia(desde)}T00:00:00Z`);
-	const fin = new Date(`${claveDia(hasta)}T00:00:00Z`);
+	// Mediodia UTC en ambos extremos, como en fechaDeClave: si se leyera a medianoche
+	// UTC, en Chile esa hora es la tarde anterior y las claves salarian un dia atrasadas
+	const actual = fechaDeClave(claveDia(desde));
+	const fin = fechaDeClave(claveDia(hasta));
 	while (actual.getTime() <= fin.getTime()) {
 		claves.push(claveDia(actual));
 		actual.setUTCDate(actual.getUTCDate() + 1);
@@ -71,30 +76,31 @@ function clavesDelRango(desde: Date, hasta: Date): string[] {
 
 const diasDelMes = (anio: number, mes: number) => new Date(Date.UTC(anio, mes + 1, 0)).getUTCDate();
 
-function construirCeldas(agenda: EventoConEstado[], primeraFecha: Date): Celda[] {
-	const anio = primeraFecha.getUTCFullYear();
-	const mes = primeraFecha.getUTCMonth();
+function construirCeldas(agenda: EventoConEstado[], mesLocal: Date): Celda[] {
+	const anio = mesLocal.getUTCFullYear();
+	const mes = mesLocal.getUTCMonth();
 
 	// Domingo es 0 en getUTCDay(), pero la semana parte el lunes
 	const desplazamiento = (new Date(Date.UTC(anio, mes, 1)).getUTCDay() + 6) % 7;
 	const totalDias = diasDelMes(anio, mes);
 	const totalCeldas = Math.ceil((desplazamiento + totalDias) / 7) * 7;
 
-	const clave = (dia: number) =>
-		`${anio}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
-
 	return Array.from({ length: totalCeldas }, (_, indice) => {
-		const numero = indice - desplazamiento + 1;
-		const dentroDelMes = numero >= 1 && numero <= totalDias;
-		// Los dias del mes vecino se muestran atenuados, con su numero real
-		const diaVecino = numero < 1 ? numero + diasDelMes(anio, mes - 1) : numero - totalDias;
-		const claveCelda = dentroDelMes ? clave(numero) : null;
+		/*
+		 * El dia 1 del mes cae en la columna del desplazamiento, asi que la celda pide
+		 * el dia 1 mas lo que se adelanta o se atrasa. Resuelto con un Date en UTC: un
+		 * dia 0 es el ultimo del mes anterior y un dia 32 el primero del siguiente, y
+		 * asi cada celda sabe que dia es sin arithmeticas a mano.
+		 */
+		const fecha = new Date(Date.UTC(anio, mes, 1 + indice - desplazamiento));
+		const clave = `${fecha.getUTCFullYear()}-${String(fecha.getUTCMonth() + 1).padStart(2, '0')}-${String(fecha.getUTCDate()).padStart(2, '0')}`;
 
 		return {
-			numero: dentroDelMes ? numero : diaVecino,
-			clave: claveCelda,
-			delMesVecino: !dentroDelMes,
-			eventos: claveCelda ? eventosDelDia(agenda, claveCelda) : []
+			numero: fecha.getUTCDate(),
+			clave,
+			// Los dias del mes vecino se muestran atenuados, con su numero real
+			delMesVecino: fecha.getUTCMonth() !== mes,
+			eventos: eventosDelDia(agenda, clave)
 		};
 	});
 }
