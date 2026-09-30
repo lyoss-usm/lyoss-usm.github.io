@@ -1,0 +1,18 @@
+---
+import { VideoOff } from '@lucide/astro';
+
+/*
+ * Marca de video pendiente: la clase ya tiene fecha y lugar, pero la grabacion
+ * todavia no se sube. Ocupa el mismo lugar que el embed y con el mismo alto, para
+ * que la pagina no se desarme ni salte de alto cuando aparezca el video.
+ */
+---
+
+<div
+	class="flex aspect-video w-full flex-col items-center justify-center rounded-2xl border border-dashed border-base-content/20 bg-base-200/30 p-6 text-center"
+>
+	<VideoOff class="h-8 w-8 text-base-content/30" aria-hidden="true" />
+	<p class="font-heading text-lg font-semibold text-base-content">
+		El video de esta clase aun no esta disponible
+	</p>
+</div>

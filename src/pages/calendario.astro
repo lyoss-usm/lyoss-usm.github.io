@@ -1,0 +1,350 @@
+---
+/*
+ * Calendario de eventos con datos de la colección 'eventos'.
+ */
+import MainLayout from '@/layouts/MainLayout.astro';
+import Encabezado from '@/components/calendario/Encabezado.astro';
+import Controles from '@/components/calendario/Controles.astro';
+import Agenda from '@/components/calendario/Agenda.astro';
+import Rejilla from '@/components/calendario/Rejilla.astro';
+import Vacio from '@/components/calendario/Vacio.astro';
+import { getCollection } from 'astro:content';
+import {
+	TIPOS_EVENTO,
+	calcularEstado,
+	aEvento,
+	formatearMesAnio,
+	type TipoEvento
+} from '@/utils/eventos';
+import { agruparPorMes, construirMeses } from '@/utils/calendario';
+
+const entradas = await getCollection('eventos');
+const eventos = entradas
+	.map(aEvento)
+	.sort((a, b) => a.fechaInicio.getTime() - b.fechaInicio.getTime());
+
+const agenda = eventos.map((evento) => ({
+	evento,
+	estado: calcularEstado(evento.fechaInicio, evento.fechaFin)
+}));
+
+// Si la coleccion llega vacia, se decide aqui y no en el navegador: el build
+// entrega el estado vacio ya visible, sin depender de un primer clic
+const hayEventos = eventos.length > 0;
+
+const grupos = agruparPorMes(agenda);
+const meses = construirMeses(agenda, grupos);
+
+const tiposPresentes = (Object.keys(TIPOS_EVENTO) as TipoEvento[]).filter((tipo) =>
+	eventos.some((evento) => evento.tipo === tipo)
+);
+
+// El periodo del resumen sale de los propios eventos, no de meses escritos a mano
+const primero = eventos[0]?.fechaInicio;
+const ultimo = eventos.at(-1)?.fechaInicio;
+let resumen = 'eventos por confirmar · agenda y mes a la vista';
+if (primero && ultimo) {
+	const desde = formatearMesAnio(primero);
+	const hasta = formatearMesAnio(ultimo);
+	const periodo = desde === hasta ? desde : `${desde.toLowerCase()} a ${hasta.toLowerCase()}`;
+	resumen = `eventos de ${periodo} · agenda y mes a la vista`;
+}
+---
+
+<MainLayout title="Calendario | Lyoss" description="Todos los eventos de Lyoss en un solo lugar">
+	<div class="min-h-screen bg-base-100 pt-20">
+		<div class="container mx-auto px-4 py-8">
+			<Encabezado total={eventos.length} resumen={resumen} />
+			<Controles tipos={tiposPresentes} />
+			<Vacio
+				id="calendario-vacio"
+				titulo="Todavia no hay eventos en el calendario"
+				detalle="Cuando carguemos las fechas te avisamos por aqui."
+				conAccion={hayEventos}
+				oculto={hayEventos}
+				clas="mb-8"
+			/>
+			<Agenda grupos={grupos} oculto={!hayEventos} />
+			<Rejilla meses={meses} oculto={!hayEventos} />
+		</div>
+	</div>
+
+	<script>
+		import { ESTADOS_EVENTO, TIPOS_EVENTO, calcularEstado, type TipoEvento } from '@/utils/eventos';
+
+		// Estado real: se calcula con la fecha de quien visita
+		const clasesEstado = Object.values(ESTADOS_EVENTO).map((estado) => estado.badge);
+
+		const pintarEstados = (raiz: ParentNode) => {
+			raiz.querySelectorAll<HTMLElement>('[data-estado]').forEach((elemento) => {
+				const contenedor = elemento.closest<HTMLElement>('[data-inicio]');
+				if (!contenedor) return;
+				const inicio = contenedor.dataset.inicio;
+				const fin = contenedor.dataset.fin;
+				if (!inicio) return;
+
+				const estado = calcularEstado(new Date(inicio), fin ? new Date(fin) : undefined);
+				elemento.dataset.estado = estado;
+				// Se limpian las clases de estado anteriores: si el markup ya traia una,
+				// se quedaria pegada junto a la nueva y ganaria la que llegue ultima en el CSS
+				clasesEstado.forEach((clase) => elemento.classList.remove(clase));
+				elemento.classList.add(ESTADOS_EVENTO[estado].badge);
+				elemento.textContent = ESTADOS_EVENTO[estado].label;
+				contenedor.classList.toggle('evento-finalizado', estado === 'finalizado');
+			});
+		};
+		pintarEstados(document);
+
+		// Vista agenda / rejilla, y el estado vacio que las reemplaza
+		const botonesVista = document.querySelectorAll<HTMLButtonElement>('.cambiar-vista');
+		const agenda = document.getElementById('vista-agenda');
+		const rejilla = document.getElementById('vista-rejilla');
+		const bloqueVacio = document.getElementById('calendario-vacio');
+		const itemsAgenda = document.querySelectorAll<HTMLElement>('.evento');
+		let vistaActiva: 'agenda' | 'rejilla' = 'agenda';
+		let tipoActivo = 'todos';
+		let verHistorial = false;
+
+		/*
+		 * Los eventos que ya pasaron se esconden por defecto. El estado se recalcula con
+		 * la fecha de quien visita, asi que el build puede quedar viejo y aun asi el
+		 * historial aparece o desaparece en el momento.
+		 */
+		const esFinalizado = (elemento: HTMLElement) => {
+			const inicio = elemento.dataset.inicio;
+			if (!inicio) return false;
+			const fin = elemento.dataset.fin;
+			return calcularEstado(new Date(inicio), fin ? new Date(fin) : undefined) === 'finalizado';
+		};
+
+		const coincideTipo = (elemento: HTMLElement) =>
+			tipoActivo === 'todos' || elemento.dataset.tipo === tipoActivo;
+
+		const coincide = (elemento: HTMLElement) =>
+			coincideTipo(elemento) && (verHistorial || !esFinalizado(elemento));
+
+		// Cuantos eventos esconde el historial, ya contando el filtro de tipo activo
+		const ocultos = () =>
+			Array.from(itemsAgenda).filter((item) => coincideTipo(item) && esFinalizado(item)).length;
+
+		const visible = (elemento: HTMLElement) => !elemento.classList.contains('hidden');
+		const sinResultados = () => !Array.from(itemsAgenda).some(visible);
+
+		/*
+		 * El boton del estado vacio cambia de intencion: si lo unico que falta son
+		 * eventos ya terminados, quitar el filtro no ayudaria, asi que ofrece el historial
+		 */
+		const pintarVacio = (raiz: HTMLElement) => {
+			const esconder = ocultos();
+			const filtrando = tipoActivo !== 'todos';
+			const tipo = filtrando ? TIPOS_EVENTO[tipoActivo as TipoEvento].label : null;
+
+			const titulo = raiz.querySelector<HTMLElement>('[data-vacio-titulo]');
+			const detalle = raiz.querySelector<HTMLElement>('[data-vacio-detalle]');
+			const boton = raiz.querySelector<HTMLButtonElement>('[data-vacio-accion]');
+
+			if (titulo) {
+				titulo.textContent =
+					esconder > 0
+						? `Solo hay eventos${tipo ? ` de tipo ${tipo}` : ''} ya terminados`
+						: filtrando
+							? `No hay eventos de tipo ${tipo}`
+							: 'Todavia no hay eventos en el calendario';
+			}
+			if (detalle) {
+				detalle.textContent =
+					esconder > 0
+						? `Quedan ${esconder} ${esconder === 1 ? 'evento' : 'eventos'} ya ${esconder === 1 ? 'terminado' : 'terminados'}, oculto${esconder === 1 ? '' : 's'} por ahora.`
+						: filtrando
+							? 'Quita el filtro o prueba con otro tipo de evento.'
+							: 'Cuando carguemos las fechas te avisamos por aqui.';
+			}
+			if (!boton) return;
+			boton.dataset.vacioAccion = esconder > 0 ? 'historial' : 'filtro';
+			boton.textContent = esconder > 0 ? 'Ver todo el historial' : 'Ver todos los eventos';
+			boton.toggleAttribute('hidden', !filtrando && esconder === 0);
+		};
+
+		const pintarVistas = () => {
+			const vacio = sinResultados();
+			bloqueVacio?.toggleAttribute('hidden', !vacio);
+
+			if (vacio && bloqueVacio) pintarVacio(bloqueVacio);
+
+			agenda?.classList.toggle('hidden', vacio || vistaActiva !== 'agenda');
+			rejilla?.classList.toggle('hidden', vacio || vistaActiva !== 'rejilla');
+		};
+
+		botonesVista.forEach((boton) => {
+			boton.addEventListener('click', () => {
+				vistaActiva = boton.dataset.vista === 'rejilla' ? 'rejilla' : 'agenda';
+				botonesVista.forEach((otro) => {
+					const activo = otro === boton;
+					otro.setAttribute('aria-pressed', String(activo));
+					otro.classList.toggle('btn-primary', activo);
+					otro.classList.toggle('btn-outline', !activo);
+				});
+				pintarVistas();
+			});
+		});
+
+		/*
+		 * Navegacion entre meses. Un mes sin nada que mostrar no se navega, asi que
+		 * el boton siguiente salta de octubre a noviembre y no pasa por agosto.
+		 */
+		const bloques = Array.from(document.querySelectorAll<HTMLElement>('.mes-rejilla'));
+		const botonesAnterior = document.querySelectorAll<HTMLButtonElement>('.mes-anterior');
+		const botonesSiguiente = document.querySelectorAll<HTMLButtonElement>('.mes-siguiente');
+		let mesActual: HTMLElement | null = null;
+
+		const mesesVisibles = () =>
+			bloques.filter((bloque) => !bloque.hasAttribute('data-mes-sin-eventos'));
+
+		const pintarMes = () => {
+			const meses = mesesVisibles();
+			// Si el mes que se estaba viendo quedo sin eventos, se cae al primero que quede
+			if (!mesActual || !meses.includes(mesActual)) mesActual = meses[0] ?? null;
+
+			// Se ocultan todos los bloques y se revela solo el mes actual
+			bloques.forEach((bloque) => {
+				bloque.hidden = bloque !== mesActual;
+			});
+
+			const posicion = mesActual ? meses.indexOf(mesActual) : -1;
+			botonesAnterior.forEach((boton) => (boton.disabled = posicion <= 0));
+			botonesSiguiente.forEach(
+				(boton) => (boton.disabled = posicion < 0 || posicion === meses.length - 1)
+			);
+		};
+
+		const moverMes = (delta: number) => {
+			const meses = mesesVisibles();
+			const destino = (mesActual ? meses.indexOf(mesActual) : -1) + delta;
+			if (destino < 0 || destino >= meses.length) return;
+			mesActual = meses[destino];
+			pintarMes();
+		};
+
+		// Cada mes trae su propio par de botones, asi que se escuchan por delegacion
+		rejilla?.addEventListener('click', (evento) => {
+			const boton = (evento.target as HTMLElement).closest<HTMLButtonElement>(
+				'.mes-anterior, .mes-siguiente'
+			);
+			if (!boton || boton.disabled) return;
+			moverMes(boton.classList.contains('mes-anterior') ? -1 : 1);
+		});
+		pintarMes();
+
+		// Detalle del dia: bajo sm el chip no es un link, asi que la celda completa
+		// es un boton que clona la plantilla del dia en el dialog
+		const modalDia = document.getElementById('dia-modal') as HTMLDialogElement | null;
+		const modalTitulo = document.getElementById('dia-modal-titulo');
+		const modalCuerpo = document.getElementById('dia-modal-cuerpo');
+
+		rejilla?.addEventListener('click', (evento) => {
+			const boton = (evento.target as HTMLElement).closest<HTMLButtonElement>('.abrir-dia');
+			const plantilla = boton?.parentElement?.querySelector<HTMLTemplateElement>('.plantilla-dia');
+			if (!boton || !plantilla || !modalDia || !modalCuerpo) return;
+
+			modalCuerpo.replaceChildren(plantilla.content.cloneNode(true));
+			modalCuerpo.querySelectorAll<HTMLElement>('[data-tipo]').forEach((item) => {
+				item.classList.toggle('hidden', !coincide(item));
+			});
+			if (modalTitulo) modalTitulo.textContent = boton.dataset.titulo ?? '';
+			pintarEstados(modalCuerpo);
+			modalDia.showModal();
+		});
+
+		modalDia?.addEventListener('click', (evento) => {
+			if ((evento.target as HTMLElement).closest('[data-cerrar-dia]')) modalDia.close();
+		});
+
+		/*
+		 * Filtros: por tipo y por historial. Los eventos ya terminados se esconden por
+		 * defecto, salvo que se pida ver el historial.
+		 */
+		const botonesFiltro = document.querySelectorAll<HTMLButtonElement>('.filtro-tipo');
+		const chips = document.querySelectorAll<HTMLElement>('.evento-chip');
+		const botonesDia = document.querySelectorAll<HTMLButtonElement>('.abrir-dia');
+		const contador = document.getElementById('evento-count');
+		const botonHistorial = document.querySelector<HTMLButtonElement>('[data-ver-historial]');
+		const textoHistorial = document.querySelector<HTMLElement>('[data-historial-etiqueta]');
+		const cuentaHistorial = document.querySelector<HTMLElement>('[data-historial-cantidad]');
+
+		const pintarHistorial = () => {
+			const escondido = verHistorial ? 0 : ocultos();
+
+			botonHistorial?.setAttribute('aria-pressed', String(verHistorial));
+			botonHistorial?.classList.toggle('btn-active', verHistorial);
+			if (textoHistorial) {
+				textoHistorial.textContent = verHistorial ? 'Ocultar historial' : 'Ver todo el historial';
+			}
+			if (cuentaHistorial) {
+				cuentaHistorial.textContent = String(escondido);
+				cuentaHistorial.toggleAttribute('hidden', escondido === 0);
+			}
+		};
+
+		const aplicarFiltro = () => {
+			itemsAgenda.forEach((item) => item.classList.toggle('hidden', !coincide(item)));
+			chips.forEach((chip) => chip.classList.toggle('hidden', !coincide(chip)));
+
+			/*
+			 * Un mes que se queda sin nada que mostrar se retira entero, no queda un
+			 * hueco con un aviso. En la agenda los items son .evento y en la rejilla
+			 * .evento-chip
+			 */
+			document.querySelectorAll<HTMLElement>('.mes-agenda, .mes-rejilla').forEach((bloque) => {
+				const items = Array.from(bloque.querySelectorAll<HTMLElement>('.evento, .evento-chip'));
+				bloque.toggleAttribute('data-mes-sin-eventos', !items.some(visible));
+			});
+
+			// El boton de dia solo queda activo si ese dia conserva algun evento visible
+			botonesDia.forEach((boton) => {
+				const chipsDelDia = boton.parentElement?.querySelectorAll<HTMLElement>('.evento-chip');
+				boton.hidden = !chipsDelDia || !Array.from(chipsDelDia).some(visible);
+			});
+
+			if (contador) {
+				contador.textContent = String(Array.from(itemsAgenda).filter(visible).length);
+			}
+			// El mes que se estaba viendo puede haber desaparecido con el filtro
+			pintarMes();
+			pintarVistas();
+		};
+
+		const aplicarTipo = (tipo: string) => {
+			tipoActivo = tipo;
+			botonesFiltro.forEach((boton) => {
+				const activo = boton.dataset.tipo === tipo;
+				boton.setAttribute('aria-pressed', String(activo));
+				boton.classList.toggle('btn-outline', !activo);
+				if (boton.dataset.clase) boton.classList.toggle(boton.dataset.clase, activo);
+			});
+			aplicarFiltro();
+			pintarHistorial();
+		};
+
+		const alternarHistorial = () => {
+			verHistorial = !verHistorial;
+			pintarHistorial();
+			aplicarFiltro();
+		};
+
+		botonesFiltro.forEach((boton) => {
+			boton.addEventListener('click', () => aplicarTipo(boton.dataset.tipo ?? 'todos'));
+		});
+		botonHistorial?.addEventListener('click', alternarHistorial);
+		document.querySelectorAll<HTMLButtonElement>('[data-vacio-accion]').forEach((boton) => {
+			boton.addEventListener('click', () => {
+				if (boton.dataset.vacioAccion === 'historial') alternarHistorial();
+				else aplicarTipo('todos');
+			});
+		});
+
+		// El build ya entrego el estado inicial, aqui solo se sincroniza por si el
+		// HTML se regenero con datos distintos a los que pinto el servidor
+		pintarHistorial();
+		aplicarFiltro();
+	</script>
+</MainLayout>

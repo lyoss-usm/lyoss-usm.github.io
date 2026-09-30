@@ -1,0 +1,75 @@
+---
+import { ArrowRight } from '@lucide/astro';
+import {
+	ESTADOS_EVENTO,
+	TIPOS_EVENTO,
+	formatearDiaMes,
+	type Evento,
+	type EventoConEstado
+} from '@/utils/eventos';
+
+type Props = { evento: Evento; agenda: EventoConEstado[] };
+
+const { evento, agenda } = Astro.props;
+
+/*
+ * Los eventos de la misma serie (Clase 1, Clase 2, ...) para poder recorrerlos
+ * sin volver al calendario. Sin serie, o sin hermanos, no se pinta nada.
+ */
+const hermanos = evento.serie
+	? agenda
+			.filter(({ evento: otro }) => otro.serie === evento.serie && otro.slug !== evento.slug)
+			.sort((a, b) => a.evento.fechaInicio.getTime() - b.evento.fechaInicio.getTime())
+	: [];
+---
+
+{
+	hermanos.length > 0 && (
+		<nav class="bg-base-100 pb-16" aria-label={`Otros eventos de ${evento.serie}`}>
+			<div class="container mx-auto max-w-4xl px-4">
+				<h2 class="mb-4 font-heading text-2xl font-bold text-base-content">
+					Más de <span class="text-primary">{evento.serie}</span>
+				</h2>
+
+				<ul class="flex flex-col gap-3">
+					{hermanos.map(({ evento: otro, estado }) => (
+						<li
+							data-evento
+							data-atenuar
+							data-inicio={otro.fechaInicio.toISOString()}
+							data-fin={otro.fechaFin?.toISOString()}
+						>
+							<a
+								href={`/eventos/${otro.slug}`}
+								class="group flex items-center gap-4 rounded-2xl border border-base-content/10 bg-base-200/50 p-4 transition-colors hover:border-primary/40 hover:bg-base-200"
+							>
+								<span class="shrink-0 text-sm text-base-content/60">
+									{formatearDiaMes(otro.fechaInicio)}
+								</span>
+
+								<span class="min-w-0 flex-1">
+									<span class="block font-heading font-semibold text-base-content transition-colors group-hover:text-primary">
+										{otro.titulo}
+									</span>
+									<span class="mt-1 flex flex-wrap items-center gap-2">
+										<span class={`badge border-0 badge-xs ${TIPOS_EVENTO[otro.tipo].badge}`}>
+											{TIPOS_EVENTO[otro.tipo].label}
+										</span>
+										<span class="badge-estado badge badge-xs" data-estado={estado}>
+											{ESTADOS_EVENTO[estado].label}
+										</span>
+									</span>
+								</span>
+
+								<ArrowRight
+									class="h-4 w-4 shrink-0 text-base-content/30 transition-transform group-hover:translate-x-1"
+									aria-hidden="true"
+								/>
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+		</nav>
+	)
+}

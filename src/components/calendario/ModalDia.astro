@@ -1,0 +1,90 @@
+---
+import { X } from '@lucide/astro';
+/*
+ * Detalle de un dia para pantallas angostas: bajo 400px el chip de la rejilla es
+ * solo un punto, asi que el dia se presiona y estos enlaces toman el lugar.
+ */
+---
+
+<dialog
+	id="dia-modal"
+	aria-labelledby="dia-modal-titulo"
+	class="dia-modal m-0 h-full max-h-full w-full max-w-none border-0 bg-transparent p-0 text-base-content backdrop:bg-transparent"
+>
+	<div class="dia-fondo absolute inset-0 bg-black/60" data-cerrar-dia></div>
+
+	<div
+		class="dia-hoja absolute inset-x-0 bottom-0 max-h-[85dvh] overflow-y-auto overscroll-contain rounded-t-3xl bg-base-100 p-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl"
+	>
+		<div class="mx-auto mb-4 h-1 w-10 rounded-full bg-base-content/20" aria-hidden="true"></div>
+
+		<header class="mb-4 flex items-start justify-between gap-4">
+			<div class="min-w-0">
+				<p class="text-xs text-base-content/60">Eventos del día</p>
+				<h2 id="dia-modal-titulo" class="font-heading text-lg leading-tight font-bold">Día</h2>
+			</div>
+			<button
+				type="button"
+				class="btn btn-circle shrink-0 btn-ghost btn-sm"
+				data-cerrar-dia
+				aria-label="Cerrar"
+			>
+				<X class="h-5 w-5" />
+			</button>
+		</header>
+
+		<ul id="dia-modal-cuerpo" class="flex flex-col gap-2"></ul>
+	</div>
+</dialog>
+
+<style is:global>
+	/* La animacion va en CSS: @starting-style marca el estado inicial al abrir y
+	   allow-discrete deja terminar la de salida cuando el dialog pierde [open]. */
+	.dia-modal {
+		opacity: 0;
+		transition:
+			opacity 0.2s ease,
+			display 0.28s allow-discrete;
+	}
+
+	.dia-modal[open] {
+		opacity: 1;
+	}
+
+	.dia-modal .dia-fondo {
+		opacity: 0;
+		transition: opacity 0.2s ease;
+	}
+
+	.dia-modal[open] .dia-fondo {
+		opacity: 1;
+	}
+
+	.dia-modal .dia-hoja {
+		opacity: 0;
+		transform: translateY(1.5rem);
+		transition:
+			opacity 0.2s ease,
+			transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+	}
+
+	.dia-modal[open] .dia-hoja {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	@starting-style {
+		.dia-modal[open] {
+			opacity: 0;
+		}
+
+		.dia-modal[open] .dia-fondo {
+			opacity: 0;
+		}
+
+		.dia-modal[open] .dia-hoja {
+			opacity: 0;
+			transform: translateY(1.5rem);
+		}
+	}
+</style>

@@ -1,0 +1,21 @@
+---
+import { CalendarDays } from '@lucide/astro';
+
+type Props = {
+	total: number;
+	resumen: string;
+};
+
+const { total, resumen } = Astro.props;
+---
+
+<header class="mb-8">
+	<div class="mb-4 flex items-center gap-3">
+		<CalendarDays class="h-10 w-10 text-base-content" />
+		<h1 class="font-heading text-4xl font-bold text-base-content lg:text-5xl">Calendario</h1>
+	</div>
+	<p class="text-lg text-base-content/70">
+		<span id="evento-count" aria-live="polite">{total}</span>
+		{resumen}
+	</p>
+</header>

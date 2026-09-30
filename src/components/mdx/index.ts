@@ -11,6 +11,8 @@ import ContribuirStep from './ContribuirStep.astro';
 import ConductaSection from './ConductaSection.astro';
 import ConductaList from './ConductaList.astro';
 import ConductaGuia from './ConductaGuia.astro';
+import Video from './Video.astro';
+import VideoPendiente from './VideoPendiente.astro';
 
 export {
 	Mini,
@@ -25,5 +27,7 @@ export {
 	ContribuirStep,
 	ConductaSection,
 	ConductaList,
-	ConductaGuia
+	ConductaGuia,
+	Video,
+	VideoPendiente
 };
