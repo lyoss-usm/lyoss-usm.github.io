@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets';
+import { ExternalLink, VideoOff } from '@lucide/astro';
+
+/*
+ * Tarjeta de una distribucion disponible en el evento: logo, nombre, video de
+ * vista previa y enlace de referencia. El logo es un import de imagen (opcional,
+ * sin el se muestra la inicial) y el video el id de YouTube (opcional, sin el
+ * se muestra el mismo marcador de VideoPendiente).
+ */
+interface Props {
+	nombre: string;
+	url: string;
+	logo?: ImageMetadata;
+	video?: string;
+}
+
+const { nombre, url, logo, video } = Astro.props;
+---
+
+<div class="card border border-base-content/10 bg-base-200/50">
+	<div class="card-body gap-4 p-6">
+		<div class="flex items-center gap-3">
+			{
+				logo ? (
+					<Image src={logo} alt="" class="h-10 w-10 object-contain" />
+				) : (
+					<div
+						class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20 font-heading text-lg font-semibold text-primary"
+						aria-hidden="true"
+					>
+						{nombre.charAt(0)}
+					</div>
+				)
+			}
+			<h3 class="font-heading text-xl font-semibold text-base-content">{nombre}</h3>
+		</div>
+
+		{
+			video ? (
+				<div class="aspect-video w-full overflow-hidden rounded-xl bg-base-200">
+					<iframe
+						class="h-full w-full"
+						src={`https://www.youtube-nocookie.com/embed/${video}`}
+						title={`Vista previa de ${nombre}`}
+						loading="lazy"
+						referrerpolicy="strict-origin-when-cross-origin"
+						allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						allowfullscreen
+					/>
+				</div>
+			) : (
+				<div class="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-base-content/20 bg-base-200/30 p-4 text-center">
+					<VideoOff class="h-6 w-6 text-base-content/30" aria-hidden="true" />
+					<p class="text-sm text-base-content/60">Vista previa pendiente</p>
+				</div>
+			)
+		}
+
+		<a
+			href={url}
+			target="_blank"
+			rel="noopener noreferrer"
+			class="btn self-start btn-outline btn-sm"
+		>
+			Sitio oficial
+			<ExternalLink class="h-4 w-4" aria-hidden="true" />
+		</a>
+	</div>
+</div>

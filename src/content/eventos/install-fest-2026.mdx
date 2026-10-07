@@ -17,6 +17,16 @@ enlaces:
 destacado: true
 ---
 
+import { Distro, DistrosGrid } from 'MDX';
+import logoMint from '@/assets/distros/linux-mint.webp';
+import logoDebian from '@/assets/distros/debian-linux.webp';
+import logoOmarchy from '@/assets/distros/omarchy.webp';
+import logoCachyos from '@/assets/distros/cachyos.webp';
+import logoFedora from '@/assets/distros/fedora.webp';
+import logoBazzite from '@/assets/distros/bazzite.webp';
+import logoArch from '@/assets/distros/arch-linux.webp';
+import logoUbuntu from '@/assets/distros/ubuntu.webp';
+
 ¿Te interesa Linux pero no sabes por dónde empezar? ¿O ya lo usas pero necesitas ayuda con una
 instalación o tienes dudas? 🐧
 
@@ -37,6 +47,21 @@ El cronograma es el mismo ambos días y no tienes que preocuparte por los horari
 estaremos instalando todo el día.
 
 No necesitas conocimientos previos, solo las ganas de aprender y compartir.
+
+## Distros disponibles
+
+Estas son las distribuciones que tendremos para instalar:
+
+<DistrosGrid>
+    <Distro nombre="Linux Mint" logo={logoMint} url="https://linuxmint.com" video="6jSZoY_RlsI" />
+	<Distro nombre="Debian" logo={logoDebian} url="https://www.debian.org" video="ZubdJ41Bqxw" />
+	<Distro nombre="Omarchy" logo={logoOmarchy} url="https://omarchy.org" video="5JPYJfN7HY0" />
+	<Distro nombre="Arch Linux" logo={logoArch} url="https://archlinux.org" video="uZDPXFQYz0Q" />
+	<Distro nombre="CachyOS" logo={logoCachyos} url="https://cachyos.org" video="Uq_YFx96Bl0" />
+	<Distro nombre="Fedora" logo={logoFedora} url="https://fedoraproject.org" video="u3jBw9ZOyTI" />
+	<Distro nombre="Bazzite" logo={logoBazzite} url="https://bazzite.gg" video="3jEHX9n58xY" />
+	<Distro nombre="Ubuntu" logo={logoUbuntu} url="https://bazzite.gg" video="tiQau8ti1-Q" />
+</DistrosGrid>
 
 ## Inscripción para externos
 

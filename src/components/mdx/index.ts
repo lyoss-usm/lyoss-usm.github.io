@@ -13,6 +13,8 @@ import ConductaList from './ConductaList.astro';
 import ConductaGuia from './ConductaGuia.astro';
 import Video from './Video.astro';
 import VideoPendiente from './VideoPendiente.astro';
+import Distro from './Distro.astro';
+import DistrosGrid from './DistrosGrid.astro';
 
 export {
 	Mini,
@@ -29,5 +31,7 @@ export {
 	ConductaList,
 	ConductaGuia,
 	Video,
-	VideoPendiente
+	VideoPendiente,
+	Distro,
+	DistrosGrid
 };
