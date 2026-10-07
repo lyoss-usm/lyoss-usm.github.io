@@ -11,34 +11,39 @@ import { ExternalLink, VideoOff } from '@lucide/astro';
 interface Props {
 	nombre: string;
 	url: string;
+	descripcion?: string;
 	logo?: ImageMetadata;
 	video?: string;
 }
 
-const { nombre, url, logo, video } = Astro.props;
+const { nombre, url, descripcion, logo, video } = Astro.props;
 ---
 
-<div class="card border border-base-content/10 bg-base-200/50">
-	<div class="card-body gap-4 p-6">
+<div class="border border-base-content/10 bg-base-200/50">
+	<div class="p-6">
 		<div class="flex items-center gap-3">
 			{
 				logo ? (
-					<Image src={logo} alt="" class="h-10 w-10 object-contain" />
+					<div class="flex h-12 w-12 shrink-0 items-center justify-center">
+						<Image src={logo} alt="" class="max-h-full max-w-full object-contain" />
+					</div>
 				) : (
 					<div
-						class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20 font-heading text-lg font-semibold text-primary"
+						class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/20 font-heading text-lg font-semibold text-primary"
 						aria-hidden="true"
 					>
 						{nombre.charAt(0)}
 					</div>
 				)
 			}
-			<h3 class="font-heading text-xl font-semibold text-base-content">{nombre}</h3>
+			<h3 class="m-0! font-heading text-xl! leading-none! font-semibold text-base-content">
+				{nombre}
+			</h3>
 		</div>
 
 		{
 			video ? (
-				<div class="aspect-video w-full overflow-hidden rounded-xl bg-base-200">
+				<div class="my-2 aspect-video w-full overflow-hidden rounded-xl bg-base-200">
 					<iframe
 						class="h-full w-full"
 						src={`https://www.youtube-nocookie.com/embed/${video}`}
@@ -50,18 +55,20 @@ const { nombre, url, logo, video } = Astro.props;
 					/>
 				</div>
 			) : (
-				<div class="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-base-content/20 bg-base-200/30 p-4 text-center">
+				<div class="my-2 flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-base-content/20 bg-base-200/30 p-4 text-center">
 					<VideoOff class="h-6 w-6 text-base-content/30" aria-hidden="true" />
 					<p class="text-sm text-base-content/60">Vista previa pendiente</p>
 				</div>
 			)
 		}
 
+		{descripcion && <p class="my-2! text-sm">{descripcion}</p>}
+
 		<a
 			href={url}
 			target="_blank"
 			rel="noopener noreferrer"
-			class="btn self-start btn-outline btn-sm"
+			class="btn self-start btn-primary btn-sm text-base-content! decoration-0"
 		>
 			Sitio oficial
 			<ExternalLink class="h-4 w-4" aria-hidden="true" />
