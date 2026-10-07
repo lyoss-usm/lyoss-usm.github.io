@@ -15,6 +15,7 @@ import Video from './Video.astro';
 import VideoPendiente from './VideoPendiente.astro';
 import Distro from './Distro.astro';
 import DistrosGrid from './DistrosGrid.astro';
+import BannerTux from './BannerTux.astro';
 
 export {
 	Mini,
@@ -33,5 +34,6 @@ export {
 	Video,
 	VideoPendiente,
 	Distro,
-	DistrosGrid
+	DistrosGrid,
+	BannerTux
 };
