@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+import logo from '@/assets/logo-1.webp';
+
+/*
+ * Variante de BannerTux para la hackathon: mismo banner negro redondeado, con resplandor azul (primary) y el logo de LYOSS
+ * (pinguino con < >) a la derecha. El logo sobresale por arriba y se recorta por abajo y a la
+ * derecha con clip-path (inset con tope negativo = sin recorte arriba y a la izquierda),
+ * porque overflow-hidden en el banner tambien cortaria la parte que sobresale.
+ * El titulo llega por el slot y se estiliza en el propio MDX. Sus clases necesitan ! porque el
+ * contenedor de la pagina estiliza h1 y strong con selectores descendientes.
+ */
+---
+
+<div class="not-prose relative flex h-44 items-center rounded-3xl bg-black sm:h-52">
+	<!-- Fondo: se recorta aparte para que el resplandor no se salga del banner -->
+	<div
+		class="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl ring-1 ring-white/10 ring-inset"
+		aria-hidden="true"
+	>
+		<div
+			class="absolute inset-0 [background-image:radial-gradient(circle,rgb(255_255_255/0.35)_1px,transparent_1px)] [mask-image:linear-gradient(to_right,black,transparent_70%)] [background-size:20px_20px] opacity-30"
+		>
+		</div>
+		<div class="absolute -right-16 -bottom-28 h-72 w-72 rounded-full bg-secondary/60 blur-3xl"></div>
+	</div>
+
+	<div class="relative z-10 pr-28 pl-6 sm:pl-8 md:pr-0">
+		<slot />
+	</div>
+
+	<div
+		class="pointer-events-none absolute right-0 bottom-0 aspect-square h-[110%] [clip-path:inset(-50%_0_0_-50%_round_0_0_1.5rem_0)] sm:right-6 md:h-[150%]"
+		aria-hidden="true"
+	>
+		<Image
+			src={logo}
+			alt=""
+			class="h-full w-full translate-y-[10%] sm:translate-y-[20%] rotate-6 object-cover drop-shadow-[0_10px_20px_rgb(0_0_0/0.6)]"
+		/>
+	</div>
+</div>
